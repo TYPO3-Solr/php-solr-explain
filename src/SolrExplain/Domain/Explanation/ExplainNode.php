@@ -38,6 +38,68 @@ class ExplainNode {
 	protected $parent = null;
 
 	/**
+	 * @var int
+	 */
+	protected $nodeType = -1;
+
+	/**
+	 * @return void
+	 */
+	public function __construct() {
+		$this->children = new \ArrayObject();
+	}
+
+	/**
+	 * @return
+	 */
+	public function getAbsoluteImpactPercentage() {
+		if($this->level == 0) {
+			return 100.0;
+		} else {
+			if($this->getParent()->getNodeType() == self::NODE_TYPE_SUM) {
+				$parentScore 			= $this->getParent()->getScore();
+				$parentPercentage		= $this->getParent()->getAbsoluteImpactPercentage();
+
+					//part of this node relative to the parent
+				$scorePercentageToParent	= (100 / $parentScore) * $this->getScore();
+				return ($parentPercentage / 100) * $scorePercentageToParent;
+			}
+
+			if($this->getParent()->getNodeType() == self::NODE_TYPE_MAX) {
+				$neighboors = $this->getParent()->getChildren();
+				foreach($neighboors as $neighboor) {
+					if($neighboor != $this && $neighboor->getScore() > $this->getScore()) {
+						return 0;
+					} else {
+							//when this node has the highest score we "inherit" the parents score
+						return $this->getParent()->getAbsoluteImpactPercentage();
+					}
+				}
+			}
+
+			if($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
+				$parentPercentage		= $this->getParent()->getAbsoluteImpactPercentage();
+				$parentScore 			= $this->getParent()->getScore();
+
+				$neighboorScoreSum = 0;
+				foreach($this->getParent()->getChildren() as $neighboor) {
+					if($neighboor != $this) {
+						$neighboorScore = $neighboor->getScore();
+						$neighboorScorePart[] = ($neighboorScore * $neighboorScore) + 1;
+					}
+
+				}
+
+				$myScorePart = (($this->getScore() * $this->getScore()) + 1);
+
+				$scoreSum 	= array_sum($neighboorScorePart) + $myScorePart;
+
+				return ($this->getParent()->getAbsoluteImpactPercentage() / $scoreSum) * $myScorePart;
+			}
+		}
+	}
+
+	/**
 	 * @param \SolrExplain\Domain\Explanation\ExplainNode $parent
 	 */
 	public function setParent($parent) {
@@ -49,13 +111,6 @@ class ExplainNode {
 	 */
 	public function getParent() {
 		return $this->parent;
-	}
-
-	/**
-	 * @return void
-	 */
-	public function __construct() {
-		$this->children = new \ArrayObject();
 	}
 
 	/**
@@ -120,5 +175,30 @@ class ExplainNode {
 	 */
 	public function getScore() {
 		return $this->score;
+	}
+
+	/**
+	 * @param int $nodeType
+	 */
+	public function setNodeType($nodeType) {
+		$this->nodeType = $nodeType;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getNodeType() {
+		return $this->nodeType;
+	}
+
+	/**
+	 *
+	 * @param \SolrExplain\Domain\Explanation\Visitors\ExplainNodeVisitorInterface $visitor
+	 */
+	public function visitNodes(\SolrExplain\Domain\Explanation\Visitors\ExplainNodeVisitorInterface $visitor) {
+		$visitor->visit($this);
+		foreach($this->getChildren() as $child) {
+			$child->visitNodes($visitor);
+		}
 	}
 }

@@ -38,7 +38,7 @@ class ExplanationSolr3TestCase extends \SolrExplain\Tests\AbstractExplanationTes
 	/**
 	 * @test
 	 */
-	public function testFixture001() {
+	public function testFixture001GetScore() {
 		$explain = $this->getExplain('3.0.001');
 
 		$this->assertNotNull($explain);
@@ -47,6 +47,51 @@ class ExplanationSolr3TestCase extends \SolrExplain\Tests\AbstractExplanationTes
 		$this->assertEquals(2,$explain->getChild(0)->getParent()->getChild(0)->getChildren()->count());
 		$this->assertEquals(0.8621642, $explain->getRootNode()->getScore());
 		$this->assertEquals(0.8621642,$explain->getChild(0)->getScore());
+	}
+
+	/**
+	 * @test
+	 */
+	public function testFixture001GetImpact() {
+		$explain = $this->getExplain('3.0.001');
+
+		$this->assertNotNull($explain);
+		$this->assertEquals(0.8621642, $explain->getRootNode()->getScore());
+		$this->assertEquals(0.8621642,$explain->getChild(0)->getScore());
+		$this->assertEquals(0.4310821,$explain->getChild(0)->getChild(0)->getScore());
+
+		$this->assertEquals(100.0,$explain->getRootNode()->getAbsoluteImpactPercentage());
+
+		$this->assertEquals(\SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_SUM,$explain->getRootNode()->getNodeType());
+		$this->assertEquals(\SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_SUM,$explain->getRootNode()->getChild(0)->getNodeType());
+
+		$this->assertEquals(100.0,$explain->getRootNode()->getChild(0)->getAbsoluteImpactPercentage());
+
+			//the sum nodes
+		$this->assertEquals(50.0,$explain->getRootNode()->getChild(0)->getChild(0)->getAbsoluteImpactPercentage());
+		$this->assertEquals(50.0,$explain->getRootNode()->getChild(0)->getChild(1)->getAbsoluteImpactPercentage());
+
+			//the max node
+		$this->assertEquals(50.0,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getAbsoluteImpactPercentage());
+
+			//	(0.5044475 * 0.5044475) + 1 = 1,25446728
+			// (0.8545628 * 0.8545628) + 1 = 1,730277579
+			// 2,984744859
+			// (100 / 2,984744859 ) * 1,25446728 = 42,02929695 => 21.014648476661
+			// (100 / 2,984744859 ) * 1,730277579 = 57,97070305 => 28.985351523339
+		$this->assertEquals(21.0146484766615,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(0)->getAbsoluteImpactPercentage());
+		$this->assertEquals(28.985351523339,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(1)->getAbsoluteImpactPercentage());
+		$this->assertEquals(\SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_MAX,$explain->getRootNode()->getChild(0)->getChild(0)->getNodeType());
+	}
+
+	/**
+	 * @test
+	 */
+	public function testCanSummerizeLeafNodes() {
+		$explain = $this->getExplain('3.0.001');
+		$visitor = new \SolrExplain\Domain\Explanation\Visitors\SummarizeLeafImpacts();
+		$explain->getRootNode()->visitNodes($visitor);
+		$this->assertEquals(100.0, $visitor->getSum());
 	}
 
 	/**

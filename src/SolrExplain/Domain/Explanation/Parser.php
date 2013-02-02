@@ -33,13 +33,34 @@ class Parser {
 	}
 
 	/**
+	 * @param string $tokenName
+	 * @param int $level
+	 */
+	protected function getNodeType($tokenName, $level) {
+		if(mb_strpos($tokenName,'sum of:') !== false) {
+			return \SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_SUM;
+		}
+
+		if(mb_strpos($tokenName,'product of:') !== false) {
+			return \SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_PRODUCT;
+		}
+
+		if(mb_strpos($tokenName,'max of:') !== false) {
+			return \SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_MAX;
+		}
+
+			//when nothing else matched we have a leaf node
+		return \SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_LEAF;
+	}
+
+	/**
 	 * Recursive method to parse the explain content into a child node structure.
 	 *
 	 * @param $contextContent
 	 * @param \ArrayObject $collection
 	 * @return \ArrayObject
 	 */
-	protected function parseChildNodes($contextContent, \ArrayObject $collection, $parent = null) {
+	protected function parseChildNodes($contextContent, \ArrayObject $collection, $parent = null,$level=0) {
 		$matches 	= array();
 
 		//look for tokens stating with 0-9* and get all following lines stating with " " space
@@ -55,6 +76,10 @@ class Parser {
 				$token->setContent($tokenName);
 				$token->setParent($parent);
 				$token->setScore($score);
+				$token->setLevel($level);
+
+				$nodeType = $this->getNodeType($tokenName,$level);
+				$token->setNodeType($nodeType);
 
 				$collection->append($token);
 
@@ -65,7 +90,8 @@ class Parser {
 				}
 
 				if(trim($nextLevelContent) != '') {
-					$this->parseChildNodes($nextLevelContent,$token->getChildren(),$token);
+					$level++;
+					$this->parseChildNodes($nextLevelContent,$token->getChildren(),$token,$level);
 				}
 			}
 		}
