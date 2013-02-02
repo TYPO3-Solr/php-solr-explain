@@ -14,6 +14,7 @@ class Parser {
 	 */
 	protected $explain;
 
+
 	/**
 	 * @param \SolrExplain\Domain\Explanation\Explain $explain
 	 */
@@ -49,15 +50,8 @@ class Parser {
 				$tokenParts		= explode(PHP_EOL,$tokenContent);
 				$tokenName		= trim(array_shift($tokenParts));
 
-				$token 			= new \SolrExplain\Domain\Explanation\ExplainNode();
-
-				$score = 0.0;
-				$scoreMatches 	= array();
-				preg_match('~(?<score>[0-9]*\.[0-9]*)~',$tokenName,$scoreMatches);
-				if(isset($scoreMatches['score']) && (float) $scoreMatches['score'] > 0) {
-					$score = (float) $scoreMatches['score'];
-				}
-
+				$token 	= new \SolrExplain\Domain\Explanation\ExplainNode();
+				$score 	= $this->getScoreFromTokenName($tokenName);
 				$token->setContent($tokenName);
 				$token->setParent($parent);
 				$token->setScore($score);
@@ -80,15 +74,66 @@ class Parser {
 	}
 
 	/**
+	 * Extracts the score from a token name.
+	 *
+	 * Input eg: 3.8332133 = idf(docFreq=0, maxDocs=17)
+	 * Output eg: 3.8332133
+	 *
+	 * @param string $tokenName
+	 * @return float
+	 */
+	protected function getScoreFromTokenName($tokenName) {
+		$score = 0.0;
+		$scoreMatches 	= array();
+		preg_match('~(?<score>[0-9]*\.[0-9]*)~',$tokenName,$scoreMatches);
+		if(isset($scoreMatches['score']) && (float) $scoreMatches['score'] > 0) {
+			$score = (float) $scoreMatches['score'];
+		}
+
+		return $score;
+	}
+
+	/**
+	 * @param $content
+	 * @return string
+	 */
+	protected function getQueryAttribute($content) {
+		$querystring = '';
+		$matches = array();
+		preg_match("~^#(?<attributes>[^\n]*)~ism", $content, $matches);
+
+		if(isset($matches['attributes'])) {
+			$attributes 		= $matches['attributes'];
+			$attributeMatches 	= array();
+			preg_match('~.*q=(?<querystring>[^&]*)~ism',$attributes,$attributeMatches);
+			if(isset($attributeMatches['querystring'])) {
+				$querystring = $attributeMatches['querystring'];
+					//convert boostvalues without decimals to boost value with
+					//decimal eg: foo^20 => foo^20.0
+				$querystring = preg_replace('~\^([0-9^.]+)~i','^$1.0',$querystring);
+			}
+		}
+
+		return $querystring;
+	}
+
+	/**
 	 * Parses the explain content to an explain object wit child nodes.
 	 *
 	 * @return \SolrExplain\Domain\Explanation\Explain
 	 */
-	public function parse(\SolrExplain\Domain\Explanation\Content $content) {
-		$rootNode = $this->getRootNode($content->getContent());
+	public function parse(	\SolrExplain\Domain\Explanation\Content $content,
+							\SolrExplain\DOmain\Explanation\MetaData $metaData) {
+
+		$rawContent = $content->getContent();
+		$rootNode = $this->getRootNode($rawContent);
+		$this->explain->setRootNode($rootNode);
+
 		$children = $rootNode->getChildren();
 		$this->explain->setChildren($children);
-		$this->explain->setRootNode($rootNode);
+
+		$this->explain->setDocumentId($metaData->getDocumentId());
+		$this->explain->setAttribute(':query',$this->getQueryAttribute($rawContent));
 
 		return $this->explain;
 	}

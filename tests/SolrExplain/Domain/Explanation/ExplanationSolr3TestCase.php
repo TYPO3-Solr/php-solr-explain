@@ -27,10 +27,10 @@ class ExplanationSolr3TestCase extends \SolrExplain\Tests\AbstractExplanationTes
 		$fileContent = $this->getFixtureContent($filename.".txt");
 		$content = new \SolrExplain\Domain\Explanation\Content($fileContent);
 		$metaData = new \SolrExplain\Domain\Explanation\MetaData('P_164345','auto');
-		$parser = new \SolrExplain\Domain\Explanation\Parser($metaData);
+		$parser = new \SolrExplain\Domain\Explanation\Parser();
 
 		$parser->injectExplain(new \SolrExplain\Domain\Explanation\Explain());
-		$explain = $parser->parse($content);
+		$explain = $parser->parse($content,$metaData);
 
 		return $explain;
 	}
