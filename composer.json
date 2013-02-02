@@ -1,0 +1,31 @@
+{
+	"name": "ts/solr-explain-php",
+	"description": "PHP Port of solr explain library: Thx to Michael Klapper",
+	"license": "MIT",
+	"require": {
+		"php": ">=5.3.3"
+	},
+	"require-dev": {
+		"phing/phing": "*",
+		"phpunit/phpunit": "3.7.*",
+		"squizlabs/php_codesniffer": "*"
+	},
+	"autoload": {
+		"psr-0": {
+			"SolrExplain\\Tests": "tests/",
+			"SolrExplain": "src/"
+		}
+	},
+	"minimum-stability": "stable",
+	"authors": [
+		{
+			"name": "Timo Schmidt",
+			"email": "timo-schmidt@gmx.net"
+		},
+		{
+			"name": "Michael Klapper",
+			"email": "michael.klapper@aoemedia.de"
+		}
+
+	]
+}
