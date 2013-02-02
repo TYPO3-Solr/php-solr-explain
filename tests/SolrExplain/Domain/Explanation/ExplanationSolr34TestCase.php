@@ -86,5 +86,6 @@ class ExplanationSolr34TestCase extends \SolrExplain\Tests\AbstractExplanationTe
 
 		$this->assertEquals(0.99999994, $explain->getChild(0)->getScore());
 		$this->assertEquals(100.48212, $explain->getChild(1)->getScore());
+		
 	}
 }
