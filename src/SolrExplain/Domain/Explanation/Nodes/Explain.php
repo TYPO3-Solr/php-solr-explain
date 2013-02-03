@@ -76,39 +76,28 @@ class Explain {
 			}
 
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_MAX) {
-				$neighbors = $this->getParent()->getChildren();
-				$tieBreaker = $this->getParent()->getTieBreaker();
-
-				if ($tieBreaker > 0) {
-					$parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
-
-					$tieBreakedCount = $neighbors->count() - 1;
-					$sum = ($tieBreakedCount * $tieBreaker) + 1;
-					$percentageMultiplier = $parentPercentage / 100;
-
-					$oneSumPercent = 100 / $sum;
-
-					$maxPercentage = 1 * $oneSumPercent * $percentageMultiplier;
-					$othersPercentage = $tieBreaker * $oneSumPercent * $percentageMultiplier;
-				}
+				$neighbors 		= $this->getParent()->getChildren();
+				$tieBreaker		= $this->getParent()->getTieBreaker();
 
 				foreach($neighbors as $neighbor) {
-					if($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
-						if($tieBreaker > 0) {
-							return $othersPercentage;
+					if($tieBreaker > 0) {
+						$parentScore	= $this->getParent()->getScore();
+						$parentScorePart = ($this->getScore()/$parentScore) * (100);
+						$parentScorePartPercentage =  $this->getParent()->getAbsoluteImpactPercentage() / 100.0;
+
+						if($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
+							return $parentScorePart * $parentScorePartPercentage * $tieBreaker;
 						} else {
-							return 0;
+							return $parentScorePart * $parentScorePartPercentage;
 						}
 					} else {
-						if($tieBreaker > 0) {
-							return $maxPercentage;
+						if($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
+							return 0;
 						} else {
-							//when this node has the highest score we "inherit" the parents score
 							return $this->getParent()->getAbsoluteImpactPercentage();
 						}
 					}
 				}
-
 			}
 
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
@@ -183,7 +172,7 @@ class Explain {
 
 	/**
 	 * @param $index
-	 * @return mixed
+	 * @return \SolrExplain\Domain\Explanation\Nodes\Explain
 	 */
 	public function getChild($index) {
 		return $this->children[$index];

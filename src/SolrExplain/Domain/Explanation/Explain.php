@@ -28,7 +28,7 @@ class Explain {
 	protected $children = null;
 
 	/**
-	 * @var \SolrExplain\Domain\Explanation\ExplainNode
+	 * @var \SolrExplain\Domain\Explanation\Nodes\Explain
 	 */
 	protected $rootNode = null;
 
@@ -60,14 +60,14 @@ class Explain {
 
 	/**
 	 * @param $index
-	 * @return \SolrExplain\Domain\Explanation\ExplainNode
+	 * @return \SolrExplain\Domain\Explanation\Nodes\Explain
 	 */
 	public function getChild($index) {
 		return $this->children[$index];
 	}
 
 	/**
-	 * @param \SolrExplain\Domain\Explanation\ExplainNode $rootNode
+	 * @param \SolrExplain\Domain\Explanation\Nodes\Explain $rootNode
 	 */
 	public function setRootNode($rootNode) {
 		$this->rootNode = $rootNode;
@@ -76,7 +76,7 @@ class Explain {
 	/**
 	 * Method to retrieve the root node of the explain.
 	 *
-	 * @return \SolrExplain\Domain\Explanation\ExplainNode
+	 * @return \SolrExplain\Domain\Explanation\Nodes\Explain
 	 */
 	public function getRootNode() {
 		return $this->rootNode;
