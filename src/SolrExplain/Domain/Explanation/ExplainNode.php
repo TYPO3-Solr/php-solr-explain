@@ -2,14 +2,19 @@
 
 namespace SolrExplain\Domain\Explanation;
 
+/**
+ * Represents an node of the explain result provided by solr.
+ *
+ * @author Timo Schmidt <timo.schmidt@aoemedia.de>
+ */
 class ExplainNode {
 
+	/**
+	 * Different types of nodes that need to be handled different during calculation
+ 	 */
 	const NODE_TYPE_SUM = 1;
-
 	const NODE_TYPE_MAX = 2;
-
 	const NODE_TYPE_PRODUCT = 4;
-
 	const NODE_TYPE_LEAF = 8;
 
 	/**
@@ -43,6 +48,11 @@ class ExplainNode {
 	protected $nodeType = -1;
 
 	/**
+	 * @var string
+	 */
+	protected $fieldName = '*';
+
+	/**
 	 * @return void
 	 */
 	public function __construct() {
@@ -67,8 +77,8 @@ class ExplainNode {
 
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_MAX) {
 				$neighboors = $this->getParent()->getChildren();
-				foreach($neighboors as $neighboor) {
-					if($neighboor != $this && $neighboor->getScore() > $this->getScore()) {
+				foreach($neighboors as $neighbor) {
+					if($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
 						return 0;
 					} else {
 							//when this node has the highest score we "inherit" the parents score
@@ -78,22 +88,18 @@ class ExplainNode {
 			}
 
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
-				$parentPercentage		= $this->getParent()->getAbsoluteImpactPercentage();
-				$parentScore 			= $this->getParent()->getScore();
+				$neighborScorePart = array();
 
-				$neighboorScoreSum = 0;
-				foreach($this->getParent()->getChildren() as $neighboor) {
-					if($neighboor != $this) {
-						$neighboorScore = $neighboor->getScore();
-						$neighboorScorePart[] = ($neighboorScore * $neighboorScore) + 1;
+				foreach($this->getParent()->getChildren() as $neighbor) {
+					if($neighbor != $this) {
+						$neighborScore = $neighbor->getScore();
+						$neighborScorePart[] = ($neighborScore * $neighborScore) + 1;
 					}
 
 				}
 
 				$myScorePart = (($this->getScore() * $this->getScore()) + 1);
-
-				$scoreSum 	= array_sum($neighboorScorePart) + $myScorePart;
-
+				$scoreSum 	= array_sum($neighborScorePart) + $myScorePart;
 				return ($this->getParent()->getAbsoluteImpactPercentage() / $scoreSum) * $myScorePart;
 			}
 		}
@@ -192,6 +198,21 @@ class ExplainNode {
 	}
 
 	/**
+	 * @param string $fieldName
+	 */
+	public function setFieldName($fieldName) {
+		$this->fieldName = $fieldName;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFieldName() {
+		return $this->fieldName;
+	}
+
+	/**
+	 * This method can be used to traverse all child nodes.
 	 *
 	 * @param \SolrExplain\Domain\Explanation\Visitors\ExplainNodeVisitorInterface $visitor
 	 */

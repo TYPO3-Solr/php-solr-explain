@@ -2,6 +2,13 @@
 
 namespace SolrExplain\Domain\Explanation\Visitors;
 
+/**
+ * This visitor is used to summarize the impacts of all leaf
+ * nodes. For a normal explain this should be 100% and it is used
+ * for verification.
+ *
+ * @autho Timo Schmidt <timo.schmidt@aoemedia.deA
+ */
 class SummarizeLeafImpacts implements \SolrExplain\Domain\Explanation\Visitors\ExplainNodeVisitorInterface {
 
 	/**
@@ -23,6 +30,6 @@ class SummarizeLeafImpacts implements \SolrExplain\Domain\Explanation\Visitors\E
 	 * @return float
 	 */
 	public function getSum() {
-		return $this->sum;
+		return round($this->sum,1);
 	}
 }

@@ -2,6 +2,17 @@
 
 namespace SolrExplain\Domain\Explanation;
 
+/**
+ * Root object of the parse explain.
+ *
+ * Can be used to travers the explain result.
+ *
+ * Eg:
+ *
+ * $explain->getChild(0)->getScore()
+ *
+ * @autho Timo Schmidt <timo.schmidt@aoemedia.deA
+ */
 class Explain {
 
 	/**
@@ -49,6 +60,7 @@ class Explain {
 
 	/**
 	 * @param $index
+	 * @return \SolrExplain\Domain\Explanation\ExplainNode
 	 */
 	public function getChild($index) {
 		return $this->children[$index];
@@ -62,6 +74,8 @@ class Explain {
 	}
 
 	/**
+	 * Method to retrieve the root node of the explain.
+	 *
 	 * @return \SolrExplain\Domain\Explanation\ExplainNode
 	 */
 	public function getRootNode() {
@@ -69,6 +83,8 @@ class Explain {
 	}
 
 	/**
+	 * Method to set the corresponding document id.
+	 *
 	 * @param string $documentId
 	 */
 	public function setDocumentId($documentId) {
@@ -76,6 +92,8 @@ class Explain {
 	}
 
 	/**
+	 * Document id where this explanation belongs to.
+	 *
 	 * @return string
 	 */
 	public function getDocumentId() {
@@ -83,6 +101,10 @@ class Explain {
 	}
 
 	/**
+	 * Method to set a single attribute
+	 *
+	 * Eg: :query
+	 *
 	 * @param string $key
 	 * @param mixed $value
 	 */
@@ -91,6 +113,8 @@ class Explain {
 	}
 
 	/**
+	 * Return the value for a single attribute.
+	 *
 	 * @param string $key
 	 * @return mixed
 	 */

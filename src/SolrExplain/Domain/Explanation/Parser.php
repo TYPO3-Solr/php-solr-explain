@@ -14,7 +14,6 @@ class Parser {
 	 */
 	protected $explain;
 
-
 	/**
 	 * @param \SolrExplain\Domain\Explanation\Explain $explain
 	 */
@@ -37,7 +36,7 @@ class Parser {
 	 * @param int $level
 	 */
 	protected function getNodeType($tokenName, $level) {
-		if(mb_strpos($tokenName,'sum of:') !== false) {
+		if(mb_strpos($tokenName,'sum of:') !== false || mb_strpos($tokenName,'result of:') !== false)  {
 			return \SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_SUM;
 		}
 
@@ -71,17 +70,20 @@ class Parser {
 				$tokenParts		= explode(PHP_EOL,$tokenContent);
 				$tokenName		= trim(array_shift($tokenParts));
 
-				$token 	= new \SolrExplain\Domain\Explanation\ExplainNode();
-				$score 	= $this->getScoreFromTokenName($tokenName);
-				$token->setContent($tokenName);
-				$token->setParent($parent);
-				$token->setScore($score);
-				$token->setLevel($level);
+				$node 	= new \SolrExplain\Domain\Explanation\ExplainNode();
+				$score 	= $this->getScoreFromNodeName($tokenName);
+				$node->setContent($tokenName);
+				$node->setParent($parent);
+				$node->setScore($score);
+				$node->setLevel($level);
 
 				$nodeType = $this->getNodeType($tokenName,$level);
-				$token->setNodeType($nodeType);
+				$node->setNodeType($nodeType);
 
-				$collection->append($token);
+				$nodeFieldName = $this->getFieldNameFromNodeName($tokenName);
+				$node->setFieldName($nodeFieldName);
+
+				$collection->append($node);
 
 				$nextLevelContent = '';
 				if(count($tokenParts)) {
@@ -91,7 +93,7 @@ class Parser {
 
 				if(trim($nextLevelContent) != '') {
 					$level++;
-					$this->parseChildNodes($nextLevelContent,$token->getChildren(),$token,$level);
+					$this->parseChildNodes($nextLevelContent,$node->getChildren(),$node,$level);
 				}
 			}
 		}
@@ -105,13 +107,13 @@ class Parser {
 	 * Input eg: 3.8332133 = idf(docFreq=0, maxDocs=17)
 	 * Output eg: 3.8332133
 	 *
-	 * @param string $tokenName
+	 * @param string $nodeName
 	 * @return float
 	 */
-	protected function getScoreFromTokenName($tokenName) {
+	protected function getScoreFromNodeName($nodeName) {
 		$score = 0.0;
 		$scoreMatches 	= array();
-		preg_match('~(?<score>[0-9]*\.[0-9]*)~',$tokenName,$scoreMatches);
+		preg_match('~(?<score>[0-9]*\.[^ ]*)~',$nodeName,$scoreMatches);
 		if(isset($scoreMatches['score']) && (float) $scoreMatches['score'] > 0) {
 			$score = (float) $scoreMatches['score'];
 		}
@@ -141,6 +143,36 @@ class Parser {
 		}
 
 		return $querystring;
+	}
+
+	/**
+	 * @param $nodeName
+	 */
+	protected function getFieldNameFromNodeName($nodeName) {
+		$result 	= '';
+		$matches 	= array();
+
+		if(mb_strpos($nodeName,'weight(') !== false ){
+			preg_match('~weight\((?<fieldname>[^\):]*)~', $nodeName, $matches);
+		} elseif (mb_strpos($nodeName, 'queryWeight(') !== false ) {
+			preg_match('~queryWeight\((?<fieldname>[^\):]*)~', $nodeName, $matches);
+		} elseif (mb_strpos($nodeName,'fieldWeight(') !== false ) {
+			preg_match('~fieldWeight\((?<fieldname>[^\):]*)~', $nodeName, $matches);
+		} elseif (mb_strpos($nodeName, 'FunctionQuery(') !== false ) {
+			preg_match('~FunctionQuery\([^\(]*\((?<fieldname>[^\):]*)~', $nodeName, $matches);
+
+				//check if it is a nested function query an get inner fieldname
+			$lastBracketPos = mb_strpos($matches['fieldname'],'(');
+			if($lastBracketPos !== false) {
+				$matches['fieldname'] = mb_substr($matches['fieldname']+1,$lastBracketPos);
+			}
+		}
+
+		if(isset($matches['fieldname'])) {
+			$result = $matches['fieldname'];
+		}
+
+		return $result;
 	}
 
 	/**

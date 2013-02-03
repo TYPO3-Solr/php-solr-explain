@@ -87,16 +87,6 @@ class ExplanationSolr3TestCase extends \SolrExplain\Tests\AbstractExplanationTes
 	/**
 	 * @test
 	 */
-	public function testCanSummerizeLeafNodes() {
-		$explain = $this->getExplain('3.0.001');
-		$visitor = new \SolrExplain\Domain\Explanation\Visitors\SummarizeLeafImpacts();
-		$explain->getRootNode()->visitNodes($visitor);
-		$this->assertEquals(100.0, $visitor->getSum());
-	}
-
-	/**
-	 * @test
-	 */
 	public function testFixture002() {
 		$explain = $this->getExplain('3.0.002');
 
