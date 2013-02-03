@@ -107,22 +107,28 @@ class Explain {
 			}
 
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
-				$neighborScorePart = array();
-				$parentPercentage		= $this->getParent()->getAbsoluteImpactPercentage();
+				$neighbors 			= $this->getParent()->getChildren();
 
-				foreach($this->getParent()->getChildren() as $neighbor) {
-					if($neighbor != $this) {
-						$neighborScore = $neighbor->getScore();
-						$neighborScorePart[] = $neighborScore;
+				if($neighbors->count() > 1) {
+					$neighborScorePart 	= array();
+					$parentPercentage	= $this->getParent()->getAbsoluteImpactPercentage();
+
+					foreach($neighbors as $neighbor) {
+						if($neighbor != $this) {
+							$neighborScore = $neighbor->getScore();
+							$neighborScorePart[] = $neighborScore;
+						}
 					}
 
+					$scoreSum 	= array_sum($neighborScorePart) + $this->getScore();
+
+					$multiplier =  100 / $scoreSum;
+					$parentMultiplier = $parentPercentage / 100;
+					return $this->getScore() * $multiplier * $parentMultiplier;
+				} else {
+						//when only one leaf in product is present we can inherit the parent score
+					return $this->getParent()->getAbsoluteImpactPercentage();
 				}
-
-				$scoreSum 	= array_sum($neighborScorePart) + $this->getScore();
-
-				$multiplier =  100 / $scoreSum;
-				$parentMultiplier = $parentPercentage / 100;
-				return $this->getScore() * $multiplier * $parentMultiplier;
 			}
 		}
 	}

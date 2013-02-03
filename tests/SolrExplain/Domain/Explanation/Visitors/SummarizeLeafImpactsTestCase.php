@@ -50,7 +50,8 @@ class SummarizeLeafImpactsTestCase extends \SolrExplain\Tests\AbstractExplanatio
 			array('3.4.015'),
 			array('3.4.016'),
 			array('3.4.017'),
-	//		array('3.4.018'),
+				//contains invalid content therefore no overall impact of 100 expected
+			array('3.4.018',0.0),
 			array('3.4.019'),
 			array('3.4.020'),
 			array('3.4.021'),
@@ -60,7 +61,7 @@ class SummarizeLeafImpactsTestCase extends \SolrExplain\Tests\AbstractExplanatio
 			array('3.4.025'),
 			array('3.4.026'),
 			array('3.4.027'),
-			//array('3.4.028'),
+			array('3.4.028'),
 			array('4.0.001'),
 			array('complex'),
 			array('custom.tieBreaker')
@@ -75,11 +76,11 @@ class SummarizeLeafImpactsTestCase extends \SolrExplain\Tests\AbstractExplanatio
 	 * @test
 	 * @dataProvider leafSumFixtureNameDataProvider
 	 */
-	public function verifyFixtureLeafImpactSum($fixtureName) {
+	public function verifyFixtureLeafImpactSum($fixtureName, $expectedImpactSum = 100) {
 		$explain = $this->getExplain($fixtureName);
 		$visitor = new \SolrExplain\Domain\Explanation\Visitors\SummarizeLeafImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
-		$this->assertEquals(100.0, $visitor->getSum());
+		$this->assertEquals($expectedImpactSum, $visitor->getSum());
 	}
 
 }

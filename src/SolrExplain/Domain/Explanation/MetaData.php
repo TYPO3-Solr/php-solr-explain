@@ -2,6 +2,12 @@
 
 namespace SolrExplain\Domain\Explanation;
 
+/**
+ * Metadata object. Used during parsing and contains some meta data
+ * like the corresponding document id or the parsing mode.
+ *
+ * @author Timo Schmidt <timo.schmidt@aoemedia.de>
+ */
 class MetaData {
 
 	/**

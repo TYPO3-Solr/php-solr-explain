@@ -22,16 +22,27 @@ class Parser {
 	}
 
 	/**
+	 * Invokes the parsing of the raw content and returns the root node.
+	 *
 	 * @param string
-	 * @return  \SolrExplain\Domain\Explanation\ExplainNode
+	 * @return  \SolrExplain\Domain\Explanation\Nodes\Explain
 	 */
 	protected function getRootNode($content) {
 		$tokens = new \ArrayObject();
 		$this->parseChildNodes($content,$tokens);
-		return $tokens[0];
+
+		if(isset($tokens[0])) {
+			return $tokens[0];
+		} else {
+			//error in parsing return a new empty dummy node
+			return new \SolrExplain\Domain\Explanation\Nodes\Explain();
+		}
 	}
 
 	/**
+	 * This method is used to parse the node type from the content and retrieve the
+	 * corresponding node object instance.
+	 *
 	 * @param string $tokenName
 	 * @param int $level
 	 */
@@ -67,35 +78,45 @@ class Parser {
 
 		if( array_key_exists('token',$matches)) {
 			foreach($matches['token'] as $tokenKey => $tokenContent) {
-				$tokenParts		= explode(PHP_EOL,$tokenContent);
-				$tokenName		= trim(array_shift($tokenParts));
+				$nodeParts		= explode(PHP_EOL,$tokenContent);
+				$nodeContent	= trim(array_shift($nodeParts));
 
-				$node	= $this->getNodeFromName($tokenName);
-				$score 	= $this->getScoreFromNodeName($tokenName);
-				$node->setContent($tokenName);
+				$node			= $this->getNodeFromName($nodeContent);
+				$score 			= $this->getScoreFromContent($nodeContent);
+				$nodeFieldName 	= $this->getFieldNameFromNodeName($nodeContent);
+
+				$node->setContent($nodeContent);
 				$node->setParent($parent);
 				$node->setScore($score);
 				$node->setLevel($level);
-
-				$nodeFieldName = $this->getFieldNameFromNodeName($tokenName);
 				$node->setFieldName($nodeFieldName);
 
 				$collection->append($node);
 
-				$nextLevelContent = '';
-				if(count($tokenParts)) {
-					$preparedTokens = preg_replace('~^  ~ims','',$tokenParts);
-					$nextLevelContent = implode(PHP_EOL,$preparedTokens);
-				}
-
+				$nextLevelContent = $this->removeLeadingSpacesFromNextLevelContent($nodeParts);
 				if(trim($nextLevelContent) != '') {
 					$level++;
+						//walk recursive through the input
 					$this->parseChildNodes($nextLevelContent,$node->getChildren(),$node,$level);
 				}
 			}
 		}
 
 		$collection;
+	}
+
+	/**
+	 * @param $tokenParts
+	 * @return string
+	 */
+	protected function removeLeadingSpacesFromNextLevelContent($tokenParts) {
+		$nextLevelContent = '';
+		if (count($tokenParts)) {
+			$preparedTokens = preg_replace('~^  ~ims', '', $tokenParts);
+			$nextLevelContent = implode(PHP_EOL, $preparedTokens);
+			return $nextLevelContent;
+		}
+		return $nextLevelContent;
 	}
 
 	/**
@@ -107,7 +128,7 @@ class Parser {
 	 * @param string $nodeName
 	 * @return float
 	 */
-	protected function getScoreFromNodeName($nodeName) {
+	protected function getScoreFromContent($nodeName) {
 		$score = 0.0;
 		$scoreMatches 	= array();
 		preg_match('~(?<score>[0-9]*\.[^ ]*)~',$nodeName,$scoreMatches);

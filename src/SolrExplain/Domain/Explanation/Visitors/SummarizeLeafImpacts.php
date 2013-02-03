@@ -7,7 +7,7 @@ namespace SolrExplain\Domain\Explanation\Visitors;
  * nodes. For a normal explain this should be 100% and it is used
  * for verification.
  *
- * @autho Timo Schmidt <timo.schmidt@aoemedia.deA
+ * @author Timo Schmidt <timo.schmidt@aoemedia.deA
  */
 class SummarizeLeafImpacts implements \SolrExplain\Domain\Explanation\Visitors\ExplainNodeVisitorInterface {
 

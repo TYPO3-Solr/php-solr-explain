@@ -3,6 +3,8 @@
 namespace SolrExplain\Domain\Explanation\Visitors;
 
 /**
+ * This visitor is used to determine a percetage impacts
+ * by a fieldname.
  *
  * @autho Timo Schmidt <timo.schmidt@aoemedia.de>
  */
@@ -29,6 +31,8 @@ class SummarizeFieldImpacts implements \SolrExplain\Domain\Explanation\Visitors\
 	}
 
 	/**
+	 * Returns the fieldnames that have been relevant during the explain.
+	 *
 	 * @return array<string>
 	 */
 	public function getRelevantFieldNames() {
@@ -36,6 +40,8 @@ class SummarizeFieldImpacts implements \SolrExplain\Domain\Explanation\Visitors\
 	}
 
 	/**
+	 * Returns the impact for a certain field by name.
+	 *
 	 * @param $fieldName
 	 * @return float
 	 */
@@ -45,5 +51,14 @@ class SummarizeFieldImpacts implements \SolrExplain\Domain\Explanation\Visitors\
 		}
 
 		return $this->sums[$fieldName];
+	}
+
+	/**
+	 * Returns the fieldname => impact array.
+	 *
+	 * @return array|float
+	 */
+	public function getFieldImpacts() {
+		return $this->sums;
 	}
 }
