@@ -1,4 +1,4 @@
-php-solr-explain
+PHP Solr Explain
 ================
 
 :Author: Timo Schmidt <timo.schmidt@aoemedia.de>
