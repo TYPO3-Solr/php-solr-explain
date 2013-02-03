@@ -56,11 +56,11 @@ if necessary, installing composer.phar locally.
     </target>
 
     <target name="install-dependencies" depends="install-composer">
-        <exec command="${cmd.composer} install --dev" passthru="true" />
+        <exec command="${cmd.composer} install --prefer-source --dev" passthru="true" />
     </target>
 
     <target name="update-dependencies" depends="install-composer">
-        <exec command="${cmd.composer} update --dev" passthru="true" />
+        <exec command="${cmd.composer} update --prefer-source --dev" passthru="true" />
     </target>
 
     <target name="clean-dependencies">
