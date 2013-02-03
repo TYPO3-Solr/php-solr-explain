@@ -35,21 +35,21 @@ class Parser {
 	 * @param string $tokenName
 	 * @param int $level
 	 */
-	protected function getNodeType($tokenName, $level) {
+	protected function getNodeFromName($tokenName) {
 		if(mb_strpos($tokenName,'sum of:') !== false || mb_strpos($tokenName,'result of:') !== false)  {
-			return \SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_SUM;
+			return new \SolrExplain\Domain\Explanation\Nodes\Sum();
 		}
 
 		if(mb_strpos($tokenName,'product of:') !== false) {
-			return \SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_PRODUCT;
+			return new \SolrExplain\Domain\Explanation\Nodes\Product();
 		}
 
-		if(mb_strpos($tokenName,'max of:') !== false) {
-			return \SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_MAX;
+		if(mb_strpos($tokenName,'max') !== false && mb_strpos($tokenName,'of:')) {
+			return new \SolrExplain\Domain\Explanation\Nodes\Max();
 		}
 
 			//when nothing else matched we have a leaf node
-		return \SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_LEAF;
+		return new \SolrExplain\Domain\Explanation\Nodes\Leaf();
 	}
 
 	/**
@@ -70,15 +70,12 @@ class Parser {
 				$tokenParts		= explode(PHP_EOL,$tokenContent);
 				$tokenName		= trim(array_shift($tokenParts));
 
-				$node 	= new \SolrExplain\Domain\Explanation\ExplainNode();
+				$node	= $this->getNodeFromName($tokenName);
 				$score 	= $this->getScoreFromNodeName($tokenName);
 				$node->setContent($tokenName);
 				$node->setParent($parent);
 				$node->setScore($score);
 				$node->setLevel($level);
-
-				$nodeType = $this->getNodeType($tokenName,$level);
-				$node->setNodeType($nodeType);
 
 				$nodeFieldName = $this->getFieldNameFromNodeName($tokenName);
 				$node->setFieldName($nodeFieldName);

@@ -11,8 +11,8 @@ namespace SolrExplain\Domain\Explanation\Visitors;
 interface ExplainNodeVisitorInterface {
 
 	/**
-	 * @param \SolrExplain\Domain\Explanation\ExplainNode $node
+	 * @param \SolrExplain\Domain\Explanation\Nodes\Explain $node
 	 * @return mixed
 	 */
-	public function visit(\SolrExplain\Domain\Explanation\ExplainNode $node);
+	public function visit(\SolrExplain\Domain\Explanation\Nodes\Explain $node);
 }

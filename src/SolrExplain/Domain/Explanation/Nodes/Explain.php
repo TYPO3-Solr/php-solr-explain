@@ -1,17 +1,17 @@
 <?php
 
-namespace SolrExplain\Domain\Explanation;
+namespace SolrExplain\Domain\Explanation\Nodes;
 
 /**
  * Represents an node of the explain result provided by solr.
  *
  * @author Timo Schmidt <timo.schmidt@aoemedia.de>
  */
-class ExplainNode {
+class Explain {
 
 	/**
 	 * Different types of nodes that need to be handled different during calculation
- 	 */
+	 */
 	const NODE_TYPE_SUM = 1;
 	const NODE_TYPE_MAX = 2;
 	const NODE_TYPE_PRODUCT = 4;
@@ -70,50 +70,77 @@ class ExplainNode {
 				$parentScore 			= $this->getParent()->getScore();
 				$parentPercentage		= $this->getParent()->getAbsoluteImpactPercentage();
 
-					//part of this node relative to the parent
+				//part of this node relative to the parent
 				$scorePercentageToParent	= (100 / $parentScore) * $this->getScore();
 				return ($parentPercentage / 100) * $scorePercentageToParent;
 			}
 
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_MAX) {
-				$neighboors = $this->getParent()->getChildren();
-				foreach($neighboors as $neighbor) {
+				$neighbors = $this->getParent()->getChildren();
+				$tieBreaker = $this->getParent()->getTieBreaker();
+
+				if ($tieBreaker > 0) {
+					$parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
+
+					$tieBreakedCount = $neighbors->count() - 1;
+					$sum = ($tieBreakedCount * $tieBreaker) + 1;
+					$percentageMultiplier = $parentPercentage / 100;
+
+					$oneSumPercent = 100 / $sum;
+
+					$maxPercentage = 1 * $oneSumPercent * $percentageMultiplier;
+					$othersPercentage = $tieBreaker * $oneSumPercent * $percentageMultiplier;
+				}
+
+				foreach($neighbors as $neighbor) {
 					if($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
-						return 0;
+						if($tieBreaker > 0) {
+							return $othersPercentage;
+						} else {
+							return 0;
+						}
 					} else {
+						if($tieBreaker > 0) {
+							return $maxPercentage;
+						} else {
 							//when this node has the highest score we "inherit" the parents score
-						return $this->getParent()->getAbsoluteImpactPercentage();
+							return $this->getParent()->getAbsoluteImpactPercentage();
+						}
 					}
 				}
+
 			}
 
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
 				$neighborScorePart = array();
+				$parentPercentage		= $this->getParent()->getAbsoluteImpactPercentage();
 
 				foreach($this->getParent()->getChildren() as $neighbor) {
 					if($neighbor != $this) {
 						$neighborScore = $neighbor->getScore();
-						$neighborScorePart[] = ($neighborScore * $neighborScore) + 1;
+						$neighborScorePart[] = $neighborScore;
 					}
 
 				}
 
-				$myScorePart = (($this->getScore() * $this->getScore()) + 1);
-				$scoreSum 	= array_sum($neighborScorePart) + $myScorePart;
-				return ($this->getParent()->getAbsoluteImpactPercentage() / $scoreSum) * $myScorePart;
+				$scoreSum 	= array_sum($neighborScorePart) + $this->getScore();
+
+				$multiplier =  100 / $scoreSum;
+				$parentMultiplier = $parentPercentage / 100;
+				return $this->getScore() * $multiplier * $parentMultiplier;
 			}
 		}
 	}
 
 	/**
-	 * @param \SolrExplain\Domain\Explanation\ExplainNode $parent
+	 * @param \SolrExplain\Domain\Explanation\Nodes\Explain $parent
 	 */
 	public function setParent($parent) {
 		$this->parent = $parent;
 	}
 
 	/**
-	 * @return \SolrExplain\Domain\Explanation\ExplainNode
+	 * @return \SolrExplain\Domain\Explanation\Nodes\Explain
 	 */
 	public function getParent() {
 		return $this->parent;
@@ -186,7 +213,7 @@ class ExplainNode {
 	/**
 	 * @param int $nodeType
 	 */
-	public function setNodeType($nodeType) {
+	protected function setNodeType($nodeType) {
 		$this->nodeType = $nodeType;
 	}
 

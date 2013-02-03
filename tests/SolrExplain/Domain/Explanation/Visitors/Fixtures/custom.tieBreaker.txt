@@ -1,0 +1,27 @@
+0.0015434669 = (MATCH) sum of:
+  8.040816E-4 = (MATCH) sum of:
+    8.040816E-4 = (MATCH) max plus 0.7 times others of:
+      7.393854E-4 = (MATCH) weight(expandedcontent:fast in 0), product of:
+        0.0024095767 = queryWeight(expandedcontent:fast), product of:
+          0.30685282 = idf(docFreq=1, maxDocs=1)
+          0.007852549 = queryNorm
+        0.30685282 = (MATCH) fieldWeight(expandedcontent:fast in 0), product of:
+          1.0 = tf(termFreq(expandedcontent:fast)=1)
+          0.30685282 = idf(docFreq=1, maxDocs=1)
+          1.0 = fieldNorm(field=expandedcontent, doc=0)
+      9.242317E-5 = (MATCH) weight(content:fast in 0), product of:
+        0.0024095767 = queryWeight(content:fast), product of:
+          0.30685282 = idf(docFreq=1, maxDocs=1)
+          0.007852549 = queryNorm
+        0.038356602 = (MATCH) fieldWeight(content:fast in 0), product of:
+          1.0 = tf(termFreq(content:fast)=1)
+          0.30685282 = idf(docFreq=1, maxDocs=1)
+          0.125 = fieldNorm(field=content, doc=0)
+  7.393854E-4 = (MATCH) weight(doctype:organic in 0), product of:
+    0.0024095767 = queryWeight(doctype:organic), product of:
+      0.30685282 = idf(docFreq=1, maxDocs=1)
+      0.007852549 = queryNorm
+    0.30685282 = (MATCH) fieldWeight(doctype:organic in 0), product of:
+      1.0 = tf(termFreq(doctype:organic)=1)
+      0.30685282 = idf(docFreq=1, maxDocs=1)
+      1.0 = fieldNorm(field=doctype, doc=0)

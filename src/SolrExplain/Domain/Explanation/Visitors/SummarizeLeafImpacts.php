@@ -17,10 +17,10 @@ class SummarizeLeafImpacts implements \SolrExplain\Domain\Explanation\Visitors\E
 	protected $sum = 0.0;
 
 	/**
-	 * @param \SolrExplain\Domain\Explanation\ExplainNode $node
+	 * @param \SolrExplain\Domain\Explanation\Nodes\Explain $node
 	 * @return mixed|void
 	 */
-	public function visit(\SolrExplain\Domain\Explanation\ExplainNode $node) {
+	public function visit(\SolrExplain\Domain\Explanation\Nodes\Explain $node) {
 		if($node->getNodeType() == $node::NODE_TYPE_LEAF) {
 			$this->sum += $node->getAbsoluteImpactPercentage();
 		}

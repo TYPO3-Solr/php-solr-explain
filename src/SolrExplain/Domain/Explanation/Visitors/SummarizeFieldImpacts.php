@@ -14,10 +14,10 @@ class SummarizeFieldImpacts implements \SolrExplain\Domain\Explanation\Visitors\
 	protected $sums = array();
 
 	/**
-	 * @param \SolrExplain\Domain\Explanation\ExplainNode $node
+	 * @param \SolrExplain\Domain\Explanation\Nodes\Explain $node
 	 * @return mixed|void
 	 */
-	public function visit(\SolrExplain\Domain\Explanation\ExplainNode $node) {
+	public function visit(\SolrExplain\Domain\Explanation\Nodes\Explain $node) {
 		if($node->getNodeType() == $node::NODE_TYPE_LEAF) {
 			$fieldName = $node->getParent()->getFieldName();
 			if(!isset($this->sums[$fieldName])) {

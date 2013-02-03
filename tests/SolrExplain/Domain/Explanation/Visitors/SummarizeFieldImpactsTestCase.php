@@ -59,4 +59,19 @@ class SummarizeFieldImpactsTestCase extends \SolrExplain\Tests\AbstractExplanati
 		$this->assertEquals(array('name','price'),$visitor->getRelevantFieldNames());
 	}
 
+	/**
+	 * @test
+	 */
+	public function testCanSummarizeCustomTieBreakerFixture() {
+		$this->markTestSkipped('Skipped');
+		$explain = $this->getExplain('custom.tieBreaker');
+		$visitor = new \SolrExplain\Domain\Explanation\Visitors\SummarizeFieldImpacts();
+		$explain->getRootNode()->visitNodes($visitor);
+
+		$this->assertEquals(array('expandedcontent','content','doctype'),$visitor->getRelevantFieldNames());
+
+		$this->assertEquals(47.9,round($visitor->getFieldImpact('doctype'),1));
+		$this->assertEquals(47.9,$visitor->getFieldImpact('expandedcontent'));
+		$this->assertEquals(4.2,$visitor->getFieldImpact('content'));
+	}
 }

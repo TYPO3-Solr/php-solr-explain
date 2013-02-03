@@ -61,9 +61,10 @@ class SummarizeLeafImpactsTestCase extends \SolrExplain\Tests\AbstractExplanatio
 			array('3.4.025'),
 			array('3.4.026'),
 			array('3.4.027'),
-	//		array('3.4.028')
+			//array('3.4.028'),
 			array('4.0.001'),
-			array('complex')
+			array('complex'),
+			array('custom.tieBreaker')
 		);
 	}
 

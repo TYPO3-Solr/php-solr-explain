@@ -62,8 +62,8 @@ class ExplanationSolr3TestCase extends \SolrExplain\Tests\AbstractExplanationTes
 
 		$this->assertEquals(100.0,$explain->getRootNode()->getAbsoluteImpactPercentage());
 
-		$this->assertEquals(\SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_SUM,$explain->getRootNode()->getNodeType());
-		$this->assertEquals(\SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_SUM,$explain->getRootNode()->getChild(0)->getNodeType());
+		$this->assertEquals(\SolrExplain\Domain\Explanation\Nodes\Explain::NODE_TYPE_SUM,$explain->getRootNode()->getNodeType());
+		$this->assertEquals(\SolrExplain\Domain\Explanation\Nodes\Explain::NODE_TYPE_SUM,$explain->getRootNode()->getChild(0)->getNodeType());
 
 		$this->assertEquals(100.0,$explain->getRootNode()->getChild(0)->getAbsoluteImpactPercentage());
 
@@ -74,14 +74,14 @@ class ExplanationSolr3TestCase extends \SolrExplain\Tests\AbstractExplanationTes
 			//the max node
 		$this->assertEquals(50.0,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getAbsoluteImpactPercentage());
 
-			//	(0.5044475 * 0.5044475) + 1 = 1,25446728
-			// (0.8545628 * 0.8545628) + 1 = 1,730277579
-			// 2,984744859
-			// (100 / 2,984744859 ) * 1,25446728 = 42,02929695 => 21.014648476661
-			// (100 / 2,984744859 ) * 1,730277579 = 57,97070305 => 28.985351523339
-		$this->assertEquals(21.0146484766615,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(0)->getAbsoluteImpactPercentage());
-		$this->assertEquals(28.985351523339,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(1)->getAbsoluteImpactPercentage());
-		$this->assertEquals(\SolrExplain\Domain\Explanation\ExplainNode::NODE_TYPE_MAX,$explain->getRootNode()->getChild(0)->getChild(0)->getNodeType());
+			//	0.5044475 + 0.8545628 = 1,3590103
+			// 100 / 1,3590103 = 73,582959599
+			// 0.5044475 * 73,582959599 = 37,118740012 / 2 => 18,559370006
+			// 0.8545628 * 73,582959599 = 62,881259988 / 2 => 31,440629994
+
+		$this->assertEquals(18.559370006246,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(0)->getAbsoluteImpactPercentage());
+		$this->assertEquals(31.440629993754,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(1)->getAbsoluteImpactPercentage());
+		$this->assertEquals(\SolrExplain\Domain\Explanation\Nodes\Explain::NODE_TYPE_MAX,$explain->getRootNode()->getChild(0)->getChild(0)->getNodeType());
 	}
 
 	/**
