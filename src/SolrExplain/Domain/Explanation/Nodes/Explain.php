@@ -79,23 +79,29 @@ class Explain {
 				$neighbors 		= $this->getParent()->getChildren();
 				$tieBreaker		= $this->getParent()->getTieBreaker();
 
-				foreach($neighbors as $neighbor) {
-					if($tieBreaker > 0) {
-						$parentScore	= $this->getParent()->getScore();
-						$parentScorePart = ($this->getScore()/$parentScore) * (100);
-						$parentScorePartPercentage =  $this->getParent()->getAbsoluteImpactPercentage() / 100.0;
+				$parentScore				= $this->getParent()->getScore();
+				$parentScorePart 			= ($this->getScore()/$parentScore) * (100);
+				$parentScorePartPercentage 	= $this->getParent()->getAbsoluteImpactPercentage() / 100.0;
 
-						if($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
-							return $parentScorePart * $parentScorePartPercentage * $tieBreaker;
-						} else {
-							return $parentScorePart * $parentScorePartPercentage;
-						}
+				$isMaxNode = true;
+				foreach($neighbors as $neighbor) {
+					if($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
+						$isMaxNode = false;
+						break;
+					}
+				}
+
+				if($tieBreaker > 0) {
+					if($isMaxNode) {
+						return $parentScorePart * $parentScorePartPercentage;
 					} else {
-						if($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
-							return 0;
-						} else {
-							return $this->getParent()->getAbsoluteImpactPercentage();
-						}
+						return $parentScorePart * $parentScorePartPercentage * $tieBreaker;
+					}
+				} else {
+					if($isMaxNode) {
+						return $this->getParent()->getAbsoluteImpactPercentage();
+					} else {
+						return 0;
 					}
 				}
 			}

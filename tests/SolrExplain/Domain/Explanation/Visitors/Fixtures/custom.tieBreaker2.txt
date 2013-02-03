@@ -1,0 +1,20 @@
+0.17560028 = (MATCH) sum of:
+  0.17547584 = (MATCH) sum of:
+    0.17547584 = (MATCH) max plus 0.7 times others of:
+      0.17547584 = (MATCH) weight(pr_title:shirt^60.0 in 7), product of:
+        0.02335868 = queryWeight(pr_title:shirt^60.0), product of:
+          60.0 = boost
+          2.5040774 = idf(docFreq=1, maxDocs=9)
+          1.5547097E-4 = queryNorm
+        7.5122323 = (MATCH) fieldWeight(pr_title:shirt in 7), product of:
+          1.0 = tf(termFreq(pr_title:shirt)=1)
+          2.5040774 = idf(docFreq=1, maxDocs=9)
+          3.0 = fieldNorm(field=pr_title, doc=7)
+  1.2443584E-4 = (MATCH) weight(doctype:organic in 7), product of:
+    1.3909048E-4 = queryWeight(doctype:organic), product of:
+      0.8946395 = idf(docFreq=9, maxDocs=9)
+      1.5547097E-4 = queryNorm
+    0.8946395 = (MATCH) fieldWeight(doctype:organic in 7), product of:
+      1.0 = tf(termFreq(doctype:organic)=1)
+      0.8946395 = idf(docFreq=9, maxDocs=9)
+      1.0 = fieldNorm(field=doctype, doc=7)

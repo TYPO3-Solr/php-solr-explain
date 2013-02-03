@@ -9,7 +9,6 @@ namespace SolrExplain\Tests\Domain\Explanation;
 class SummarizeLeafImpactsTestCase extends \SolrExplain\Tests\AbstractExplanationTestCase{
 
 	/**
-	 *
 	 * @return \SolrExplain\Domain\Explanation\Explain
 	 */
 	protected function getExplain($filename) {
@@ -31,7 +30,7 @@ class SummarizeLeafImpactsTestCase extends \SolrExplain\Tests\AbstractExplanatio
 		return array(
 			array('3.0.001'),
 			array('3.0.002'),
-		//	array('3.0.003'),
+			array('3.0.003'),
 			array('3.0.004'),
 			array('3.0.005'),
 			array('3.4.001'),

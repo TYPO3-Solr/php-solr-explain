@@ -72,4 +72,34 @@ class SummarizeFieldImpactsTestCase extends \SolrExplain\Tests\AbstractExplanati
 		$this->assertEquals(47.9,round($visitor->getFieldImpact('expandedcontent'),1));
 		$this->assertEquals(4.2,round($visitor->getFieldImpact('content'),1));
 	}
+
+	/**
+	 * @test
+	 */
+	public function testCanSummarizeCustomTieBreaker2Fixture() {
+		$explain = $this->getExplain('custom.tieBreaker2');
+		$visitor = new \SolrExplain\Domain\Explanation\Visitors\SummarizeFieldImpacts();
+		$explain->getRootNode()->visitNodes($visitor);
+
+		$this->assertEquals(array('pr_title','doctype'),$visitor->getRelevantFieldNames());
+		$this->assertEquals(0.07,round($visitor->getFieldImpact('doctype'),2));
+		$this->assertEquals(99.93,round($visitor->getFieldImpact('pr_title'),2));
+	}
+
+
+	/**
+	 * @test
+	 */
+	public function testCanSummarizeCustomTieBreaker3Fixture() {
+		$explain = $this->getExplain('custom.tieBreaker3');
+		$visitor = new \SolrExplain\Domain\Explanation\Visitors\SummarizeFieldImpacts();
+		$explain->getRootNode()->visitNodes($visitor);
+
+		$this->assertEquals(array('keywords','expandedcontent','content','description','doctype'),$visitor->getRelevantFieldNames());
+		$this->assertEquals(0.00,round($visitor->getFieldImpact('keywords'),2));
+		$this->assertEquals(7.55,round($visitor->getFieldImpact('expandedcontent'),2));
+		$this->assertEquals(4.72,round($visitor->getFieldImpact('content'),2));
+		$this->assertEquals(85.64,round($visitor->getFieldImpact('description'),2));
+		$this->assertEquals(2.09, round($visitor->getFieldImpact('doctype'),2));
+	}
 }

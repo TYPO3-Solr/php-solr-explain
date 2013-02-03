@@ -11,7 +11,7 @@ namespace SolrExplain\Domain\Explanation;
  *
  * $explain->getChild(0)->getScore()
  *
- * @autho Timo Schmidt <timo.schmidt@aoemedia.deA
+ * @author Timo Schmidt <timo.schmidt@aoemedia.de>
  */
 class Explain {
 

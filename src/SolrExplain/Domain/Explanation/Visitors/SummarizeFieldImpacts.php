@@ -4,7 +4,7 @@ namespace SolrExplain\Domain\Explanation\Visitors;
 
 /**
  *
- * @autho Timo Schmidt <timo.schmidt@aoemedia.deA
+ * @autho Timo Schmidt <timo.schmidt@aoemedia.de>
  */
 class SummarizeFieldImpacts implements \SolrExplain\Domain\Explanation\Visitors\ExplainNodeVisitorInterface {
 

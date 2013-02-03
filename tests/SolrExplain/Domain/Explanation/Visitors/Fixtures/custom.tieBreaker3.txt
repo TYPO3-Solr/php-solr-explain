@@ -1,0 +1,45 @@
+0.06551409 = (MATCH) sum of:
+  0.06414288 = (MATCH) sum of:
+    0.06414288 = (MATCH) max plus 0.7 times others of:
+      0.0 = (MATCH) weight(keywords:usb^0.0 in 0), product of:
+        0.0 = queryWeight(keywords:usb^0.0), product of:
+          0.0 = boost
+          4.0056825 = idf(docFreq=4, maxDocs=101)
+          0.0013986309 = queryNorm
+        2.5035515 = (MATCH) fieldWeight(keywords:usb in 0), product of:
+          1.0 = tf(termFreq(keywords:usb)=1)
+          4.0056825 = idf(docFreq=4, maxDocs=101)
+          0.625 = fieldNorm(field=keywords, doc=0)
+      0.0070668845 = (MATCH) weight(expandedcontent:usb in 0), product of:
+        0.003143877 = queryWeight(expandedcontent:usb), product of:
+          2.2478247 = idf(docFreq=28, maxDocs=101)
+          0.0013986309 = queryNorm
+        2.2478247 = (MATCH) fieldWeight(expandedcontent:usb in 0), product of:
+          1.0 = tf(termFreq(expandedcontent:usb)=1)
+          2.2478247 = idf(docFreq=28, maxDocs=101)
+          1.0 = fieldNorm(field=expandedcontent, doc=0)
+      0.004416803 = (MATCH) weight(content:usb in 0), product of:
+        0.003143877 = queryWeight(content:usb), product of:
+          2.2478247 = idf(docFreq=28, maxDocs=101)
+          0.0013986309 = queryNorm
+        1.4048904 = (MATCH) fieldWeight(content:usb in 0), product of:
+          1.0 = tf(termFreq(content:usb)=1)
+          2.2478247 = idf(docFreq=28, maxDocs=101)
+          0.625 = fieldNorm(field=content, doc=0)
+      0.056104302 = (MATCH) weight(description:usb^4.0 in 0), product of:
+        0.022409886 = queryWeight(description:usb^4.0), product of:
+          4.0 = boost
+          4.0056825 = idf(docFreq=4, maxDocs=101)
+          0.0013986309 = queryNorm
+        2.5035515 = (MATCH) fieldWeight(description:usb in 0), product of:
+          1.0 = tf(termFreq(description:usb)=1)
+          4.0056825 = idf(docFreq=4, maxDocs=101)
+          0.625 = fieldNorm(field=description, doc=0)
+  0.0013712072 = (MATCH) weight(doctype:organic in 0), product of:
+    0.0013848512 = queryWeight(doctype:organic), product of:
+      0.9901477 = idf(docFreq=101, maxDocs=101)
+      0.0013986309 = queryNorm
+    0.9901477 = (MATCH) fieldWeight(doctype:organic in 0), product of:
+      1.0 = tf(termFreq(doctype:organic)=1)
+      0.9901477 = idf(docFreq=101, maxDocs=101)
+      1.0 = fieldNorm(field=doctype, doc=0)
