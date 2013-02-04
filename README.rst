@@ -78,3 +78,8 @@ Simple example:
 	echo "Field name has an impact of ".$result['name']." %";
 
 ?>
+
+
+.. |buildStatusIcon| image:: https://travis-ci.org/timoschmidt/php-solr-explain.png?branch=master
+   :alt: Build Status
+   :target: https://travis-ci.org/timoschmidt/php-solr-explain
