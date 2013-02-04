@@ -25,6 +25,22 @@ abstract class AbstractExplanationTestCase extends \PHPUnit_Framework_TestCase {
 		return file_get_contents($this->getTestFixturePath().$fixtureFilename);
 	}
 
+
+	/**
+	 * @param $filename
+	 * @return \SolrExplain\Domain\Explanation\Explain
+	 */
+	protected function getExplainFromFixture($filename) {
+		$fileContent = $this->getFixtureContent($filename.".txt");
+		$content = new \SolrExplain\Domain\Explanation\Content($fileContent);
+		$metaData = new \SolrExplain\Domain\Explanation\MetaData('P_164345','auto');
+
+		$parser = new \SolrExplain\Domain\Explanation\Parser();
+		$parser->injectExplain(new \SolrExplain\Domain\Explanation\Explain());
+		$explain = $parser->parse($content,$metaData);
+
+		return $explain;
+	}
 }
 
 ?>

@@ -20,26 +20,10 @@ class ExplanationSolr34TestCase extends \SolrExplain\Tests\AbstractExplanationTe
 	public function tearDown() {}
 
 	/**
-	 * @param $filename
-	 * @return \SolrExplain\Domain\Explanation\Explain
-	 */
-	protected function getFixture($filename) {
-		$fileContent = $this->getFixtureContent($filename.".txt");
-		$content = new \SolrExplain\Domain\Explanation\Content($fileContent);
-		$metaData = new \SolrExplain\Domain\Explanation\MetaData('P_164345','auto');
-
-		$parser = new \SolrExplain\Domain\Explanation\Parser();
-		$parser->injectExplain(new \SolrExplain\Domain\Explanation\Explain());
-		$explain = $parser->parse($content,$metaData);
-
-		return $explain;
-	}
-
-	/**
 	 * @test
 	 */
 	public function testFixture001() {
-		$explain = $this->getFixture('3.4.001');
+		$explain = $this->getExplainFromFixture('3.4.001');
 
 		$this->assertNotNull($explain);
 		$this->assertEquals('P_164345',$explain->getDocumentId());
@@ -54,7 +38,7 @@ class ExplanationSolr34TestCase extends \SolrExplain\Tests\AbstractExplanationTe
 	 * @test
 	 */
 	public function testFixture002() {
-		$explain = $this->getFixture('3.4.002');
+		$explain = $this->getExplainFromFixture('3.4.002');
 
 		$this->assertNotNull($explain);
 		$this->assertEquals('P_164345',$explain->getDocumentId());
@@ -74,7 +58,7 @@ class ExplanationSolr34TestCase extends \SolrExplain\Tests\AbstractExplanationTe
 	 * @test
 	 */
 	public function testFixture003() {
-		$explain = $this->getFixture('3.4.003');
+		$explain = $this->getExplainFromFixture('3.4.003');
 
 		$this->assertNotNull($explain);
 		$this->assertEquals('P_164345', $explain->getDocumentId());
@@ -89,7 +73,7 @@ class ExplanationSolr34TestCase extends \SolrExplain\Tests\AbstractExplanationTe
 	}
 
 	public function testFixture004() {
-		$explain = $this->getFixture('3.4.004');
+		$explain = $this->getExplainFromFixture('3.4.004');
 
 		$this->assertNotNull($explain);
 		$this->assertEquals('P_164345', $explain->getDocumentId());
@@ -107,7 +91,7 @@ class ExplanationSolr34TestCase extends \SolrExplain\Tests\AbstractExplanationTe
 	 * @test
 	 */
 	public function testFixture005() {
-		$explain = $this->getFixture('3.4.005');
+		$explain = $this->getExplainFromFixture('3.4.005');
 
 		$this->assertNotNull($explain);
 		$this->assertEquals('P_164345', $explain->getDocumentId());
@@ -121,7 +105,7 @@ class ExplanationSolr34TestCase extends \SolrExplain\Tests\AbstractExplanationTe
 	}
 
 	public function testFixture006() {
-		$explain = $this->getFixture('3.4.006');
+		$explain = $this->getExplainFromFixture('3.4.006');
 
 		$this->assertNotNull($explain);
 		$this->assertEquals('P_164345', $explain->getDocumentId());
@@ -135,7 +119,7 @@ class ExplanationSolr34TestCase extends \SolrExplain\Tests\AbstractExplanationTe
 	}
 
 	public function testFixture007() {
-		$explain = $this->getFixture('3.4.007');
+		$explain = $this->getExplainFromFixture('3.4.007');
 
 		$this->assertNotNull($explain);
 		$this->assertEquals('P_164345', $explain->getDocumentId());

@@ -21,12 +21,15 @@ class SummarizeFieldImpacts implements \SolrExplain\Domain\Explanation\Visitors\
 	 */
 	public function visit(\SolrExplain\Domain\Explanation\Nodes\Explain $node) {
 		if($node->getNodeType() == $node::NODE_TYPE_LEAF) {
-			$fieldName = $node->getParent()->getFieldName();
-			if(!isset($this->sums[$fieldName])) {
-				$this->sums[$fieldName] = 0;
-			}
+			if($node->getParent() != null) {
+				$fieldName = $node->getParent()->getFieldName();
+				if(!isset($this->sums[$fieldName])) {
+					$this->sums[$fieldName] = 0;
+				}
 
-			$this->sums[$fieldName] += $node->getAbsoluteImpactPercentage();
+				$this->sums[$fieldName] += $node->getAbsoluteImpactPercentage();
+
+			}
 		}
 	}
 

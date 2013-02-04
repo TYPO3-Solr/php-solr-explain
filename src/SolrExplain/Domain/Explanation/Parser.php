@@ -74,13 +74,12 @@ class Parser {
 		$matches 	= array();
 
 		//look for tokens stating with 0-9* and get all following lines stating with " " space
-		preg_match_all('~(?P<token>^[0-9][^\n]*\n(([ ][^\n]*\n)*)?)~m',$contextContent,$matches);
+		preg_match_all('~((?<=^)|(?<=\n))(?<token>[0-9].*?\n)((?=[0-9])|(?=$))~s',$contextContent,$matches);
 
 		if( array_key_exists('token',$matches)) {
 			foreach($matches['token'] as $tokenKey => $tokenContent) {
 				$nodeParts		= explode(PHP_EOL,$tokenContent);
 				$nodeContent	= trim(array_shift($nodeParts));
-
 				$node			= $this->getNodeFromName($nodeContent);
 				$score 			= $this->getScoreFromContent($nodeContent);
 				$nodeFieldName 	= $this->getFieldNameFromNodeName($nodeContent);
@@ -90,10 +89,10 @@ class Parser {
 				$node->setScore($score);
 				$node->setLevel($level);
 				$node->setFieldName($nodeFieldName);
-
 				$collection->append($node);
 
 				$nextLevelContent = $this->removeLeadingSpacesFromNextLevelContent($nodeParts);
+
 				if(trim($nextLevelContent) != '') {
 					$level++;
 						//walk recursive through the input
@@ -114,7 +113,7 @@ class Parser {
 		if (count($tokenParts)) {
 			$preparedTokens = preg_replace('~^  ~ims', '', $tokenParts);
 			$nextLevelContent = implode(PHP_EOL, $preparedTokens);
-			return $nextLevelContent;
+			return trim($nextLevelContent).PHP_EOL;
 		}
 		return $nextLevelContent;
 	}
@@ -202,7 +201,7 @@ class Parser {
 							\SolrExplain\DOmain\Explanation\MetaData $metaData) {
 
 		$rawContent = $content->getContent();
-		$rootNode = $this->getRootNode($rawContent);
+		$rootNode = $this->getRootNode($rawContent.PHP_EOL);
 		$this->explain->setRootNode($rootNode);
 
 		$children = $rootNode->getChildren();
