@@ -12,8 +12,8 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"SolrExplain\\Tests": "tests/",
-			"SolrExplain": "src/"
+			"Solr\\Tests": "tests/",
+			"Solr": "src/"
 		}
 	},
 	"minimum-stability": "stable",

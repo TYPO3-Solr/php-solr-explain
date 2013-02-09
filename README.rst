@@ -69,7 +69,7 @@ Simple example:
 			'          2.734601 = idf(docFreq=2, maxDocs=17)'.PHP_EOL.
 			'          0.3125 = fieldNorm(field=name, doc=1)'.PHP_EOL;
 
-	$result 	= \SolrExplain\Domain\Explanation\ExplainService::getFieldImpactsFromRawContent(
+	$result 	= \Solr\Domain\Result\Explanation\ExplainService::getFieldImpactsFromRawContent(
 		$content,
 		'version',
 		'auto'
