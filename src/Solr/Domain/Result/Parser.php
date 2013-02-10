@@ -2,6 +2,10 @@
 
 namespace Solr\Domain\Result;
 
+/**
+ *
+ * @author Timo Schmidt <timo.schmidt@aoemedia.de>
+ */
 class Parser {
 
 	/**
@@ -28,6 +32,9 @@ class Parser {
 
 		$documentCollection = $this->extractDocumentCollection($xpath);
 		$result->setDocumentCollection($documentCollection);
+
+		$timing = $this->extractTiming($xpath);
+		$result->setTiming($timing);
 
 		return $result;
 	}
@@ -147,6 +154,81 @@ class Parser {
 		}
 
 		return $explainContent;
+	}
+
+	/**
+	 * @param \DOMXPath $xpath
+	 * @return Timing\Timing
+	 */
+	protected function extractTiming(\DOMXPath $xpath) {
+		$prepareItemCollection 		= new \Solr\Domain\Result\Timing\ItemCollection();
+		$processingItemCollection	= new \Solr\Domain\Result\Timing\ItemCollection();
+
+		$path 			= "//lst[@name='debug']/lst[@name='timing']/*[@name='time']";
+		$overallTime 	= $this->getTimeFromNode($xpath, $path);
+
+		//get prepare timing and items
+		$path 			= "//lst[@name='debug']/lst[@name='timing']/lst[@name='prepare']/*[@name='time']";
+		$prepareTime	= $this->getTimeFromNode($xpath, $path);
+		$prepareItemCollection->setTimeSpend($prepareTime);
+
+		$prepareNodesPath = "//lst[@name='debug']/lst[@name='timing']/lst[@name='prepare']/lst";
+		$this->extractTimingSubNodes($xpath, $prepareNodesPath, $prepareItemCollection);
+
+		//get processing time and items
+		$path 			= "//lst[@name='debug']/lst[@name='timing']/lst[@name='process']/*[@name='time']";
+		$processingTime	= $this->getTimeFromNode($xpath, $path);
+		$processingItemCollection->setTimeSpend($processingTime);
+
+		$processingNodesPath = "//lst[@name='debug']/lst[@name='timing']/lst[@name='process']/lst";
+		$this->extractTimingSubNodes($xpath, $processingNodesPath, $processingItemCollection);
+
+		//build all and return
+		$result = new \Solr\Domain\Result\Timing\Timing($prepareItemCollection, $processingItemCollection);
+		$result->setTimeSpend($overallTime);
+
+		return $result;
+	}
+
+	/**
+	 * This method is used to build timing items from timing subnodes.
+	 *
+	 * @param $xpath
+	 * @param $nodeXPath
+	 * @param $itemCollection
+	 */
+	protected function extractTimingSubNodes($xpath, $nodeXPath, $itemCollection){
+		$nodes = $xpath->query($nodeXPath);
+
+		foreach ($nodes as $node) {
+			/** @var $node \DOMElement */
+			$name = $node->getAttribute('name');
+			$time = 0.0;
+			if (isset($node->childNodes->item(0)->textContent)) {
+				$time = (float)$node->childNodes->item(0)->textContent;
+			}
+
+			$item = new \Solr\Domain\Result\Timing\Item();
+			$item->setComponentName($name);
+			$item->setTimeSpend($time);
+
+			$itemCollection->append($item);
+		}
+	}
+
+	/**
+	 * @param $xpath
+	 * @param $path
+	 * @return float
+	 */
+	protected function getTimeFromNode($xpath, $path){
+		$timeNode = $xpath->query($path);
+		$time = 0.0;
+		if (isset($timeNode->item(0)->textContent)) {
+			$time = (float)$timeNode->item(0)->textContent;
+		}
+
+		return $time;
 	}
 }
 

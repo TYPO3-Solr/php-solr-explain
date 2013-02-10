@@ -20,6 +20,11 @@ class Result {
 	protected $documentCollection;
 
 	/**
+	 * @var \Solr\Domain\Result\Timing\Timing
+	 */
+	protected $timing = null;
+
+	/**
 	 * @param int $completeResultCount
 	 * @return \Solr\Domain\Result\Result
 	 */
@@ -72,5 +77,19 @@ class Result {
 	 */
 	public function getDocumentCollection() {
 		return $this->documentCollection;
+	}
+
+	/**
+	 * @param \Solr\Domain\Result\Timing\Timing $timing
+	 */
+	public function setTiming(\Solr\Domain\Result\Timing\Timing $timing) {
+		$this->timing = $timing;
+	}
+
+	/**
+	 * @return \Solr\Domain\Result\Timing\Timing
+	 */
+	public function getTiming() {
+		return $this->timing;
 	}
 }

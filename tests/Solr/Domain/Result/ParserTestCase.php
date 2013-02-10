@@ -49,6 +49,8 @@ class ParserTestCase extends \Solr\Tests\AbstractSolrTest {
 		$actualExplain 		= $result->getDocumentCollection()->getDocument(3)->getRawExplainData();
 
 		$this->assertEquals($expectedExplain4, $actualExplain);
+		$this->assertEquals(2.0, $result->getTiming()->getTimeSpend());
+		$this->assertEquals(6, $result->getTiming()->getProcessingItems()->count());
 	}
 }
 
