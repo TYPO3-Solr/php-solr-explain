@@ -36,6 +36,9 @@ class Parser {
 		$timing = $this->extractTiming($xpath);
 		$result->setTiming($timing);
 
+		$queryParserName = $this->extractParserName($xpath);
+		$result->setQueryParser($queryParserName);
+
 		return $result;
 	}
 
@@ -129,10 +132,10 @@ class Parser {
 	}
 
 	/**
-	 * @param $resultXPath
+	 * @param \DOMXPath $resultXPath
 	 * @return mixed
 	 */
-	protected function getExplainNodes($resultXPath) {
+	protected function getExplainNodes(\DOMXPath $resultXPath) {
 		if($this->explainNodes == null) {
 			$this->explainNodes = $resultXPath->query("//lst[@name='debug']/lst[@name='explain']/str");
 		}
@@ -193,11 +196,11 @@ class Parser {
 	/**
 	 * This method is used to build timing items from timing subnodes.
 	 *
-	 * @param $xpath
-	 * @param $nodeXPath
-	 * @param $itemCollection
+	 * @param \DOMXPath $xpath
+	 * @param string $nodeXPath
+	 * @param \Solr\Domain\Result\Timing\ItemCollection $itemCollection
 	 */
-	protected function extractTimingSubNodes($xpath, $nodeXPath, $itemCollection){
+	protected function extractTimingSubNodes(\DOMXPath $xpath, $nodeXPath, $itemCollection){
 		$nodes = $xpath->query($nodeXPath);
 
 		foreach ($nodes as $node) {
@@ -217,8 +220,8 @@ class Parser {
 	}
 
 	/**
-	 * @param $xpath
-	 * @param $path
+	 * @param \DOMXPath $xpath
+	 * @param string $path
 	 * @return float
 	 */
 	protected function getTimeFromNode($xpath, $path){
@@ -229,6 +232,21 @@ class Parser {
 		}
 
 		return $time;
+	}
+
+	/**
+	 * @param \DOMXPath $xpath
+	 */
+	protected function extractParserName(\DOMXPath $xpath) {
+		$result				= '';
+		$path 				= "//lst[@name='debug']/str[@name='QParser']";
+		$queryParserNode 	= $xpath->query($path);
+
+		if(isset($queryParserNode->item(0)->textContent)) {
+			$result = (string) $queryParserNode->item(0)->textContent;
+		}
+
+		return $result;
 	}
 }
 

@@ -67,68 +67,89 @@ class Explain {
 			return 100.0;
 		} else {
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_SUM) {
-				$parentScore 			= $this->getParent()->getScore();
-				$parentPercentage		= $this->getParent()->getAbsoluteImpactPercentage();
-
-				//part of this node relative to the parent
-				$scorePercentageToParent	= (100 / $parentScore) * $this->getScore();
-				return ($parentPercentage / 100) * $scorePercentageToParent;
+				return $this->handleSumParent();
 			}
 
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_MAX) {
-				$neighbors 		= $this->getParent()->getChildren();
-				$tieBreaker		= $this->getParent()->getTieBreaker();
-
-				$parentScore				= $this->getParent()->getScore();
-				$parentScorePart 			= ($this->getScore()/$parentScore) * (100);
-				$parentScorePartPercentage 	= $this->getParent()->getAbsoluteImpactPercentage() / 100.0;
-
-				$isMaxNode = true;
-				foreach($neighbors as $neighbor) {
-					if($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
-						$isMaxNode = false;
-						break;
-					}
-				}
-
-				if($tieBreaker > 0) {
-					if($isMaxNode) {
-						return $parentScorePart * $parentScorePartPercentage;
-					} else {
-						return $parentScorePart * $parentScorePartPercentage * $tieBreaker;
-					}
-				} else {
-					if($isMaxNode) {
-						return $this->getParent()->getAbsoluteImpactPercentage();
-					} else {
-						return 0;
-					}
-				}
+				return $this->handleMaxParent();
 			}
 
 			if($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
-				$neighbors 			= $this->getParent()->getChildren();
+				return $this->handleProductParent();
+			}
+		}
+	}
 
-				if($neighbors->count() > 1) {
-					$neighborScorePart 	= array();
-					$parentPercentage	= $this->getParent()->getAbsoluteImpactPercentage();
+	/**
+	 * @return float
+	 */
+	protected function handleProductParent() {
+		$neighbors = $this->getParent()->getChildren();
 
-					foreach($neighbors as $neighbor) {
-						if($neighbor != $this) {
-							$neighborScore = $neighbor->getScore();
-							$neighborScorePart[] = $neighborScore;
-						}
-					}
+		if ($neighbors->count() > 1) {
+			$neighborScorePart = array();
+			$parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
 
-					$scoreSum 	= array_sum($neighborScorePart) + $this->getScore();
-
-					$multiplier =  100 / $scoreSum;
-					$parentMultiplier = $parentPercentage / 100;
-					return $this->getScore() * $multiplier * $parentMultiplier;
-				} else {
-						//when only one leaf in product is present we can inherit the parent score
-					return $this->getParent()->getAbsoluteImpactPercentage();
+			foreach ($neighbors as $neighbor) {
+				if ($neighbor != $this) {
+					$neighborScore = $neighbor->getScore();
+					$neighborScorePart[] = $neighborScore;
 				}
+			}
+
+			$scoreSum = array_sum($neighborScorePart) + $this->getScore();
+
+			$multiplier = 100 / $scoreSum;
+			$parentMultiplier = $parentPercentage / 100;
+			return $this->getScore() * $multiplier * $parentMultiplier;
+		} else {
+			//when only one leaf in product is present we can inherit the parent score
+			return $this->getParent()->getAbsoluteImpactPercentage();
+		}
+	}
+
+	/**
+	 * @return float
+	 */
+	protected function handleSumParent() {
+		$parentScore = $this->getParent()->getScore();
+		$parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
+
+		//part of this node relative to the parent
+		$scorePercentageToParent = (100 / $parentScore) * $this->getScore();
+		return ($parentPercentage / 100) * $scorePercentageToParent;
+	}
+
+	/**
+	 * @return float
+	 */
+	protected function handleMaxParent() {
+		$neighbors = $this->getParent()->getChildren();
+		$tieBreaker = $this->getParent()->getTieBreaker();
+
+		$parentScore = $this->getParent()->getScore();
+		$parentScorePart = ($this->getScore() / $parentScore) * (100);
+		$parentScorePartPercentage = $this->getParent()->getAbsoluteImpactPercentage() / 100.0;
+
+		$isMaxNode = true;
+		foreach ($neighbors as $neighbor) {
+			if ($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
+				$isMaxNode = false;
+				break;
+			}
+		}
+
+		if ($tieBreaker > 0) {
+			if ($isMaxNode) {
+				return $parentScorePart * $parentScorePartPercentage;
+			} else {
+				return $parentScorePart * $parentScorePartPercentage * $tieBreaker;
+			}
+		} else {
+			if ($isMaxNode) {
+				return $this->getParent()->getAbsoluteImpactPercentage();
+			} else {
+				return 0.0;
 			}
 		}
 	}

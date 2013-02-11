@@ -52,6 +52,19 @@ class ParserTestCase extends \Solr\Tests\AbstractSolrTest {
 		$this->assertEquals(2.0, $result->getTiming()->getTimeSpend());
 		$this->assertEquals(6, $result->getTiming()->getProcessingItems()->count());
 	}
+
+	/**
+	 * @test
+	 */
+	public function testFixtureSolr4010() {
+		$content = $this->getFixtureContent("4.0.010.xml");
+		$parser = new \Solr\Domain\Result\Parser();
+		$result = $parser->parse($content);
+
+		$this->assertEquals(3, $result->getResultCount());
+		$this->assertEquals(4, $result->getTiming()->getTimeSpend());
+		$this->assertEquals("LuceneQParser",$result->getQueryParser());
+	}
 }
 
 ?>

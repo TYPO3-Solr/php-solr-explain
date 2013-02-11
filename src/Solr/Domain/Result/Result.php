@@ -2,6 +2,9 @@
 
 namespace Solr\Domain\Result;
 
+/**
+ * @author Timo Schmidt <timo.schmidt@aoemedia.de>
+ */
 class Result {
 
 	/**
@@ -13,6 +16,11 @@ class Result {
 	 * @var integer
 	 */
 	protected $queryTime = 0;
+
+	/**
+	 * @var string
+	 */
+	protected $queryParser = '';
 
 	/**
 	 * @var \Solr\Domain\Result\Document\Collection
@@ -91,5 +99,19 @@ class Result {
 	 */
 	public function getTiming() {
 		return $this->timing;
+	}
+
+	/**
+	 * @param string $queryParser
+	 */
+	public function setQueryParser($queryParser) {
+		$this->queryParser = $queryParser;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getQueryParser() {
+		return $this->queryParser;
 	}
 }
