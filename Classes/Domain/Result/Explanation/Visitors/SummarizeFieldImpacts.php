@@ -23,6 +23,9 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface {
 		if($node->getNodeType() == $node::NODE_TYPE_LEAF) {
 			if($node->getParent() != null) {
 				$fieldName = $node->getParent()->getFieldName();
+                if(trim($fieldName) === '') {
+                    return;
+                }
 				if(!isset($this->sums[$fieldName])) {
 					$this->sums[$fieldName] = 0;
 				}

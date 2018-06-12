@@ -22,4 +22,23 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase {
 
 		$this->assertEquals(array('name' => 100), $result);
 	}
+
+    /**
+     * @test
+     */
+	public function testCanNotCreateEmptyNodes() {
+        $content 	= $this->getFixtureContent('6.2.001.txt');
+        $result 	= ExplainService::getFieldImpactsFromRawContent(
+            $content,
+            'foo',
+            'bar'
+        );
+
+        $expectedResult = [
+            'keywords' => 3.9746099859253836,
+            'title' =>  7.1126007378396707,
+            'content' => 88.912788999915335
+        ];
+        $this->assertEquals($expectedResult, $result);
+    }
 }

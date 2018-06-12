@@ -1,0 +1,31 @@
+36.189976 = sum of:
+  36.189976 = max plus 0.5 times others of:
+    2.8768208 = weight(keywords:dev in 0) [SchemaSimilarity], result of:
+      2.8768208 = score(doc=0,freq=1.0 = termFreq=1.0
+), product of:
+        10.0 = boost
+        0.2876821 = idf(docFreq=1, docCount=1)
+        1.0 = tfNorm, computed from:
+          1.0 = termFreq=1.0
+          1.2 = parameter k1
+          0.0 = parameter b (norms omitted for field)
+    5.148097 = weight(title:dev in 0) [SchemaSimilarity], result of:
+      5.148097 = score(doc=0,freq=1.0 = termFreq=1.0
+), product of:
+        5.0 = boost
+        1.0296195 = idf(docFreq=2, docCount=6)
+        1.0 = tfNorm, computed from:
+          1.0 = termFreq=1.0
+          1.2 = parameter k1
+          0.0 = parameter b (norms omitted for field)
+    32.177517 = weight(content:dev in 0) [SchemaSimilarity], result of:
+      32.177517 = score(doc=0,freq=1.0 = termFreq=1.0
+), product of:
+        40.0 = boost
+        0.98082924 = idf(docFreq=1, docCount=3)
+        0.82016104 = tfNorm, computed from:
+          1.0 = termFreq=1.0
+          1.2 = parameter k1
+          0.75 = parameter b
+          1.6666666 = avgFieldLength
+          2.56 = fieldLength
