@@ -175,7 +175,6 @@ class Parser {
 	protected function getFieldNameFromNodeName($nodeName) {
 		$result 	= '';
 		$matches 	= array();
-
 		if(mb_strpos($nodeName,'weight(') !== false ){
 			preg_match('~weight\((?<fieldname>[^\):]*)~', $nodeName, $matches);
 		} elseif (mb_strpos($nodeName, 'queryWeight(') !== false ) {
@@ -188,7 +187,10 @@ class Parser {
 				//check if it is a nested function query an get inner fieldname
 			$lastBracketPos = mb_strpos($matches['fieldname'],'(');
 			if($lastBracketPos !== false) {
-				$matches['fieldname'] = mb_substr($matches['fieldname']+1,$lastBracketPos);
+				$fieldMatch = mb_substr($matches['fieldname'], $lastBracketPos+1, mb_strlen($matches['fieldname']));
+				if(!is_numeric($fieldMatch)) {
+					$matches['fieldname'] = $fieldMatch;
+				}
 			}
 		}
 
