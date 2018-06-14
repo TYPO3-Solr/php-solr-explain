@@ -175,13 +175,16 @@ class Parser {
 	protected function getFieldNameFromNodeName($nodeName) {
 		$result 	= '';
 		$matches 	= array();
-		if(mb_strpos($nodeName,'weight(') !== false ){
+
+        if (mb_strpos($nodeName,'weight(Synonym(') !== false ) {
+            preg_match('~weight\(Synonym\((?<fieldname>[^\):]*)~', $nodeName, $matches);
+        } elseif(mb_strpos($nodeName,'weight(') !== false ){
 			preg_match('~weight\((?<fieldname>[^\):]*)~', $nodeName, $matches);
 		} elseif (mb_strpos($nodeName, 'queryWeight(') !== false ) {
 			preg_match('~queryWeight\((?<fieldname>[^\):]*)~', $nodeName, $matches);
 		} elseif (mb_strpos($nodeName,'fieldWeight(') !== false ) {
 			preg_match('~fieldWeight\((?<fieldname>[^\):]*)~', $nodeName, $matches);
-		} elseif (mb_strpos($nodeName, 'FunctionQuery(') !== false ) {
+        }  elseif (mb_strpos($nodeName, 'FunctionQuery(') !== false ) {
 			preg_match('~FunctionQuery\([^\(]*\((?<fieldname>[^\):]*)~', $nodeName, $matches);
 
 				//check if it is a nested function query an get inner fieldname

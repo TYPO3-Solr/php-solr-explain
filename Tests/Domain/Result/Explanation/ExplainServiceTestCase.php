@@ -24,9 +24,9 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase {
 	}
 
     /**
-     * @test
-     */
-	public function testCanNotCreateEmptyNodes() {
+ * @test
+ */
+    public function testCanNotCreateEmptyNodes() {
         $content 	= $this->getFixtureContent('6.2.001.txt');
         $result 	= ExplainService::getFieldImpactsFromRawContent(
             $content,
@@ -39,6 +39,27 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase {
             'title' =>  7.1126007378396707,
             'content' => 88.912788999915335
         ];
+        $this->assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function testCanParseSynonymeNodes() {
+        $content 	= $this->getFixtureContent('6.6.001.txt');
+        $result 	= ExplainService::getFieldImpactsFromRawContent(
+            $content,
+            'foo',
+            'bar'
+        );
+
+        $expectedResult = [
+            'keywords' => 8.2394580648419,
+            'description' => 2.1925963619964,
+            'tagsH1' => 8.539163146877,
+            'content' => 81.028780249768
+        ];
+
         $this->assertEquals($expectedResult, $result);
     }
 }

@@ -1,0 +1,122 @@
+57.431225 = sum of:
+  54.484947 = max plus 0.5 times others of:
+    9.464044 = sum of:
+      5.479183 = weight(Synonym(keywords:typo keywords:typo3) in 4) [SchemaSimilarity], result of:
+        5.479183 = score(doc=4,freq=2.0 = termFreq=2.0
+), product of:
+          2.0 = boost
+          1.9924302 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+            1.0 = docFreq
+            10.0 = docCount
+          1.375 = tfNorm, computed as (freq * (k1 + 1)) / (freq + k1) from:
+            2.0 = termFreq=2.0
+            1.2 = parameter k1
+            0.0 = parameter b (norms omitted for field)
+      3.9848604 = weight(keywords:3 in 4) [SchemaSimilarity], result of:
+        3.9848604 = score(doc=4,freq=1.0 = termFreq=1.0
+), product of:
+          2.0 = boost
+          1.9924302 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+            1.0 = docFreq
+            10.0 = docCount
+          1.0 = tfNorm, computed as (freq * (k1 + 1)) / (freq + k1) from:
+            1.0 = termFreq=1.0
+            1.2 = parameter k1
+            0.0 = parameter b (norms omitted for field)
+    2.5184698 = sum of:
+      1.4764061 = weight(Synonym(description:typo description:typo3) in 4) [SchemaSimilarity], result of:
+        1.4764061 = score(doc=4,freq=2.0 = termFreq=2.0
+), product of:
+          4.0 = boost
+          0.2876821 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+            1.0 = docFreq
+            1.0 = docCount
+          1.2830188 = tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength)) from:
+            2.0 = termFreq=2.0
+            1.2 = parameter k1
+            0.75 = parameter b
+            51.0 = avgFieldLength
+            64.0 = fieldLength
+      1.0420638 = weight(description:3 in 4) [SchemaSimilarity], result of:
+        1.0420638 = score(doc=4,freq=1.0 = termFreq=1.0
+), product of:
+          4.0 = boost
+          0.2876821 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+            1.0 = docFreq
+            1.0 = docCount
+          0.90556896 = tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength)) from:
+            1.0 = termFreq=1.0
+            1.2 = parameter k1
+            0.75 = parameter b
+            51.0 = avgFieldLength
+            64.0 = fieldLength
+    9.808292 = sum of:
+      4.904146 = weight(Synonym(tagsH1:typo tagsH1:typo3) in 4) [SchemaSimilarity], result of:
+        4.904146 = score(doc=4,freq=1.0 = termFreq=1.0
+), product of:
+          5.0 = boost
+          0.98082924 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+            1.0 = docFreq
+            3.0 = docCount
+          1.0 = tfNorm, computed as (freq * (k1 + 1)) / (freq + k1) from:
+            1.0 = termFreq=1.0
+            1.2 = parameter k1
+            0.0 = parameter b (norms omitted for field)
+      4.904146 = weight(tagsH1:3 in 4) [SchemaSimilarity], result of:
+        4.904146 = score(doc=4,freq=1.0 = termFreq=1.0
+), product of:
+          5.0 = boost
+          0.98082924 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+            1.0 = docFreq
+            3.0 = docCount
+          1.0 = tfNorm, computed as (freq * (k1 + 1)) / (freq + k1) from:
+            1.0 = termFreq=1.0
+            1.2 = parameter k1
+            0.0 = parameter b (norms omitted for field)
+    43.589542 = sum of:
+      27.827307 = weight(Synonym(content:typo content:typo3) in 4) [SchemaSimilarity], result of:
+        27.827307 = score(doc=4,freq=9.0 = termFreq=9.0
+), product of:
+          40.0 = boost
+          0.33950713 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+            23.0 = docFreq
+            32.0 = docCount
+          2.0490959 = tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength)) from:
+            9.0 = termFreq=9.0
+            1.2 = parameter k1
+            0.75 = parameter b
+            282.25 = avgFieldLength
+            113.77778 = fieldLength
+      15.762237 = weight(content:3 in 4) [SchemaSimilarity], result of:
+        15.762237 = score(doc=4,freq=1.0 = termFreq=1.0
+), product of:
+          40.0 = boost
+          0.29783446 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+            24.0 = docFreq
+            32.0 = docCount
+          1.3230703 = tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength)) from:
+            1.0 = termFreq=1.0
+            1.2 = parameter k1
+            0.75 = parameter b
+            282.25 = avgFieldLength
+            113.77778 = fieldLength
+  2.9462771 = weight(content:&quot;(typo3 typo) 3&quot;~15 in 4) [SchemaSimilarity], result of:
+    2.9462771 = score(doc=4,freq=1.0 = phraseFreq=1.0
+), product of:
+      2.0 = boost
+      1.1134243 = idf(), sum of:
+        0.33950713 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+          23.0 = docFreq
+          32.0 = docCount
+        0.47608268 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+          20.0 = docFreq
+          32.0 = docCount
+        0.29783446 = idf, computed as log(1 + (docCount - docFreq + 0.5) / (docFreq + 0.5)) from:
+          24.0 = docFreq
+          32.0 = docCount
+      1.3230703 = tfNorm, computed as (freq * (k1 + 1)) / (freq + k1 * (1 - b + b * fieldLength / avgFieldLength)) from:
+        1.0 = phraseFreq=1.0
+        1.2 = parameter k1
+        0.75 = parameter b
+        282.25 = avgFieldLength
+        113.77778 = fieldLength
