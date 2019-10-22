@@ -11,7 +11,7 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain;
 class SummarizeFieldImpacts implements ExplainNodeVisitorInterface {
 
 	/**
-	 * @var float
+	 * @var array
 	 */
 	protected $sums = array();
 
@@ -22,8 +22,7 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface {
 	public function visit(Explain $node) {
 		if($node->getNodeType() == $node::NODE_TYPE_LEAF) {
 			if($node->getParent() != null) {
-				$fieldName = $node->getParent()->getFieldName();
-
+				$fieldName = $this->getClosestFieldName($node);
                 if(trim($fieldName) === '') {
                     return;
                 }
@@ -37,6 +36,25 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface {
 			}
 		}
 	}
+
+    /**
+     * Returns the closest fieldname in the parent root line and and empty string when none is present.
+     *
+     * @param $node
+     * @return string
+     */
+	protected function getClosestFieldName($node) {
+        while(!is_null($node->getParent())) {
+            $parent = $node->getParent();
+            if ($parent->getFieldName() !== '') {
+                return $parent->getFieldName();
+            }
+
+            $node = $parent;
+        }
+
+        return '';
+    }
 
 	/**
 	 * Returns the fieldnames that have been relevant during the explain.

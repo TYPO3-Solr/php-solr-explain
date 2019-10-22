@@ -1,0 +1,38 @@
+44.474316 = sum of:
+  44.474316 = max plus 0.5 times others of:
+    3.6079488 = weight(tagsH2H3:page in 45) [SchemaSimilarity], result of:
+      3.6079488 = score(freq=1.0), product of:
+        3.0 = boost
+        1.6405284 = idf, computed as log(1 + (N - n + 0.5) / (n + 0.5)) from:
+          9 = n, number of documents containing term
+          48 = N, total number of documents with field
+        0.73308676 = tf, computed as freq / (freq + k1 * (1 - b + b * dl / avgdl)) from:
+          1.0 = freq, occurrences of term within document
+          1.2 = k1, term saturation parameter
+          0.75 = b, length normalization parameter
+          1.0 = dl, length of field
+          14.041667 = avgdl, average length of field
+    9.3395815 = weight(title:page in 45) [SchemaSimilarity], result of:
+      9.3395815 = score(freq=1.0), product of:
+        5.0 = boost
+        3.2884018 = idf, computed as log(1 + (N - n + 0.5) / (n + 0.5)) from:
+          2 = n, number of documents containing term
+          66 = N, total number of documents with field
+        0.56803167 = tf, computed as freq / (freq + k1 * (1 - b + b * dl / avgdl)) from:
+          1.0 = freq, occurrences of term within document
+          1.2 = k1, term saturation parameter
+          0.75 = b, length normalization parameter
+          1.0 = dl, length of field
+          1.9545455 = avgdl, average length of field
+    38.00055 = weight(content:page in 45) [SchemaSimilarity], result of:
+      38.00055 = score(freq=4.0), product of:
+        40.0 = boost
+        1.0761395 = idf, computed as log(1 + (N - n + 0.5) / (n + 0.5)) from:
+          22 = n, number of documents containing term
+          65 = N, total number of documents with field
+        0.882798 = tf, computed as freq / (freq + k1 * (1 - b + b * dl / avgdl)) from:
+          4.0 = freq, occurrences of term within document
+          1.2 = k1, term saturation parameter
+          0.75 = b, length normalization parameter
+          72.0 = dl, length of field (approximate)
+          280.46155 = avgdl, average length of field

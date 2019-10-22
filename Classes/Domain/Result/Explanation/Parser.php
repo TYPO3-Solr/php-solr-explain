@@ -84,6 +84,7 @@ class Parser {
 		preg_match_all('~((?<=^)|(?<=\n))(?<token>[0-9].*?\n)((?=[0-9])|(?=$))~s',$contextContent,$matches);
 
 		if( array_key_exists('token',$matches)) {
+
 			foreach($matches['token'] as $tokenKey => $tokenContent) {
 				$nodeParts		= explode(PHP_EOL,$tokenContent);
 				$nodeContent	= trim(array_shift($nodeParts));
@@ -107,8 +108,6 @@ class Parser {
 				}
 			}
 		}
-
-		$collection;
 	}
 
 	/**
@@ -175,7 +174,6 @@ class Parser {
 	protected function getFieldNameFromNodeName($nodeName) {
 		$result 	= '';
 		$matches 	= array();
-
         if (mb_strpos($nodeName,'weight(Synonym(') !== false ) {
             preg_match('~weight\(Synonym\((?<fieldname>[^\):]*)~', $nodeName, $matches);
         } elseif(mb_strpos($nodeName,'weight(') !== false ){

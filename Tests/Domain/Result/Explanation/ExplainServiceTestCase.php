@@ -62,4 +62,24 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase {
 
         $this->assertEquals($expectedResult, $result);
     }
+
+    /**
+     * @test
+     */
+    public function testCanParse82Response() {
+        $content 	= $this->getFixtureContent('8.2.001.txt');
+        $result 	= ExplainService::getFieldImpactsFromRawContent(
+            $content,
+            'foo',
+            'bar'
+        );
+
+        $expectedResult = [
+            'content' => 85.44380986095436,
+            'tagsH2H3' => 4.056216176545581,
+            'title' => 10.499972051284612
+        ];
+
+        $this->assertEquals($expectedResult, $result);
+    }
 }
