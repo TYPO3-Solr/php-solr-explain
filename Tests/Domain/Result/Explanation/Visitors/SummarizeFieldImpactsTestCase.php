@@ -3,15 +3,17 @@
 namespace ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result\Explanation\Visitors;
 
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Content;
+use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\ExplainResult;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\MetaData;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Parser;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Visitors\SummarizeFieldImpacts;
 use ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result\Explanation\AbstractExplanationTestCase;
 
-class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase{
+class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
+{
 
 	/**
-	 * @return \ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\ExplainResult
+	 * @return ExplainResult
 	 */
 	protected function getExplain($filename) {
 		$fileContent = $this->getFixtureContent($filename.".txt");
@@ -19,7 +21,7 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase{
 		$metaData = new MetaData('P_164345','auto');
 		$parser = new Parser();
 
-		$parser->injectExplainResult(new \ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\ExplainResult());
+		$parser->injectExplainResult(new ExplainResult());
 		$explain = $parser->parse($content,$metaData);
 
 		return $explain;
@@ -28,7 +30,8 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testCanSummarizeFieldImpactFixture001() {
+	public function testCanSummarizeFieldImpactFixture001()
+    {
 		$explain = $this->getExplain('3.0.001');
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
@@ -40,7 +43,8 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testCanSummarizeFieldImpactFixture003() {
+	public function testCanSummarizeFieldImpactFixture003()
+    {
 		$explain = $this->getExplain('3.0.003');
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
@@ -52,7 +56,8 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testCanSummarizeFieldImpactFixture004() {
+	public function testCanSummarizeFieldImpactFixture004()
+    {
 		$explain = $this->getExplain('3.0.004');
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
@@ -64,7 +69,8 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testCanSummarizeCustomTieBreakerFixture() {
+	public function testCanSummarizeCustomTieBreakerFixture()
+    {
 		$explain = $this->getExplain('custom.tieBreaker');
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
@@ -78,7 +84,8 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testCanSummarizeCustomTieBreaker2Fixture() {
+	public function testCanSummarizeCustomTieBreaker2Fixture()
+    {
 		$explain = $this->getExplain('custom.tieBreaker2');
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
@@ -92,7 +99,8 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testCanSummarizeCustomTieBreaker3Fixture() {
+	public function testCanSummarizeCustomTieBreaker3Fixture()
+    {
 		$explain = $this->getExplain('custom.tieBreaker3');
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);

@@ -16,9 +16,10 @@ class Item {
 
 	/**
 	 * @param string $componentName
-	 * @return Item
+	 * @return self
 	 */
-	public function setComponentName($componentName) {
+	public function setComponentName(string $componentName): Item
+    {
 		$this->componentName = $componentName;
 
 		return $this;
@@ -27,15 +28,17 @@ class Item {
 	/**
 	 * @return string
 	 */
-	public function getComponentName() {
+	public function getComponentName(): string
+    {
 		return $this->componentName;
 	}
 
 	/**
 	 * @param float $timeSpend
-	 * @return Item
+	 * @return self
 	 */
-	public function setTimeSpend($timeSpend) {
+	public function setTimeSpend(float $timeSpend): Item
+    {
 		$this->timeSpend = $timeSpend;
 
 		return $this;
@@ -44,7 +47,8 @@ class Item {
 	/**
 	 * @return float
 	 */
-	public function getTimeSpend() {
+	public function getTimeSpend(): float
+    {
 		return $this->timeSpend;
 	}
 }

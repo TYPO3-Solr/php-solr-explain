@@ -3,11 +3,13 @@
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes;
 
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Visitors\ExplainNodeVisitorInterface;
+use ArrayObject;
 
 /**
- * Represents an node of the explain result provided by solr.
+ * Represents a node of the explain result provided by solr.
  */
-class Explain {
+class Explain
+{
 
 	/**
 	 * Different types of nodes that need to be handled different during calculation
@@ -33,7 +35,7 @@ class Explain {
 	protected $score = 0.0;
 
 	/**
-	 * @var \ArrayObject
+	 * @var ArrayObject
 	 */
 	protected $children = null;
 
@@ -55,35 +57,37 @@ class Explain {
 	/**
 	 * @return void
 	 */
-	public function __construct() {
-		$this->children = new \ArrayObject();
+	public function __construct()
+    {
+		$this->children = new ArrayObject();
 	}
 
-	/**
-	 * @return
-	 */
-	public function getAbsoluteImpactPercentage() {
+    /**
+     * @return ?float|?int
+     */
+	public function getAbsoluteImpactPercentage()
+    {
 		if($this->level == 0) {
 			return 100.0;
-		} else {
-			if($this->getParent()->getNodeType() == self::NODE_TYPE_SUM) {
-				return $this->handleSumParent();
-			}
-
-			if($this->getParent()->getNodeType() == self::NODE_TYPE_MAX) {
-				return $this->handleMaxParent();
-			}
-
-			if($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
-				return $this->handleProductParent();
-			}
 		}
+
+        if($this->getParent()->getNodeType() == self::NODE_TYPE_SUM) {
+            return $this->handleSumParent();
+        }
+        if($this->getParent()->getNodeType() == self::NODE_TYPE_MAX) {
+            return $this->handleMaxParent();
+        }
+        if($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
+            return $this->handleProductParent();
+        }
+        return null;
 	}
 
 	/**
 	 * @return float
 	 */
-	protected function handleProductParent() {
+	protected function handleProductParent()
+    {
 		$neighbors = $this->getParent()->getChildren();
 
 		if ($neighbors->count() > 1) {
@@ -111,7 +115,8 @@ class Explain {
 	/**
 	 * @return float
 	 */
-	protected function handleSumParent() {
+	protected function handleSumParent()
+    {
 		$parentScore = $this->getParent()->getScore();
 		$parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
 
@@ -123,7 +128,8 @@ class Explain {
 	/**
 	 * @return float
 	 */
-	protected function handleMaxParent() {
+	protected function handleMaxParent()
+    {
 		$neighbors = $this->getParent()->getChildren();
 		$tieBreaker = $this->getParent()->getTieBreaker();
 
@@ -154,52 +160,59 @@ class Explain {
 		}
 	}
 
-	/**
-	 * @param Explain $parent
-	 */
-	public function setParent($parent) {
+    /**
+     * @param ?Explain $parent
+     */
+	public function setParent(?Explain $parent)
+    {
 		$this->parent = $parent;
 	}
 
 	/**
 	 * @return Explain
 	 */
-	public function getParent() {
+	public function getParent(): ?Explain
+    {
 		return $this->parent;
 	}
 
 	/**
 	 * @param string $content
 	 */
-	public function setContent($content) {
+	public function setContent(string $content)
+    {
 		$this->content = $content;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getContent() {
+	public function getContent(): string
+    {
 		return $this->content;
 	}
 
 	/**
 	 * @param int $level
 	 */
-	public function setLevel($level) {
+	public function setLevel(int $level)
+    {
 		$this->level = $level;
 	}
 
 	/**
-	 * @param \ArrayObject $children
+	 * @param ArrayObject $children
 	 */
-	public function setChildren($children) {
+	public function setChildren(ArrayObject $children)
+    {
 		$this->children = $children;
 	}
 
 	/**
-	 * @return \ArrayObject
+	 * @return ArrayObject
 	 */
-	public function getChildren() {
+	public function getChildren(): ?ArrayObject
+    {
 		return $this->children;
 	}
 
@@ -207,56 +220,64 @@ class Explain {
 	 * @param $index
 	 * @return Explain
 	 */
-	public function getChild($index) {
+	public function getChild($index): Explain
+    {
 		return $this->children[$index];
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getLevel() {
+	public function getLevel(): int
+    {
 		return $this->level;
 	}
 
 	/**
 	 * @param float $score
 	 */
-	public function setScore($score) {
+	public function setScore(float $score)
+    {
 		$this->score = $score;
 	}
 
 	/**
 	 * @return float
 	 */
-	public function getScore() {
+	public function getScore(): float
+    {
 		return $this->score;
 	}
 
 	/**
 	 * @param int $nodeType
 	 */
-	protected function setNodeType($nodeType) {
+	protected function setNodeType(int $nodeType)
+    {
 		$this->nodeType = $nodeType;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getNodeType() {
+	public function getNodeType(): int
+    {
 		return $this->nodeType;
 	}
 
 	/**
 	 * @param string $fieldName
 	 */
-	public function setFieldName($fieldName) {
+	public function setFieldName(string $fieldName)
+    {
 		$this->fieldName = $fieldName;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getFieldName() {
+	public function getFieldName(): string
+    {
 		return $this->fieldName;
 	}
 
@@ -265,7 +286,8 @@ class Explain {
 	 *
 	 * @param ExplainNodeVisitorInterface $visitor
 	 */
-	public function visitNodes(ExplainNodeVisitorInterface $visitor) {
+	public function visitNodes(ExplainNodeVisitorInterface $visitor)
+    {
 		$visitor->visit($this);
 		foreach($this->getChildren() as $child) {
 			$child->visitNodes($visitor);

@@ -7,12 +7,14 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\ExplainService;
 /**
  * Test for the top level service class.
  */
-class ExplainServiceTestCase extends AbstractExplanationTestCase {
+class ExplainServiceTestCase extends AbstractExplanationTestCase
+{
 
 	/**
 	 * @test
 	 */
-	public function testFixture1() {
+	public function testFixture1()
+    {
 		$content 	= $this->getFixtureContent('3.0.001.txt');
 		$result 	= ExplainService::getFieldImpactsFromRawContent(
 			$content,
@@ -26,7 +28,8 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase {
     /**
  * @test
  */
-    public function testCanNotCreateEmptyNodes() {
+    public function testCanNotCreateEmptyNodes()
+    {
         $content 	= $this->getFixtureContent('6.2.001.txt');
         $result 	= ExplainService::getFieldImpactsFromRawContent(
             $content,
@@ -45,7 +48,8 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase {
     /**
      * @test
      */
-    public function testCanParseSynonymeNodes() {
+    public function testCanParseSynonymeNodes()
+    {
         $content 	= $this->getFixtureContent('6.6.001.txt');
         $result 	= ExplainService::getFieldImpactsFromRawContent(
             $content,
@@ -66,7 +70,8 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase {
     /**
      * @test
      */
-    public function testCanParse82Response() {
+    public function testCanParse82Response()
+    {
         $content 	= $this->getFixtureContent('8.2.001.txt');
         $result 	= ExplainService::getFieldImpactsFromRawContent(
             $content,

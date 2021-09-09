@@ -5,10 +5,13 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Collection;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Document;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Field\Field;
-use ApacheSolrForTypo3\SolrExplain\Domain\Result\Result;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\Item;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\ItemCollection;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\Timing;
+use DOMDocument;
+use DOMElement;
+use DOMNodeList;
+use DOMXPath;
 
 class Parser {
 
@@ -18,15 +21,16 @@ class Parser {
 	protected $explainNodes;
 
 	/**
-	 * @param $xml
+	 * @param string $xml
 	 * @return Result
 	 */
-	public function parse($xml) {
+	public function parse(string $xml): Result
+    {
 		$result 	= new Result();
-		$dom		= new \DOMDocument(1.0,"UTF-8");
+		$dom		= new DOMDocument(1.0,"UTF-8");
 		$dom->loadXML(trim($xml));
 
-		$xpath 		= new \DOMXPath($dom);
+		$xpath 		= new DOMXPath($dom);
 
 		$completeResultCount = $this->extractCompleteResultCount($xpath);
 		$result->setCompleteResultCount($completeResultCount);
@@ -47,10 +51,11 @@ class Parser {
 	}
 
 	/**
-	 * @param \DOMXPath $resultXpath
+	 * @param DOMXPath $resultXpath
 	 * @return int
 	 */
-	protected function extractCompleteResultCount(\DOMXPath $resultXpath) {
+	protected function extractCompleteResultCount(DOMXPath $resultXpath): int
+    {
 		$result 	= 0;
 		$numFound 	= $resultXpath->query("//response/result/@numFound");
 
@@ -62,10 +67,11 @@ class Parser {
 	}
 
 	/**
-	 * @param \DOMXPath $resultXpath
+	 * @param DOMXPath $resultXpath
 	 * @return int
 	 */
-	protected function extractQueryTime(\DOMXPath $resultXpath) {
+	protected function extractQueryTime(DOMXPath $resultXpath): int
+    {
 		$result 		= 0;
 		$responseTime 	= $resultXpath->query("//lst[@name='responseHeader']/int[@name='QTime']");
 
@@ -77,10 +83,11 @@ class Parser {
 	}
 
 	/**
-	 * @param \DOMXPath $resultXpath
+	 * @param DOMXPath $resultXpath
 	 * @return Collection
 	 */
-	protected function extractDocumentCollection(\DOMXPath $resultXpath) {
+	protected function extractDocumentCollection(DOMXPath $resultXpath): Collection
+    {
 		$result 		= new Collection();
 		$documentNodes 	= $resultXpath->query("//doc");
 		$documentCount 	= 0;
@@ -88,7 +95,7 @@ class Parser {
 		foreach($documentNodes as $documentNode) {
 			$document = new Document();
 
-			/** @var $documentNode \DOMElement */
+			/* @var DOMElement $documentNode */
 			foreach($documentNode->childNodes as $fieldNode) {
 				$this->extractDocumentFields($fieldNode, $document);
 			}
@@ -111,7 +118,7 @@ class Parser {
 	 * @param Document $document
 	 */
 	protected function extractDocumentFields($fieldNode, Document $document) {
-		if ($fieldNode instanceof \DOMElement) {
+		if ($fieldNode instanceof DOMElement) {
 			$field = new Field();
 
 			if ($fieldNode->nodeName == 'arr') {
@@ -135,10 +142,14 @@ class Parser {
 	}
 
 	/**
-	 * @param \DOMXPath $resultXPath
-	 * @return mixed
+	 * @param DOMXPath $resultXPath
+	 * @return DOMNodeList|false a DOMNodeList containing all nodes matching
+     * the given XPath expression. Any expression which does not return nodes
+     * will return an empty DOMNodeList. The return is false if the expression
+     * is malformed or the contextnode is invalid.
 	 */
-	protected function getExplainNodes(\DOMXPath $resultXPath) {
+	protected function getExplainNodes(DOMXPath $resultXPath)
+    {
 		if($this->explainNodes == null) {
 			$this->explainNodes = $resultXPath->query("//lst[@name='debug']/lst[@name='explain']/str");
 		}
@@ -146,11 +157,13 @@ class Parser {
 		return $this->explainNodes;
 	}
 
-	/**
-	 * @param \DOMXPath $resultXPath
-	 * @param
-	 */
-	protected function extractExplainContent(\DOMXPath $resultXPath, $documentCount) {
+    /**
+     * @param DOMXPath $resultXPath
+     * @param
+     * @return string
+     */
+	protected function extractExplainContent(DOMXPath $resultXPath, $documentCount): string
+    {
 		$explainContent = '';
 
 		$explainNodes 	= $this->getExplainNodes($resultXPath);
@@ -163,10 +176,11 @@ class Parser {
 	}
 
 	/**
-	 * @param \DOMXPath $xpath
+	 * @param DOMXPath $xpath
 	 * @return Timing
 	 */
-	protected function extractTiming(\DOMXPath $xpath) {
+	protected function extractTiming(DOMXPath $xpath): Timing
+    {
 		$prepareItemCollection 		= new ItemCollection();
 		$processingItemCollection	= new ItemCollection();
 
@@ -199,15 +213,16 @@ class Parser {
 	/**
 	 * This method is used to build timing items from timing subnodes.
 	 *
-	 * @param \DOMXPath $xpath
+	 * @param DOMXPath $xpath
 	 * @param string $nodeXPath
 	 * @param ItemCollection $itemCollection
 	 */
-	protected function extractTimingSubNodes(\DOMXPath $xpath, $nodeXPath, $itemCollection){
+	protected function extractTimingSubNodes(DOMXPath $xpath, string $nodeXPath, ItemCollection $itemCollection)
+    {
 		$nodes = $xpath->query($nodeXPath);
 
 		foreach ($nodes as $node) {
-			/** @var $node \DOMElement */
+			/** @var $node DOMElement */
 			$name = $node->getAttribute('name');
 			$time = 0.0;
 			if (isset($node->childNodes->item(0)->textContent)) {
@@ -223,11 +238,12 @@ class Parser {
 	}
 
 	/**
-	 * @param \DOMXPath $xpath
+	 * @param DOMXPath $xpath
 	 * @param string $path
 	 * @return float
 	 */
-	protected function getTimeFromNode($xpath, $path){
+	protected function getTimeFromNode(DOMXPath $xpath, string $path): float
+    {
 		$timeNode = $xpath->query($path);
 		$time = 0.0;
 		if (isset($timeNode->item(0)->textContent)) {
@@ -237,20 +253,20 @@ class Parser {
 		return $time;
 	}
 
-	/**
-	 * @param \DOMXPath $xpath
-	 */
-	protected function extractParserName(\DOMXPath $xpath) {
+    /**
+     * @param DOMXPath $xpath
+     * @return string
+     */
+	protected function extractParserName(DOMXPath $xpath): string
+    {
 		$result				= '';
 		$path 				= "//lst[@name='debug']/str[@name='QParser']";
 		$queryParserNode 	= $xpath->query($path);
 
 		if(isset($queryParserNode->item(0)->textContent)) {
-			$result = (string) $queryParserNode->item(0)->textContent;
+			$result = $queryParserNode->item(0)->textContent;
 		}
 
 		return $result;
 	}
 }
-
-?>

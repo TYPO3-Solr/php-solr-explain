@@ -9,12 +9,14 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Parser;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Visitors\SummarizeLeafImpacts;
 use ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result\Explanation\AbstractExplanationTestCase;
 
-class SummarizeLeafImpactsTestCase extends AbstractExplanationTestCase{
+class SummarizeLeafImpactsTestCase extends AbstractExplanationTestCase
+{
 
 	/**
 	 * @return ExplainResult
 	 */
-	protected function getExplain($filename) {
+	protected function getExplain($filename)
+    {
 		$fileContent = $this->getFixtureContent($filename.".txt");
 		$content = new Content($fileContent);
 		$metaData = new MetaData('P_164345','auto');
@@ -29,7 +31,8 @@ class SummarizeLeafImpactsTestCase extends AbstractExplanationTestCase{
 	/**
 	 * @return array
 	 */
-	public function leafSumFixtureNameDataProvider() {
+	public function leafSumFixtureNameDataProvider()
+    {
 		return array(
 			array('3.0.001'),
 			array('3.0.002'),
@@ -79,7 +82,8 @@ class SummarizeLeafImpactsTestCase extends AbstractExplanationTestCase{
 	 * @test
 	 * @dataProvider leafSumFixtureNameDataProvider
 	 */
-	public function verifyFixtureLeafImpactSum($fixtureName, $expectedImpactSum = 100) {
+	public function verifyFixtureLeafImpactSum($fixtureName, $expectedImpactSum = 100)
+    {
 		$explain = $this->getExplain($fixtureName);
 		$visitor = new SummarizeLeafImpacts();
 		$explain->getRootNode()->visitNodes($visitor);

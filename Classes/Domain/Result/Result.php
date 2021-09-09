@@ -8,12 +8,12 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\Timing;
 class Result {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $completeResultCount = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $queryTime = 0;
 
@@ -34,9 +34,10 @@ class Result {
 
 	/**
 	 * @param int $completeResultCount
-	 * @return \ApacheSolrForTypo3\SolrExplain\Domain\Result\Result
+	 * @return self
 	 */
-	public function setCompleteResultCount($completeResultCount) {
+	public function setCompleteResultCount(int $completeResultCount): Result
+    {
 		$this->completeResultCount = $completeResultCount;
 
 		return $this;
@@ -45,22 +46,25 @@ class Result {
 	/**
 	 * @return int
 	 */
-	public function getCompleteResultCount() {
+	public function getCompleteResultCount(): int
+    {
 		return $this->completeResultCount;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getResultCount() {
+	public function getResultCount(): int
+    {
 		return $this->documentCollection->count();
 	}
 
 	/**
 	 * @param int $queryTime
-	 * @return \ApacheSolrForTypo3\SolrExplain\Domain\Result\Result
+	 * @return self
 	 */
-	public function setQueryTime($queryTime) {
+	public function setQueryTime(int $queryTime): Result
+    {
 		$this->queryTime = $queryTime;
 
 		return $this;
@@ -69,7 +73,8 @@ class Result {
 	/**
 	 * @return int
 	 */
-	public function getQueryTime() {
+	public function getQueryTime(): int
+    {
 		return $this->queryTime;
 	}
 
@@ -83,7 +88,8 @@ class Result {
 	/**
 	 * @return Collection
 	 */
-	public function getDocumentCollection() {
+	public function getDocumentCollection(): Collection
+    {
 		return $this->documentCollection;
 	}
 
@@ -97,21 +103,23 @@ class Result {
 	/**
 	 * @return Timing
 	 */
-	public function getTiming() {
+	public function getTiming(): ?Timing
+    {
 		return $this->timing;
 	}
 
 	/**
 	 * @param string $queryParser
 	 */
-	public function setQueryParser($queryParser) {
+	public function setQueryParser(string $queryParser) {
 		$this->queryParser = $queryParser;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getQueryParser() {
+	public function getQueryParser(): string
+    {
 		return $this->queryParser;
 	}
 }

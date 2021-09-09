@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) ; pwd -P )
-ROOTPATH="$SCRIPTPATH/../"
+SCRIPT_PATH=$( cd $(dirname "${BASH_SOURCE[0]}"); pwd -P )
+ROOT_PATH="$SCRIPT_PATH/../"
 
-cd $ROOTPATH
+cd "$ROOT_PATH"
 rm -fR .Build
 composer install --no-dev
 
 cd ..
-wget https://github.com/clue/phar-composer/releases/download/v1.0.0/phar-composer.phar
-php phar-composer.phar build "$ROOTPATH/../php-solr-explain"
+wget https://github.com/clue/phar-composer/releases/download/v1.2.0/phar-composer-1.2.0.phar -O phar-composer
+php phar-composer build "$ROOT_PATH/../php-solr-explain"

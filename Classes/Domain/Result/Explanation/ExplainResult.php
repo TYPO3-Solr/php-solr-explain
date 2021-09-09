@@ -2,6 +2,10 @@
 
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation;
 
+use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain;
+use ArrayObject;
+use Solr\Domain\Result\Explanation\ExplainNode;
+
 /**
  * Root object of the parse explain.
  *
@@ -11,7 +15,8 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation;
  *
  * $explain->getChild(0)->getScore()
  */
-class ExplainResult {
+class ExplainResult
+{
 
 	/**
 	 * Id of the relevant document.
@@ -21,62 +26,68 @@ class ExplainResult {
 	protected $documentId = '';
 
 	/**
-	 * @var \ArrayObject
+	 * @var ArrayObject
 	 */
 	protected $children = null;
 
 	/**
-	 * @var \ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain
+	 * @var Explain
 	 */
 	protected $rootNode = null;
 
 	/**
-	 * @var null
+	 * @var ArrayObject
 	 */
 	protected $attributes = null;
 
 	/**
 	 * @return void
 	 */
-	public function __construct() {
-		$this->attributes = new \ArrayObject();
+	public function __construct()
+    {
+		$this->attributes = new ArrayObject();
 	}
 
 	/**
-	 * @param \ArrayObject $children
+	 * @param ArrayObject $children
 	 */
-	public function setChildren($children) {
+	public function setChildren(ArrayObject $children)
+    {
 		$this->children = $children;
 	}
 
 	/**
-	 * @return \ArrayObject<\Solr\Domain\Result\Explanation\ExplainNode>
+	 * @return ArrayObject<ExplainNode>
 	 */
-	public function getChildren() {
+	public function getChildren(): ?ArrayObject
+    {
 		return $this->children;
 	}
 
 	/**
 	 * @param $index
-	 * @return \ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain
+	 * @return Explain
 	 */
-	public function getChild($index) {
+	public function getChild($index): Explain
+    {
 		return $this->children[$index];
 	}
 
 	/**
-	 * @param \ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain $rootNode
+	 * @param Explain $rootNode
 	 */
-	public function setRootNode($rootNode) {
+	public function setRootNode(Explain $rootNode)
+    {
 		$this->rootNode = $rootNode;
 	}
 
 	/**
 	 * Method to retrieve the root node of the explain.
 	 *
-	 * @return \ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain
+	 * @return Explain
 	 */
-	public function getRootNode() {
+	public function getRootNode(): ?Explain
+    {
 		return $this->rootNode;
 	}
 
@@ -85,7 +96,8 @@ class ExplainResult {
 	 *
 	 * @param string $documentId
 	 */
-	public function setDocumentId($documentId) {
+	public function setDocumentId(string $documentId)
+    {
 		$this->documentId = $documentId;
 	}
 
@@ -94,7 +106,8 @@ class ExplainResult {
 	 *
 	 * @return string
 	 */
-	public function getDocumentId() {
+	public function getDocumentId(): string
+    {
 		return $this->documentId;
 	}
 
@@ -106,7 +119,8 @@ class ExplainResult {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setAttribute($key, $value) {
+	public function setAttribute(string $key, $value)
+    {
 		$this->attributes->offsetSet($key,$value);
 	}
 
@@ -116,7 +130,8 @@ class ExplainResult {
 	 * @param string $key
 	 * @return mixed
 	 */
-	public function getAttribute($key) {
+	public function getAttribute(string $key)
+    {
 		return $this->attributes->offsetGet($key);
 	}
 }

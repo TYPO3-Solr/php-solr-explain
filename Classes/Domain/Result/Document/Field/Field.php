@@ -2,7 +2,8 @@
 
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Field;
 
-class Field {
+class Field
+{
 
 	/**
 	 * @var string
@@ -22,49 +23,56 @@ class Field {
 	/**
 	 * @param string $name
 	 */
-	public function setName($name) {
+	public function setName(string $name)
+    {
 		$this->name = $name;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string
+    {
 		return $this->name;
 	}
 
 	/**
 	 * @param int $type
 	 */
-	public function setType($type) {
+	public function setType(int $type)
+    {
 		$this->type = $type;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getType() {
+	public function getType(): int
+    {
 		return $this->type;
 	}
 
 	/**
 	 * @param mixed $value
 	 */
-	public function setValue($value) {
+	public function setValue($value)
+    {
 		$this->value = $value;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getValue() {
+	public function getValue()
+    {
 		return $this->value;
 	}
 
 	/**
 	 * @boolean
 	 */
-	public function isMultiValue() {
+	public function isMultiValue(): bool
+    {
 		return is_array($this->value);
 	}
 }

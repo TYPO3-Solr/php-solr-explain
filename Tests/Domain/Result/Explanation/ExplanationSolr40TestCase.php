@@ -5,22 +5,14 @@ namespace ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result\Explanation;
 /**
  * Testcase for solr 4.0 explain results.
  */
-class ExplanationSolr40TestCase extends AbstractExplanationTestCase{
-
-	/**
-	 * @return void
-	 */
-	public function setUp() {}
-
-	/**
-	 * @return void
-	 */
-	public function tearDown() {}
+class ExplanationSolr40TestCase extends AbstractExplanationTestCase
+{
 
 	/**
 	 * @test
 	 */
-	public function testFixture001() {
+	public function testFixture001()
+    {
 		$explain = $this->getExplainFromFixture('4.0.001');
 
 		$this->assertNotNull($explain);
