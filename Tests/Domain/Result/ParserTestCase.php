@@ -27,7 +27,7 @@ class ParserTestCase extends AbstractSolrTest
 		);
 
 		$this->assertEquals(
-			array('electronics','hard drive'),
+            ['electronics','hard drive'],
 			$result->getDocumentCollection()->getDocument(1)->getFieldByName('cat')->getValue()
 		);
 

@@ -1,4 +1,4 @@
-name: php-solr-explain Github Actions
+name: BUILD
 
 on:
   push:

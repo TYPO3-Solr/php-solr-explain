@@ -22,7 +22,7 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase
 			'bar'
 		);
 
-		$this->assertEquals(array('name' => 100), $result);
+		$this->assertEquals(['name' => 100], $result);
 	}
 
     /**

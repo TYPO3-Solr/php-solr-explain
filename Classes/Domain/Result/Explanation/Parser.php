@@ -139,7 +139,7 @@ class Parser
 	 */
 	protected function getScoreFromContent($nodeName) {
 		$score = 0.0;
-		$scoreMatches 	= array();
+		$scoreMatches 	= [];
 		preg_match('~(?<score>[0-9]*\.[^ ]*)~',$nodeName,$scoreMatches);
 		if(isset($scoreMatches['score']) && (float) $scoreMatches['score'] > 0) {
 			$score = (float) $scoreMatches['score'];
@@ -154,12 +154,12 @@ class Parser
 	 */
 	protected function getQueryAttribute($content) {
 		$querystring = '';
-		$matches = array();
+		$matches = [];
 		preg_match("~^#(?<attributes>[^\n]*)~ism", $content, $matches);
 
 		if(isset($matches['attributes'])) {
 			$attributes 		= $matches['attributes'];
-			$attributeMatches 	= array();
+			$attributeMatches 	= [];
 			preg_match('~.*q=(?<querystring>[^&]*)~ism',$attributes,$attributeMatches);
 			if(isset($attributeMatches['querystring'])) {
 				$querystring = $attributeMatches['querystring'];
@@ -177,7 +177,7 @@ class Parser
 	 */
 	protected function getFieldNameFromNodeName($nodeName) {
 		$result 	= '';
-		$matches 	= array();
+		$matches 	= [];
         if (mb_strpos($nodeName,'weight(Synonym(') !== false ) {
             preg_match('~weight\(Synonym\((?<fieldname>[^\):]*)~', $nodeName, $matches);
         } elseif(mb_strpos($nodeName,'weight(') !== false ){

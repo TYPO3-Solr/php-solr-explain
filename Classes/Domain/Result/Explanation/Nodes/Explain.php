@@ -91,7 +91,7 @@ class Explain
 		$neighbors = $this->getParent()->getChildren();
 
 		if ($neighbors->count() > 1) {
-			$neighborScorePart = array();
+			$neighborScorePart = [];
 			$parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
 
 			foreach ($neighbors as $neighbor) {

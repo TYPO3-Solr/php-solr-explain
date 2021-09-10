@@ -20,7 +20,7 @@ class Max extends Explain
 	public function getTieBreaker()
     {
 
-		$matches = array();
+		$matches = [];
 		preg_match('~plus (?<tiebreaker>.*) times~',$this->getContent(),$matches);
 		if(isset($matches['tiebreaker'])) {
 			return $matches['tiebreaker'];

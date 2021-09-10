@@ -37,7 +37,7 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
 		$explain->getRootNode()->visitNodes($visitor);
 
 		$this->assertEquals(100.0,$visitor->getFieldImpact('name'));
-		$this->assertEquals(array('name'),$visitor->getRelevantFieldNames());
+		$this->assertEquals(['name'],$visitor->getRelevantFieldNames());
 	}
 
 	/**
@@ -50,7 +50,7 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
 		$explain->getRootNode()->visitNodes($visitor);
 
 		$this->assertEquals(95.756597168764,$visitor->getFieldImpact('price'));
-		$this->assertEquals(array('name','manu','price'),$visitor->getRelevantFieldNames());
+		$this->assertEquals(['name','manu','price'],$visitor->getRelevantFieldNames());
 	}
 
 	/**
@@ -63,7 +63,7 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
 		$explain->getRootNode()->visitNodes($visitor);
 
 		$this->assertEquals(100.0,$visitor->getFieldImpact('name'));
-		$this->assertEquals(array('name','price'),$visitor->getRelevantFieldNames());
+		$this->assertEquals(['name','price'],$visitor->getRelevantFieldNames());
 	}
 
 	/**
@@ -75,7 +75,7 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
 
-		$this->assertEquals(array('expandedcontent','content','doctype'),$visitor->getRelevantFieldNames());
+		$this->assertEquals(['expandedcontent','content','doctype'],$visitor->getRelevantFieldNames());
 		$this->assertEquals(47.9,round($visitor->getFieldImpact('doctype'),1));
 		$this->assertEquals(47.9,round($visitor->getFieldImpact('expandedcontent'),1));
 		$this->assertEquals(4.2,round($visitor->getFieldImpact('content'),1));
@@ -90,7 +90,7 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
 
-		$this->assertEquals(array('pr_title','doctype'),$visitor->getRelevantFieldNames());
+		$this->assertEquals(['pr_title','doctype'],$visitor->getRelevantFieldNames());
 		$this->assertEquals(0.07,round($visitor->getFieldImpact('doctype'),2));
 		$this->assertEquals(99.93,round($visitor->getFieldImpact('pr_title'),2));
 	}
@@ -105,7 +105,7 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
 
-		$this->assertEquals(array('keywords','expandedcontent','content','description','doctype'),$visitor->getRelevantFieldNames());
+		$this->assertEquals(['keywords','expandedcontent','content','description','doctype'],$visitor->getRelevantFieldNames());
 		$this->assertEquals(0.00,round($visitor->getFieldImpact('keywords'),2));
 		$this->assertEquals(7.55,round($visitor->getFieldImpact('expandedcontent'),2));
 		$this->assertEquals(4.72,round($visitor->getFieldImpact('content'),2));

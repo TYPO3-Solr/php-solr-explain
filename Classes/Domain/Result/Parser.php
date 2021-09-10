@@ -123,7 +123,7 @@ class Parser {
 
 			if ($fieldNode->nodeName == 'arr') {
 				//multivalue field
-				$value = array();
+				$value = [];
 				foreach ($fieldNode->childNodes as $singleField) {
 					$value[] = $singleField->textContent;
 				}

@@ -1,6 +1,6 @@
 # PHP Solr Explain
 
-[![Build Status](https://travis-ci.org/TYPO3-Solr/php-solr-explain.svg?branch=master)](https://travis-ci.org/TYPO3-Solr/php-solr-explain)
+[![Build Status](https://github.com/TYPO3-Solr/php-solr-explain/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/TYPO3-Solr/php-solr-explain/actions?query=branch%3Amaster)
 [![Latest Stable Version](https://poser.pugx.org/apache-solr-for-typo3/php-solr-explain/v/stable)](https://packagist.org/packages/apache-solr-for-typo3/php-solr-explain)
 [![Latest Unstable Version](https://poser.pugx.org/apache-solr-for-typo3/php-solr-explain/v/unstable)](https://packagist.org/packages/apache-solr-for-typo3/php-solr-explain)
 [![License](https://poser.pugx.org/apache-solr-for-typo3/php-solr-explain/license)](https://packagist.org/packages/apache-solr-for-typo3/php-solr-explain)
