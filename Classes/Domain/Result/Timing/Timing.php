@@ -2,12 +2,11 @@
 
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing;
 
-use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\ItemCollection;
-
 /**
  * Timing information of a solr response.
  */
-class Timing {
+class Timing
+{
 
 	/**
 	 * @var ItemCollection
@@ -28,7 +27,8 @@ class Timing {
 	 * @param ItemCollection $preparationItems
 	 * @param ItemCollection $processingItems
 	 */
-	public function __construct(ItemCollection $preparationItems, ItemCollection $processingItems) {
+	public function __construct(ItemCollection $preparationItems, ItemCollection $processingItems)
+    {
 		$this->preparationItems = $preparationItems;
 		$this->processingItems = $processingItems;
 	}
@@ -36,44 +36,48 @@ class Timing {
 	/**
 	 * @param float $timeSpend
 	 */
-	public function setTimeSpend($timeSpend) {
+	public function setTimeSpend(float $timeSpend)
+    {
 		$this->timeSpend = $timeSpend;
 	}
 
 	/**
 	 * @return float
 	 */
-	public function getTimeSpend() {
+	public function getTimeSpend(): float
+    {
 		return $this->timeSpend;
 	}
 
 	/**
 	 * @param ItemCollection $processingItems
 	 */
-	public function setProcessingItems($processingItems) {
+	public function setProcessingItems(ItemCollection $processingItems)
+    {
 		$this->processingItems = $processingItems;
 	}
 
 	/**
 	 * @return ItemCollection
 	 */
-	public function getProcessingItems() {
+	public function getProcessingItems(): ItemCollection
+    {
 		return $this->processingItems;
 	}
 
 	/**
 	 * @param ItemCollection $preparationItems
 	 */
-	public function setPreparationItems($preparationItems) {
+	public function setPreparationItems(ItemCollection $preparationItems)
+    {
 		$this->preparationItems = $preparationItems;
 	}
 
 	/**
 	 * @return ItemCollection
 	 */
-	public function getPreparationItems() {
+	public function getPreparationItems(): ItemCollection
+    {
 		return $this->preparationItems;
 	}
 }
-
-?>

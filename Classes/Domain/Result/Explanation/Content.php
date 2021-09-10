@@ -3,7 +3,7 @@
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation;
 
 /**
- * Represent the raw content of an solr explanation:.
+ * Represent the raw content of a solr explanation:.
  *
  * Eg:
  * 0.8621642 = (MATCH) sum of:
@@ -19,7 +19,8 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation;
  *           0.3125 = fieldNorm(field=name, doc=1)
  * ....
  */
-class Content {
+class Content
+{
 
 	/**
 	 * @var string
@@ -29,14 +30,16 @@ class Content {
 	/**
 	 * @param string $content
 	 */
-	public function __construct($content) {
+	public function __construct(string $content)
+    {
 		$this->content = $content;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getContent() {
+	public function getContent(): string
+    {
 		return $this->content;
 	}
 }

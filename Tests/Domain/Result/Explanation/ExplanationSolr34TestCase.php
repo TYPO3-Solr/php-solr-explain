@@ -8,19 +8,10 @@ namespace ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result\Explanation;
 class ExplanationSolr34TestCase extends AbstractExplanationTestCase{
 
 	/**
-	 * @return void
-	 */
-	public function setUp() {}
-
-	/**
-	 * @return void
-	 */
-	public function tearDown() {}
-
-	/**
 	 * @test
 	 */
-	public function testFixture001() {
+	public function testFixture001()
+    {
 		$explain = $this->getExplainFromFixture('3.4.001');
 
 		$this->assertNotNull($explain);
@@ -35,7 +26,8 @@ class ExplanationSolr34TestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testFixture002() {
+	public function testFixture002()
+    {
 		$explain = $this->getExplainFromFixture('3.4.002');
 
 		$this->assertNotNull($explain);
@@ -55,7 +47,8 @@ class ExplanationSolr34TestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testFixture003() {
+	public function testFixture003()
+    {
 		$explain = $this->getExplainFromFixture('3.4.003');
 
 		$this->assertNotNull($explain);
@@ -70,7 +63,8 @@ class ExplanationSolr34TestCase extends AbstractExplanationTestCase{
 		$this->assertEquals(100.48212, $explain->getChild(1)->getScore());
 	}
 
-	public function testFixture004() {
+	public function testFixture004()
+    {
 		$explain = $this->getExplainFromFixture('3.4.004');
 
 		$this->assertNotNull($explain);
@@ -88,7 +82,8 @@ class ExplanationSolr34TestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testFixture005() {
+	public function testFixture005()
+    {
 		$explain = $this->getExplainFromFixture('3.4.005');
 
 		$this->assertNotNull($explain);
@@ -102,7 +97,8 @@ class ExplanationSolr34TestCase extends AbstractExplanationTestCase{
 		$this->assertEquals(71.05158,$explain->getChild(1)->getScore());
 	}
 
-	public function testFixture006() {
+	public function testFixture006()
+    {
 		$explain = $this->getExplainFromFixture('3.4.006');
 
 		$this->assertNotNull($explain);
@@ -116,7 +112,8 @@ class ExplanationSolr34TestCase extends AbstractExplanationTestCase{
 		$this->assertEquals(0.0, $explain->getChild(1)->getScore());
 	}
 
-	public function testFixture007() {
+	public function testFixture007()
+    {
 		$explain = $this->getExplainFromFixture('3.4.007');
 
 		$this->assertNotNull($explain);

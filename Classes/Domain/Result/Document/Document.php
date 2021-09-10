@@ -5,7 +5,8 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Document;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Field\Collection;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Field\Field;
 
-class Document {
+class Document
+{
 
 	/**
 	 * @var Collection
@@ -20,21 +21,24 @@ class Document {
 	/**
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct()
+    {
 		$this->fieldCollection = new Collection();
 	}
 
 	/**
 	 * @param Field $field
 	 */
-	public function addField(Field $field) {
+	public function addField(Field $field)
+    {
 		$this->fieldCollection->offsetSet($field->getName(),$field);
 	}
 
 	/**
 	 * @return Collection
 	 */
-	public function getFields() {
+	public function getFields(): Collection
+    {
 		return $this->fieldCollection;
 	}
 
@@ -42,21 +46,24 @@ class Document {
 	 * @param string
 	 * @return Field
 	 */
-	public function getFieldByName($fieldName) {
+	public function getFieldByName(string $fieldName): Field
+    {
 		return $this->fieldCollection->offsetGet($fieldName);
 	}
 
 	/**
 	 * @param string $rawExplainData
 	 */
-	public function setRawExplainData($rawExplainData) {
+	public function setRawExplainData(string $rawExplainData)
+    {
 		$this->rawExplainData = $rawExplainData;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getRawExplainData() {
+	public function getRawExplainData(): string
+    {
 		return $this->rawExplainData;
 	}
 }

@@ -1,16 +1,19 @@
 <?php
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Parser;
+use ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrTest;
 
 /**
  * This testcase should test if response from solr
  * can be parsed into an object structure.
  */
-class ParserTestCase extends \ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrTest {
+class ParserTestCase extends AbstractSolrTest
+{
 
 	/**
 	 * @test
 	 */
-	public function testFixture001() {
+	public function testFixture001()
+    {
 		$content = $this->getFixtureContent("3.4.001.xml");
 		$parser = new Parser();
 		$result = $parser->parse($content);
@@ -36,7 +39,8 @@ class ParserTestCase extends \ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrT
 	/**
 	 * @test
 	 */
-	public function testFixture004() {
+	public function testFixture004()
+    {
 		$content = $this->getFixtureContent("3.4.004.xml");
 		$parser = new Parser();
 		$result = $parser->parse($content);
@@ -55,7 +59,8 @@ class ParserTestCase extends \ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrT
 	/**
 	 * @test
 	 */
-	public function testFixtureSolr4010() {
+	public function testFixtureSolr4010()
+    {
 		$content = $this->getFixtureContent("4.0.010.xml");
 		$parser = new Parser();
 		$result = $parser->parse($content);

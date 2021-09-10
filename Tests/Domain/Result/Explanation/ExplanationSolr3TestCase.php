@@ -7,22 +7,14 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain;
 /**
  * Testcases for the php port of solr explain.
  */
-class ExplanationSolr3TestCase extends AbstractExplanationTestCase{
-
-	/**
-	 * @return void
-	 */
-	public function setUp() {}
-
-	/**
-	 * @return void
-	 */
-	public function tearDown() {}
+class ExplanationSolr3TestCase extends AbstractExplanationTestCase
+{
 
 	/**
 	 * @test
 	 */
-	public function testFixture001GetScore() {
+	public function testFixture001GetScore()
+    {
 		$explain = $this->getExplainFromFixture('3.0.001');
 
 		$this->assertNotNull($explain);
@@ -36,7 +28,8 @@ class ExplanationSolr3TestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testFixture001GetImpact() {
+	public function testFixture001GetImpact()
+    {
 		$explain = $this->getExplainFromFixture('3.0.001');
 
 		$this->assertNotNull($explain);
@@ -71,7 +64,8 @@ class ExplanationSolr3TestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testFixture002() {
+	public function testFixture002()
+    {
 		$explain = $this->getExplainFromFixture('3.0.002');
 
 		$this->assertNotNull($explain);
@@ -82,7 +76,8 @@ class ExplanationSolr3TestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testFixture003() {
+	public function testFixture003()
+    {
 		$explain = $this->getExplainFromFixture('3.0.003');
 
 		$this->assertNotNull($explain);
@@ -93,7 +88,8 @@ class ExplanationSolr3TestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testFixture004() {
+	public function testFixture004()
+    {
 		$explain = $this->getExplainFromFixture('3.0.004');
 
 		$this->assertNotNull($explain);
@@ -104,7 +100,8 @@ class ExplanationSolr3TestCase extends AbstractExplanationTestCase{
 	/**
 	 * @test
 	 */
-	public function testFixture005() {
+	public function testFixture005()
+    {
 		$explain = $this->getExplainFromFixture('3.0.005');
 
 		$this->assertNotNull($explain);

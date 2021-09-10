@@ -2,12 +2,14 @@
 
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes;
 
-class Max extends Explain {
+class Max extends Explain
+{
 
 	/**
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct()
+    {
 		parent::__construct();
 		$this->setNodeType(self::NODE_TYPE_MAX);
 	}
@@ -15,7 +17,8 @@ class Max extends Explain {
 	/**
 	 * @return float
 	 */
-	public function getTieBreaker() {
+	public function getTieBreaker()
+    {
 
 		$matches = array();
 		preg_match('~plus (?<tiebreaker>.*) times~',$this->getContent(),$matches);

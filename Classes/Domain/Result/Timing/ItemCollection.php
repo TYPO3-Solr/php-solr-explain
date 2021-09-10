@@ -2,11 +2,14 @@
 
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing;
 
+use ArrayObject;
+
 /**
  * Collection of timing items used to group timing items
  * by processing or preparation state.
  */
-class ItemCollection extends \ArrayObject {
+class ItemCollection extends ArrayObject
+{
 
 	/**
 	 * @var float
@@ -15,9 +18,10 @@ class ItemCollection extends \ArrayObject {
 
 	/**
 	 * @param float $timeSpend
-	 * @return ItemCollection
+	 * @return self
 	 */
-	public function setTimeSpend($timeSpend) {
+	public function setTimeSpend(float $timeSpend): ItemCollection
+    {
 		$this->timeSpend = $timeSpend;
 
 		return $this;
@@ -26,7 +30,8 @@ class ItemCollection extends \ArrayObject {
 	/**
 	 * @return float
 	 */
-	public function getTimeSpend() {
+	public function getTimeSpend(): float
+    {
 		return $this->timeSpend;
 	}
 }

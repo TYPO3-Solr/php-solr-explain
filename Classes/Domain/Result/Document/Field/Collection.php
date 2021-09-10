@@ -2,4 +2,8 @@
 
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Field;
 
-class Collection extends \ArrayObject {}
+use ArrayObject;
+
+class Collection extends ArrayObject
+{
+}

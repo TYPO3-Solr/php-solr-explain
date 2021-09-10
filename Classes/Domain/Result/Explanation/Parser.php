@@ -2,19 +2,18 @@
 
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation;
 
-use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Content;
-use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\ExplainResult;
-use ApacheSolrForTypo3\SolrExplain\DOmain\Result\Explanation\MetaData;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Leaf;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Max;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Product;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Sum;
+use ArrayObject;
 
 /**
  * Parser used to parse the explain content into a node structure.
  */
-class Parser {
+class Parser
+{
 
 	/**
 	 * @var ExplainResult
@@ -24,7 +23,8 @@ class Parser {
 	/**
 	 * @param ExplainResult $explain
 	 */
-	public function injectExplainResult(ExplainResult $explain) {
+	public function injectExplainResult(ExplainResult $explain)
+    {
 		$this->explain = $explain;
 	}
 
@@ -34,8 +34,9 @@ class Parser {
 	 * @param string
 	 * @return  Explain
 	 */
-	protected function getRootNode($content) {
-		$tokens = new \ArrayObject();
+	protected function getRootNode($content): Explain
+    {
+		$tokens = new ArrayObject();
 		$this->parseChildNodes($content,$tokens);
 
 		if(isset($tokens[0])) {
@@ -46,14 +47,15 @@ class Parser {
 		}
 	}
 
-	/**
-	 * This method is used to parse the node type from the content and retrieve the
-	 * corresponding node object instance.
-	 *
-	 * @param string $tokenName
-	 * @param int $level
-	 */
-	protected function getNodeFromName($tokenName) {
+    /**
+     * This method is used to parse the node type from the content and retrieve the
+     * corresponding node object instance.
+     *
+     * @param string $tokenName
+     * @return Leaf|Max|Product|Sum
+     */
+	protected function getNodeFromName(string $tokenName): Explain
+    {
 		if(mb_strpos($tokenName,'sum of:') !== false || mb_strpos($tokenName,'result of:') !== false)  {
 			return new Sum();
 		}
@@ -70,18 +72,20 @@ class Parser {
 		return new Leaf();
 	}
 
-	/**
-	 * Recursive method to parse the explain content into a child node structure.
-	 *
-	 * @param $contextContent
-	 * @param \ArrayObject $collection
-	 * @return \ArrayObject
-	 */
-	protected function parseChildNodes($contextContent, \ArrayObject $collection, $parent = null,$level=0) {
-		$matches 	= array();
+    /**
+     * Recursive method to parse the explain content into a child node structure.
+     *
+     * @param string $contextContent
+     * @param ArrayObject $collection
+     * @param Explain|null $parent
+     * @param int $level
+     */
+	protected function parseChildNodes(string $contextContent, ArrayObject $collection, Explain $parent = null, int $level = 0)
+    {
+		$matches = [];
 
 		//look for tokens stating with 0-9* and get all following lines stating with " " space
-		preg_match_all('~((?<=^)|(?<=\n))(?<token>[0-9].*?\n)((?=[0-9])|(?=$))~s',$contextContent,$matches);
+		preg_match_all('~((?<=^)|(?<=\n))(?<token>[0-9].*?\n)((?=[0-9])|(?=$))~s', $contextContent,$matches);
 
 		if( array_key_exists('token',$matches)) {
 

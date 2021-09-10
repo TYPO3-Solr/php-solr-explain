@@ -5,21 +5,23 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Visitors;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain;
 
 /**
- * This visitor is used to determine a percetage impacts
+ * This visitor is used to determine a percentage impacts
  * by a fieldname.
  */
-class SummarizeFieldImpacts implements ExplainNodeVisitorInterface {
+class SummarizeFieldImpacts implements ExplainNodeVisitorInterface
+{
 
 	/**
-	 * @var array
+	 * @var float[]
 	 */
-	protected $sums = array();
+	protected $sums = [];
 
 	/**
 	 * @param Explain $node
-	 * @return mixed|void
+	 * @return void
 	 */
-	public function visit(Explain $node) {
+	public function visit(Explain $node)
+    {
 		if($node->getNodeType() == $node::NODE_TYPE_LEAF) {
 			if($node->getParent() != null) {
 				$fieldName = $this->getClosestFieldName($node);
@@ -43,7 +45,8 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface {
      * @param $node
      * @return string
      */
-	protected function getClosestFieldName($node) {
+	protected function getClosestFieldName($node): string
+    {
         while(!is_null($node->getParent())) {
             $parent = $node->getParent();
             if ($parent->getFieldName() !== '') {
@@ -59,9 +62,10 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface {
 	/**
 	 * Returns the fieldnames that have been relevant during the explain.
 	 *
-	 * @return array<string>
+	 * @return string[]
 	 */
-	public function getRelevantFieldNames() {
+	public function getRelevantFieldNames(): array
+    {
 		return array_keys($this->sums);
 	}
 
@@ -71,7 +75,8 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface {
 	 * @param $fieldName
 	 * @return float
 	 */
-	public function getFieldImpact($fieldName) {
+	public function getFieldImpact($fieldName): float
+    {
 		if(!array_key_exists($fieldName,$this->sums)) {
 			return 0.0;
 		}
@@ -82,9 +87,10 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface {
 	/**
 	 * Returns the fieldname => impact array.
 	 *
-	 * @return array|float
-	 */
-	public function getFieldImpacts() {
+	 * @return float[]
+     */
+	public function getFieldImpacts(): array
+    {
 		return $this->sums;
 	}
 }
