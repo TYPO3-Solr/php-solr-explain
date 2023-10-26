@@ -2,11 +2,11 @@ name: BUILD
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     tags:
       - "**"
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 env:
   PHP_CS_FIXER_VERSION: '^3.0.2'
