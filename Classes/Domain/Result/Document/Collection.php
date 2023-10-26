@@ -6,13 +6,12 @@ use ArrayObject;
 
 class Collection extends ArrayObject
 {
-
-	/**
-	 * @param $offset
-	 * @return Document
-	 */
-	public function getDocument($offset): Document
+    /**
+     * @param $offset
+     * @return Document
+     */
+    public function getDocument($offset): Document
     {
-		return $this->offsetGet($offset);
-	}
+        return $this->offsetGet($offset);
+    }
 }

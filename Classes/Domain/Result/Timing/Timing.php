@@ -7,77 +7,76 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing;
  */
 class Timing
 {
+    /**
+     * @var ItemCollection
+     */
+    protected $preparationItems;
 
-	/**
-	 * @var ItemCollection
-	 */
-	protected $preparationItems;
+    /**
+     * @var ItemCollection
+     */
+    protected $processingItems;
 
-	/**
-	 * @var ItemCollection
-	 */
-	protected $processingItems;
+    /**
+     * @var float
+     */
+    protected $timeSpend = 0.0;
 
-	/**
-	 * @var float
-	 */
-	protected $timeSpend = 0.0;
-
-	/**
-	 * @param ItemCollection $preparationItems
-	 * @param ItemCollection $processingItems
-	 */
-	public function __construct(ItemCollection $preparationItems, ItemCollection $processingItems)
+    /**
+     * @param ItemCollection $preparationItems
+     * @param ItemCollection $processingItems
+     */
+    public function __construct(ItemCollection $preparationItems, ItemCollection $processingItems)
     {
-		$this->preparationItems = $preparationItems;
-		$this->processingItems = $processingItems;
-	}
+        $this->preparationItems = $preparationItems;
+        $this->processingItems = $processingItems;
+    }
 
-	/**
-	 * @param float $timeSpend
-	 */
-	public function setTimeSpend(float $timeSpend)
+    /**
+     * @param float $timeSpend
+     */
+    public function setTimeSpend(float $timeSpend)
     {
-		$this->timeSpend = $timeSpend;
-	}
+        $this->timeSpend = $timeSpend;
+    }
 
-	/**
-	 * @return float
-	 */
-	public function getTimeSpend(): float
+    /**
+     * @return float
+     */
+    public function getTimeSpend(): float
     {
-		return $this->timeSpend;
-	}
+        return $this->timeSpend;
+    }
 
-	/**
-	 * @param ItemCollection $processingItems
-	 */
-	public function setProcessingItems(ItemCollection $processingItems)
+    /**
+     * @param ItemCollection $processingItems
+     */
+    public function setProcessingItems(ItemCollection $processingItems)
     {
-		$this->processingItems = $processingItems;
-	}
+        $this->processingItems = $processingItems;
+    }
 
-	/**
-	 * @return ItemCollection
-	 */
-	public function getProcessingItems(): ItemCollection
+    /**
+     * @return ItemCollection
+     */
+    public function getProcessingItems(): ItemCollection
     {
-		return $this->processingItems;
-	}
+        return $this->processingItems;
+    }
 
-	/**
-	 * @param ItemCollection $preparationItems
-	 */
-	public function setPreparationItems(ItemCollection $preparationItems)
+    /**
+     * @param ItemCollection $preparationItems
+     */
+    public function setPreparationItems(ItemCollection $preparationItems)
     {
-		$this->preparationItems = $preparationItems;
-	}
+        $this->preparationItems = $preparationItems;
+    }
 
-	/**
-	 * @return ItemCollection
-	 */
-	public function getPreparationItems(): ItemCollection
+    /**
+     * @return ItemCollection
+     */
+    public function getPreparationItems(): ItemCollection
     {
-		return $this->preparationItems;
-	}
+        return $this->preparationItems;
+    }
 }

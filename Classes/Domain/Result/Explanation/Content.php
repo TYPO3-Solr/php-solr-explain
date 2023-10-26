@@ -21,25 +21,24 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation;
  */
 class Content
 {
+    /**
+     * @var string
+     */
+    protected $content;
 
-	/**
-	 * @var string
-	 */
-	protected $content;
-
-	/**
-	 * @param string $content
-	 */
-	public function __construct(string $content)
+    /**
+     * @param string $content
+     */
+    public function __construct(string $content)
     {
-		$this->content = $content;
-	}
+        $this->content = $content;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getContent(): string
+    /**
+     * @return string
+     */
+    public function getContent(): string
     {
-		return $this->content;
-	}
+        return $this->content;
+    }
 }

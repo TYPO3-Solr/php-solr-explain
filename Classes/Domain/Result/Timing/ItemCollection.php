@@ -10,28 +10,27 @@ use ArrayObject;
  */
 class ItemCollection extends ArrayObject
 {
+    /**
+     * @var float
+     */
+    protected $timeSpend = 0.0;
 
-	/**
-	 * @var float
-	 */
-	protected $timeSpend = 0.0;
-
-	/**
-	 * @param float $timeSpend
-	 * @return self
-	 */
-	public function setTimeSpend(float $timeSpend): ItemCollection
+    /**
+     * @param float $timeSpend
+     * @return self
+     */
+    public function setTimeSpend(float $timeSpend): ItemCollection
     {
-		$this->timeSpend = $timeSpend;
+        $this->timeSpend = $timeSpend;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return float
-	 */
-	public function getTimeSpend(): float
+    /**
+     * @return float
+     */
+    public function getTimeSpend(): float
     {
-		return $this->timeSpend;
-	}
+        return $this->timeSpend;
+    }
 }

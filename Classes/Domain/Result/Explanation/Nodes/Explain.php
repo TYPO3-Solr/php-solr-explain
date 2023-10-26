@@ -10,287 +10,279 @@ use ArrayObject;
  */
 class Explain
 {
+    /**
+     * Different types of nodes that need to be handled different during calculation
+     */
+    public const NODE_TYPE_SUM = 1;
+    public const NODE_TYPE_MAX = 2;
+    public const NODE_TYPE_PRODUCT = 4;
+    public const NODE_TYPE_LEAF = 8;
 
-	/**
-	 * Different types of nodes that need to be handled different during calculation
-	 */
-	const NODE_TYPE_SUM = 1;
-	const NODE_TYPE_MAX = 2;
-	const NODE_TYPE_PRODUCT = 4;
-	const NODE_TYPE_LEAF = 8;
+    /**
+     * @var int
+     */
+    protected $level = 0;
 
-	/**
-	 * @var int
-	 */
-	protected $level = 0;
+    /**
+     * @var string
+     */
+    protected $content = '';
 
-	/**
-	 * @var string
-	 */
-	protected $content = '';
+    /**
+     * @var float
+     */
+    protected $score = 0.0;
 
-	/**
-	 * @var float
-	 */
-	protected $score = 0.0;
+    /**
+     * @var ArrayObject
+     */
+    protected $children;
 
-	/**
-	 * @var ArrayObject
-	 */
-	protected $children = null;
+    /**
+     * @var Explain
+     */
+    protected $parent;
 
-	/**
-	 * @var Explain
-	 */
-	protected $parent = null;
+    /**
+     * @var int
+     */
+    protected $nodeType = -1;
 
-	/**
-	 * @var int
-	 */
-	protected $nodeType = -1;
+    /**
+     * @var string
+     */
+    protected $fieldName = '*';
 
-	/**
-	 * @var string
-	 */
-	protected $fieldName = '*';
-
-	/**
-	 * @return void
-	 */
-	public function __construct()
+    public function __construct()
     {
-		$this->children = new ArrayObject();
-	}
+        $this->children = new ArrayObject();
+    }
 
     /**
      * @return ?float|?int
      */
-	public function getAbsoluteImpactPercentage()
+    public function getAbsoluteImpactPercentage()
     {
-		if($this->level == 0) {
-			return 100.0;
-		}
+        if ($this->level == 0) {
+            return 100.0;
+        }
 
-        if($this->getParent()->getNodeType() == self::NODE_TYPE_SUM) {
+        if ($this->getParent()->getNodeType() == self::NODE_TYPE_SUM) {
             return $this->handleSumParent();
         }
-        if($this->getParent()->getNodeType() == self::NODE_TYPE_MAX) {
+        if ($this->getParent()->getNodeType() == self::NODE_TYPE_MAX) {
             return $this->handleMaxParent();
         }
-        if($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
+        if ($this->getParent()->getNodeType() == self::NODE_TYPE_PRODUCT) {
             return $this->handleProductParent();
         }
         return null;
-	}
+    }
 
-	/**
-	 * @return float
-	 */
-	protected function handleProductParent()
+    /**
+     * @return float
+     */
+    protected function handleProductParent()
     {
-		$neighbors = $this->getParent()->getChildren();
+        $neighbors = $this->getParent()->getChildren();
 
-		if ($neighbors->count() > 1) {
-			$neighborScorePart = [];
-			$parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
+        if ($neighbors->count() > 1) {
+            $neighborScorePart = [];
+            $parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
 
-			foreach ($neighbors as $neighbor) {
-				if ($neighbor != $this) {
-					$neighborScore = $neighbor->getScore();
-					$neighborScorePart[] = $neighborScore;
-				}
-			}
+            foreach ($neighbors as $neighbor) {
+                if ($neighbor != $this) {
+                    $neighborScore = $neighbor->getScore();
+                    $neighborScorePart[] = $neighborScore;
+                }
+            }
 
-			$scoreSum = array_sum($neighborScorePart) + $this->getScore();
+            $scoreSum = array_sum($neighborScorePart) + $this->getScore();
 
-			$multiplier = 100 / $scoreSum;
-			$parentMultiplier = $parentPercentage / 100;
-			return $this->getScore() * $multiplier * $parentMultiplier;
-		} else {
-			//when only one leaf in product is present we can inherit the parent score
-			return $this->getParent()->getAbsoluteImpactPercentage();
-		}
-	}
+            $multiplier = 100 / $scoreSum;
+            $parentMultiplier = $parentPercentage / 100;
+            return $this->getScore() * $multiplier * $parentMultiplier;
+        }
+        //when only one leaf in product is present we can inherit the parent score
+        return $this->getParent()->getAbsoluteImpactPercentage();
+    }
 
-	/**
-	 * @return float
-	 */
-	protected function handleSumParent()
+    /**
+     * @return float
+     */
+    protected function handleSumParent()
     {
-		$parentScore = $this->getParent()->getScore();
-		$parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
+        $parentScore = $this->getParent()->getScore();
+        $parentPercentage = $this->getParent()->getAbsoluteImpactPercentage();
 
-		//part of this node relative to the parent
-		$scorePercentageToParent = (100 / $parentScore) * $this->getScore();
-		return ($parentPercentage / 100) * $scorePercentageToParent;
-	}
+        //part of this node relative to the parent
+        $scorePercentageToParent = (100 / $parentScore) * $this->getScore();
+        return ($parentPercentage / 100) * $scorePercentageToParent;
+    }
 
-	/**
-	 * @return float
-	 */
-	protected function handleMaxParent()
+    /**
+     * @return float
+     */
+    protected function handleMaxParent()
     {
-		$neighbors = $this->getParent()->getChildren();
-		$tieBreaker = $this->getParent()->getTieBreaker();
+        $neighbors = $this->getParent()->getChildren();
+        $tieBreaker = $this->getParent()->getTieBreaker();
 
-		$parentScore = $this->getParent()->getScore();
-		$parentScorePart = ($this->getScore() / $parentScore) * (100);
-		$parentScorePartPercentage = $this->getParent()->getAbsoluteImpactPercentage() / 100.0;
+        $parentScore = $this->getParent()->getScore();
+        $parentScorePart = ($this->getScore() / $parentScore) * (100);
+        $parentScorePartPercentage = $this->getParent()->getAbsoluteImpactPercentage() / 100.0;
 
-		$isMaxNode = true;
-		foreach ($neighbors as $neighbor) {
-			if ($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
-				$isMaxNode = false;
-				break;
-			}
-		}
+        $isMaxNode = true;
+        foreach ($neighbors as $neighbor) {
+            if ($neighbor != $this && $neighbor->getScore() > $this->getScore()) {
+                $isMaxNode = false;
+                break;
+            }
+        }
 
-		if ($tieBreaker > 0) {
-			if ($isMaxNode) {
-				return $parentScorePart * $parentScorePartPercentage;
-			} else {
-				return $parentScorePart * $parentScorePartPercentage * $tieBreaker;
-			}
-		} else {
-			if ($isMaxNode) {
-				return $this->getParent()->getAbsoluteImpactPercentage();
-			} else {
-				return 0.0;
-			}
-		}
-	}
+        if ($tieBreaker > 0) {
+            if ($isMaxNode) {
+                return $parentScorePart * $parentScorePartPercentage;
+            }
+            return $parentScorePart * $parentScorePartPercentage * $tieBreaker;
+        }
+        if ($isMaxNode) {
+            return $this->getParent()->getAbsoluteImpactPercentage();
+        }
+        return 0.0;
+    }
 
     /**
      * @param ?Explain $parent
      */
-	public function setParent(?Explain $parent)
+    public function setParent(?Explain $parent)
     {
-		$this->parent = $parent;
-	}
+        $this->parent = $parent;
+    }
 
-	/**
-	 * @return Explain
-	 */
-	public function getParent(): ?Explain
+    /**
+     * @return Explain
+     */
+    public function getParent(): ?Explain
     {
-		return $this->parent;
-	}
+        return $this->parent;
+    }
 
-	/**
-	 * @param string $content
-	 */
-	public function setContent(string $content)
+    /**
+     * @param string $content
+     */
+    public function setContent(string $content)
     {
-		$this->content = $content;
-	}
+        $this->content = $content;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getContent(): string
+    /**
+     * @return string
+     */
+    public function getContent(): string
     {
-		return $this->content;
-	}
+        return $this->content;
+    }
 
-	/**
-	 * @param int $level
-	 */
-	public function setLevel(int $level)
+    /**
+     * @param int $level
+     */
+    public function setLevel(int $level)
     {
-		$this->level = $level;
-	}
+        $this->level = $level;
+    }
 
-	/**
-	 * @param ArrayObject $children
-	 */
-	public function setChildren(ArrayObject $children)
+    /**
+     * @param ArrayObject $children
+     */
+    public function setChildren(ArrayObject $children)
     {
-		$this->children = $children;
-	}
+        $this->children = $children;
+    }
 
-	/**
-	 * @return ArrayObject
-	 */
-	public function getChildren(): ?ArrayObject
+    /**
+     * @return ArrayObject
+     */
+    public function getChildren(): ?ArrayObject
     {
-		return $this->children;
-	}
+        return $this->children;
+    }
 
-	/**
-	 * @param $index
-	 * @return Explain
-	 */
-	public function getChild($index): Explain
+    /**
+     * @param $index
+     * @return Explain
+     */
+    public function getChild($index): Explain
     {
-		return $this->children[$index];
-	}
+        return $this->children[$index];
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getLevel(): int
+    /**
+     * @return int
+     */
+    public function getLevel(): int
     {
-		return $this->level;
-	}
+        return $this->level;
+    }
 
-	/**
-	 * @param float $score
-	 */
-	public function setScore(float $score)
+    /**
+     * @param float $score
+     */
+    public function setScore(float $score)
     {
-		$this->score = $score;
-	}
+        $this->score = $score;
+    }
 
-	/**
-	 * @return float
-	 */
-	public function getScore(): float
+    /**
+     * @return float
+     */
+    public function getScore(): float
     {
-		return $this->score;
-	}
+        return $this->score;
+    }
 
-	/**
-	 * @param int $nodeType
-	 */
-	protected function setNodeType(int $nodeType)
+    /**
+     * @param int $nodeType
+     */
+    protected function setNodeType(int $nodeType)
     {
-		$this->nodeType = $nodeType;
-	}
+        $this->nodeType = $nodeType;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getNodeType(): int
+    /**
+     * @return int
+     */
+    public function getNodeType(): int
     {
-		return $this->nodeType;
-	}
+        return $this->nodeType;
+    }
 
-	/**
-	 * @param string $fieldName
-	 */
-	public function setFieldName(string $fieldName)
+    /**
+     * @param string $fieldName
+     */
+    public function setFieldName(string $fieldName)
     {
-		$this->fieldName = $fieldName;
-	}
+        $this->fieldName = $fieldName;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getFieldName(): string
+    /**
+     * @return string
+     */
+    public function getFieldName(): string
     {
-		return $this->fieldName;
-	}
+        return $this->fieldName;
+    }
 
-	/**
-	 * This method can be used to traverse all child nodes.
-	 *
-	 * @param ExplainNodeVisitorInterface $visitor
-	 */
-	public function visitNodes(ExplainNodeVisitorInterface $visitor)
+    /**
+     * This method can be used to traverse all child nodes.
+     *
+     * @param ExplainNodeVisitorInterface $visitor
+     */
+    public function visitNodes(ExplainNodeVisitorInterface $visitor)
     {
-		$visitor->visit($this);
-		foreach($this->getChildren() as $child) {
-			$child->visitNodes($visitor);
-		}
-	}
+        $visitor->visit($this);
+        foreach ($this->getChildren() as $child) {
+            $child->visitNodes($visitor);
+        }
+    }
 }

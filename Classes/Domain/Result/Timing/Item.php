@@ -2,53 +2,53 @@
 
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing;
 
-class Item {
+class Item
+{
+    /**
+     * @var float
+     */
+    protected $timeSpend = 0.0;
 
-	/**
-	 * @var float
-	 */
-	protected $timeSpend = 0.0;
+    /**
+     * @var string
+     */
+    protected $componentName = '';
 
-	/**
-	 * @var string
-	 */
-	protected $componentName = '';
-
-	/**
-	 * @param string $componentName
-	 * @return self
-	 */
-	public function setComponentName(string $componentName): Item
+    /**
+     * @param string $componentName
+     * @return self
+     */
+    public function setComponentName(string $componentName): Item
     {
-		$this->componentName = $componentName;
+        $this->componentName = $componentName;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getComponentName(): string
+    /**
+     * @return string
+     */
+    public function getComponentName(): string
     {
-		return $this->componentName;
-	}
+        return $this->componentName;
+    }
 
-	/**
-	 * @param float $timeSpend
-	 * @return self
-	 */
-	public function setTimeSpend(float $timeSpend): Item
+    /**
+     * @param float $timeSpend
+     * @return self
+     */
+    public function setTimeSpend(float $timeSpend): Item
     {
-		$this->timeSpend = $timeSpend;
+        $this->timeSpend = $timeSpend;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return float
-	 */
-	public function getTimeSpend(): float
+    /**
+     * @return float
+     */
+    public function getTimeSpend(): float
     {
-		return $this->timeSpend;
-	}
+        return $this->timeSpend;
+    }
 }

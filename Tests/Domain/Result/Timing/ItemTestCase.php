@@ -5,27 +5,23 @@ use ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrTest;
 
 class ItemTestCase extends AbstractSolrTest
 {
+    /**
+     * @var Item
+     */
+    protected $timingItem;
 
-	/**
-	 * @var Item
-	 */
-	protected $timingItem;
-
-	/**
-	 * @return void
-	 */
     protected function setUp(): void
     {
-		$this->timingItem = new Item();
-	}
+        $this->timingItem = new Item();
+    }
 
-	/**
-	 * @test
-	 */
-	public function testSetTimeSpend()
+    /**
+     * @test
+     */
+    public function testSetTimeSpend()
     {
-		$this->assertEquals(0.0, $this->timingItem->getTimeSpend());
-		$this->timingItem->setTimeSpend(1.0);
-		$this->assertEquals(1.0, $this->timingItem->getTimeSpend());
-	}
+        self::assertEquals(0.0, $this->timingItem->getTimeSpend());
+        $this->timingItem->setTimeSpend(1.0);
+        self::assertEquals(1.0, $this->timingItem->getTimeSpend());
+    }
 }

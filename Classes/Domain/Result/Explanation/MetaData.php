@@ -8,56 +8,55 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation;
  */
 class MetaData
 {
+    /**
+     * @var string
+     */
+    protected $documentId = '';
 
-	/**
-	 * @var string
-	 */
-	protected $documentId = '';
+    /**
+     * @var string
+     */
+    protected $mode = '';
 
-	/**
-	 * @var string
-	 */
-	protected $mode = '';
-
-	/**
-	 * @param string $documentId
-	 * @param string $mode
-	 */
-	public function __construct(string $documentId, string $mode)
+    /**
+     * @param string $documentId
+     * @param string $mode
+     */
+    public function __construct(string $documentId, string $mode)
     {
-		$this->setDocumentId($documentId);
-		$this->setMode($mode);
-	}
+        $this->setDocumentId($documentId);
+        $this->setMode($mode);
+    }
 
-	/**
-	 * @param string $documentId
-	 */
-	public function setDocumentId(string $documentId)
+    /**
+     * @param string $documentId
+     */
+    public function setDocumentId(string $documentId)
     {
-		$this->documentId = $documentId;
-	}
+        $this->documentId = $documentId;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getDocumentId(): string
+    /**
+     * @return string
+     */
+    public function getDocumentId(): string
     {
-		return $this->documentId;
-	}
+        return $this->documentId;
+    }
 
-	/**
-	 * @param string $mode
-	 */
-	public function setMode(string $mode)
+    /**
+     * @param string $mode
+     */
+    public function setMode(string $mode)
     {
-		$this->mode = $mode;
-	}
+        $this->mode = $mode;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getMode(): string
+    /**
+     * @return string
+     */
+    public function getMode(): string
     {
-		return $this->mode;
-	}
+        return $this->mode;
+    }
 }

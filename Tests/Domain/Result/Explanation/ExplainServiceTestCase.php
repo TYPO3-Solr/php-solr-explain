@@ -9,21 +9,20 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\ExplainService;
  */
 class ExplainServiceTestCase extends AbstractExplanationTestCase
 {
-
-	/**
-	 * @test
-	 */
-	public function testFixture1()
+    /**
+     * @test
+     */
+    public function testFixture1()
     {
-		$content 	= $this->getFixtureContent('3.0.001.txt');
-		$result 	= ExplainService::getFieldImpactsFromRawContent(
-			$content,
-			'foo',
-			'bar'
-		);
+        $content 	= $this->getFixtureContent('3.0.001.txt');
+        $result 	= ExplainService::getFieldImpactsFromRawContent(
+            $content,
+            'foo',
+            'bar'
+        );
 
-		$this->assertEquals(['name' => 100], $result);
-	}
+        self::assertEquals(['name' => 100], $result);
+    }
 
     /**
  * @test
@@ -40,9 +39,9 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase
         $expectedResult = [
             'keywords' => 3.9746099859253836,
             'title' =>  7.1126007378396707,
-            'content' => 88.912788999915335
+            'content' => 88.912788999915335,
         ];
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -64,7 +63,7 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase
             'content' => 81.02878024976832,
         ];
 
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 
     /**
@@ -82,9 +81,9 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase
         $expectedResult = [
             'content' => 85.44380986095436,
             'tagsH2H3' => 4.056216176545581,
-            'title' => 10.499972051284612
+            'title' => 10.499972051284612,
         ];
 
-        $this->assertEquals($expectedResult, $result);
+        self::assertEquals($expectedResult, $result);
     }
 }
