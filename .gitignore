@@ -1,4 +1,5 @@
+.Build
 .buildpath
 .project
 .settings/
-.Build
+composer.lock

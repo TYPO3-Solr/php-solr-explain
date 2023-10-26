@@ -56,8 +56,8 @@ class ExplanationSolr3TestCase extends AbstractExplanationTestCase
 			// 0.5044475 * 73,582959599 = 37,118740012 / 2 => 18,559370006
 			// 0.8545628 * 73,582959599 = 62,881259988 / 2 => 31,440629994
 
-		$this->assertEquals(18.559370006246,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(0)->getAbsoluteImpactPercentage());
-		$this->assertEquals(31.440629993754,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(1)->getAbsoluteImpactPercentage());
+		$this->assertEquals(18.55937000624646,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(0)->getAbsoluteImpactPercentage());
+		$this->assertEquals(31.440629993753543,$explain->getRootNode()->getChild(0)->getChild(0)->getChild(0)->getChild(1)->getAbsoluteImpactPercentage());
 		$this->assertEquals(Explain::NODE_TYPE_MAX,$explain->getRootNode()->getChild(0)->getChild(0)->getNodeType());
 	}
 

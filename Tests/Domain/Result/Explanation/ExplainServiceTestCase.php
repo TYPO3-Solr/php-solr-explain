@@ -48,7 +48,7 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase
     /**
      * @test
      */
-    public function testCanParseSynonymeNodes()
+    public function testCanParseSynonymNodes()
     {
         $content 	= $this->getFixtureContent('6.6.001.txt');
         $result 	= ExplainService::getFieldImpactsFromRawContent(
@@ -58,10 +58,10 @@ class ExplainServiceTestCase extends AbstractExplanationTestCase
         );
 
         $expectedResult = [
-            'keywords' => 8.2394580648419,
-            'description' => 2.1925963619964,
-            'tagsH1' => 8.539163146877,
-            'content' => 81.028780249768
+            'keywords' => 8.239458064841905,
+            'description' => 2.1925963619964572,
+            'tagsH1' => 8.539163146876982,
+            'content' => 81.02878024976832,
         ];
 
         $this->assertEquals($expectedResult, $result);

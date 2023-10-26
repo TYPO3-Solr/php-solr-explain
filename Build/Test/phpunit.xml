@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
-         bootstrap="../../.Build/vendor/autoload.php"
-         backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertWarningsToExceptions="true"
-         forceCoversAnnotation="false"
-         processIsolation="false"
-         stopOnError="true"
-         stopOnFailure="true"
-         stopOnIncomplete="false"
-         stopOnSkipped="false"
-         verbose="false"
+	bootstrap="../../.Build/vendor/autoload.php"
+	backupGlobals="false"
+	backupStaticAttributes="false"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertWarningsToExceptions="true"
+	forceCoversAnnotation="false"
+	processIsolation="false"
+	stopOnError="false"
+	stopOnFailure="false"
+	stopOnIncomplete="false"
+	stopOnSkipped="false"
+	verbose="false"
 >
-    <coverage processUncoveredFiles="false">
-        <include>
-            <directory suffix=".php">../../Classes/</directory>
-        </include>
-    </coverage>
-    <testsuites>
-        <testsuite name="php-solr-explain-unit-tests">
-            <directory suffix="TestCase.php">../../Tests/</directory>
-        </testsuite>
-    </testsuites>
+	<coverage processUncoveredFiles="false">
+		<include>
+			<directory suffix=".php">../../Classes/</directory>
+		</include>
+	</coverage>
+	<testsuites>
+		<testsuite name="php-solr-explain-unit-tests">
+			<directory suffix="TestCase.php">../../Tests/</directory>
+		</testsuite>
+	</testsuites>
 </phpunit>

@@ -49,7 +49,7 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
 		$visitor = new SummarizeFieldImpacts();
 		$explain->getRootNode()->visitNodes($visitor);
 
-		$this->assertEquals(95.756597168764,$visitor->getFieldImpact('price'));
+		$this->assertEquals(95.75659716876356,$visitor->getFieldImpact('price'));
 		$this->assertEquals(['name','manu','price'],$visitor->getRelevantFieldNames());
 	}
 
