@@ -6,7 +6,6 @@ use PHPUnit\Framework\TestCase;
 
 abstract class AbstractSolrTest extends TestCase
 {
-
 	/**
 	 * Helper method to get the path of a "fixtures" folder that is relative to the current class folder.
 	 *
