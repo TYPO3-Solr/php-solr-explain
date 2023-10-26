@@ -7,74 +7,46 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing;
  */
 class Timing
 {
-    /**
-     * @var ItemCollection
-     */
-    protected $preparationItems;
+    protected ItemCollection $preparationItems;
 
-    /**
-     * @var ItemCollection
-     */
-    protected $processingItems;
+    protected ItemCollection $processingItems;
 
-    /**
-     * @var float
-     */
-    protected $timeSpend = 0.0;
+    protected float $timeSpend = 0.0;
 
-    /**
-     * @param ItemCollection $preparationItems
-     * @param ItemCollection $processingItems
-     */
     public function __construct(ItemCollection $preparationItems, ItemCollection $processingItems)
     {
         $this->preparationItems = $preparationItems;
         $this->processingItems = $processingItems;
     }
 
-    /**
-     * @param float $timeSpend
-     */
-    public function setTimeSpend(float $timeSpend)
+    public function setTimeSpend(float $timeSpend): Timing
     {
         $this->timeSpend = $timeSpend;
+        return $this;
     }
 
-    /**
-     * @return float
-     */
     public function getTimeSpend(): float
     {
         return $this->timeSpend;
     }
 
-    /**
-     * @param ItemCollection $processingItems
-     */
-    public function setProcessingItems(ItemCollection $processingItems)
+    public function setProcessingItems(ItemCollection $processingItems): Timing
     {
         $this->processingItems = $processingItems;
+        return $this;
     }
 
-    /**
-     * @return ItemCollection
-     */
     public function getProcessingItems(): ItemCollection
     {
         return $this->processingItems;
     }
 
-    /**
-     * @param ItemCollection $preparationItems
-     */
-    public function setPreparationItems(ItemCollection $preparationItems)
+    public function setPreparationItems(ItemCollection $preparationItems): Timing
     {
         $this->preparationItems = $preparationItems;
+        return $this;
     }
 
-    /**
-     * @return ItemCollection
-     */
     public function getPreparationItems(): ItemCollection
     {
         return $this->preparationItems;

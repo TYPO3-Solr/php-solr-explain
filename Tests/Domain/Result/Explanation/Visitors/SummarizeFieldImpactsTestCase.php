@@ -11,10 +11,7 @@ use ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result\Explanation\AbstractExpla
 
 class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
 {
-    /**
-     * @return ExplainResult
-     */
-    protected function getExplain($filename)
+    protected function getExplain($filename): ExplainResult
     {
         $fileContent = $this->getFixtureContent($filename . '.txt');
         $content = new Content($fileContent);
@@ -22,9 +19,7 @@ class SummarizeFieldImpactsTestCase extends AbstractExplanationTestCase
         $parser = new Parser();
 
         $parser->injectExplainResult(new ExplainResult());
-        $explain = $parser->parse($content, $metaData);
-
-        return $explain;
+        return $parser->parse($content, $metaData);
     }
 
     /**
