@@ -11,12 +11,13 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\Timing;
 use DOMDocument;
 use DOMElement;
 use DOMNodeList;
+use DOMText;
 use DOMXPath;
 
 class Parser
 {
     /**
-     * @var
+     * @var DOMNodeList|false
      */
     protected $explainNodes;
 
@@ -50,10 +51,6 @@ class Parser
         return $result;
     }
 
-    /**
-     * @param DOMXPath $resultXpath
-     * @return int
-     */
     protected function extractCompleteResultCount(DOMXPath $resultXpath): int
     {
         $result 	= 0;
@@ -66,10 +63,6 @@ class Parser
         return $result;
     }
 
-    /**
-     * @param DOMXPath $resultXpath
-     * @return int
-     */
     protected function extractQueryTime(DOMXPath $resultXpath): int
     {
         $result 		= 0;
@@ -82,10 +75,6 @@ class Parser
         return $result;
     }
 
-    /**
-     * @param DOMXPath $resultXpath
-     * @return Collection
-     */
     protected function extractDocumentCollection(DOMXPath $resultXpath): Collection
     {
         $result 		= new Collection();
@@ -95,8 +84,11 @@ class Parser
         foreach ($documentNodes as $documentNode) {
             $document = new Document();
 
-            /* @var DOMElement $documentNode */
+            /* @var DOMElement|DOMText $documentNode */
             foreach ($documentNode->childNodes as $fieldNode) {
+                if (!($fieldNode instanceof DOMElement)) {
+                    continue;
+                }
                 $this->extractDocumentFields($fieldNode, $document);
             }
 
@@ -113,37 +105,31 @@ class Parser
     /**
      * This method is used to extract the fields from the xml response
      * and attach them to the document object.
-     *
-     * @param $fieldNode
-     * @param Document $document
      */
-    protected function extractDocumentFields($fieldNode, Document $document)
+    protected function extractDocumentFields(DOMElement $fieldNode, Document $document): void
     {
-        if ($fieldNode instanceof DOMElement) {
-            $field = new Field();
+        $field = new Field();
 
-            if ($fieldNode->nodeName == 'arr') {
-                //multivalue field
-                $value = [];
-                foreach ($fieldNode->childNodes as $singleField) {
-                    $value[] = $singleField->textContent;
-                }
-            } else {
-                //single value field
-                $value = $fieldNode->textContent;
+        if ($fieldNode->nodeName == 'arr') {
+            //multivalue field
+            $value = [];
+            foreach ($fieldNode->childNodes as $singleField) {
+                $value[] = $singleField->textContent;
             }
-
-            $field->setValue($value);
-
-            $fieldName = $fieldNode->getAttribute('name');
-            $field->setName($fieldName);
-
-            $document->addField($field);
+        } else {
+            //single value field
+            $value = $fieldNode->textContent;
         }
+
+        $field->setValue($value);
+
+        $fieldName = $fieldNode->getAttribute('name');
+        $field->setName($fieldName);
+
+        $document->addField($field);
     }
 
     /**
-     * @param DOMXPath $resultXPath
      * @return DOMNodeList|false a DOMNodeList containing all nodes matching
      * the given XPath expression. Any expression which does not return nodes
      * will return an empty DOMNodeList. The return is false if the expression
@@ -158,12 +144,7 @@ class Parser
         return $this->explainNodes;
     }
 
-    /**
-     * @param DOMXPath $resultXPath
-     * @param
-     * @return string
-     */
-    protected function extractExplainContent(DOMXPath $resultXPath, $documentCount): string
+    protected function extractExplainContent(DOMXPath $resultXPath, int $documentCount): string
     {
         $explainContent = '';
 
@@ -176,10 +157,6 @@ class Parser
         return $explainContent;
     }
 
-    /**
-     * @param DOMXPath $xpath
-     * @return Timing
-     */
     protected function extractTiming(DOMXPath $xpath): Timing
     {
         $prepareItemCollection 		= new ItemCollection();
@@ -212,13 +189,9 @@ class Parser
     }
 
     /**
-     * This method is used to build timing items from timing subnodes.
-     *
-     * @param DOMXPath $xpath
-     * @param string $nodeXPath
-     * @param ItemCollection $itemCollection
+     * This method is used to build timing items from timing sub-nodes.
      */
-    protected function extractTimingSubNodes(DOMXPath $xpath, string $nodeXPath, ItemCollection $itemCollection)
+    protected function extractTimingSubNodes(DOMXPath $xpath, string $nodeXPath, ItemCollection $itemCollection): void
     {
         $nodes = $xpath->query($nodeXPath);
 
@@ -238,11 +211,6 @@ class Parser
         }
     }
 
-    /**
-     * @param DOMXPath $xpath
-     * @param string $path
-     * @return float
-     */
     protected function getTimeFromNode(DOMXPath $xpath, string $path): float
     {
         $timeNode = $xpath->query($path);
@@ -254,10 +222,6 @@ class Parser
         return $time;
     }
 
-    /**
-     * @param DOMXPath $xpath
-     * @return string
-     */
     protected function extractParserName(DOMXPath $xpath): string
     {
         $result				= '';

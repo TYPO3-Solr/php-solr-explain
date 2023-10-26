@@ -10,11 +10,7 @@ use ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrTest;
 
 abstract class AbstractExplanationTestCase extends AbstractSolrTest
 {
-    /**
-     * @param $filename
-     * @return ExplainResult
-     */
-    protected function getExplainFromFixture($filename)
+    protected function getExplainFromFixture(string $filename): ExplainResult
     {
         $fileContent = $this->getFixtureContent($filename . '.txt');
         $content = new Content($fileContent);
@@ -22,8 +18,6 @@ abstract class AbstractExplanationTestCase extends AbstractSolrTest
 
         $parser = new Parser();
         $parser->injectExplainResult(new ExplainResult());
-        $explain = $parser->parse($content, $metaData);
-
-        return $explain;
+        return $parser->parse($content, $metaData);
     }
 }

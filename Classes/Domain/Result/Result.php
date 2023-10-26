@@ -7,115 +7,69 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\Timing;
 
 class Result
 {
-    /**
-     * @var int
-     */
-    protected $completeResultCount = 0;
+    protected int $completeResultCount = 0;
 
-    /**
-     * @var int
-     */
-    protected $queryTime = 0;
+    protected int $queryTime = 0;
 
-    /**
-     * @var string
-     */
-    protected $queryParser = '';
+    protected string $queryParser = '';
 
-    /**
-     * @var Collection
-     */
-    protected $documentCollection;
+    protected ?Collection $documentCollection = null;
 
-    /**
-     * @var Timing
-     */
-    protected $timing;
+    protected ?Timing $timing = null;
 
-    /**
-     * @param int $completeResultCount
-     * @return self
-     */
     public function setCompleteResultCount(int $completeResultCount): Result
     {
         $this->completeResultCount = $completeResultCount;
-
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getCompleteResultCount(): int
     {
         return $this->completeResultCount;
     }
 
-    /**
-     * @return int
-     */
     public function getResultCount(): int
     {
         return $this->documentCollection->count();
     }
 
-    /**
-     * @param int $queryTime
-     * @return self
-     */
     public function setQueryTime(int $queryTime): Result
     {
         $this->queryTime = $queryTime;
-
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getQueryTime(): int
     {
         return $this->queryTime;
     }
 
-    /**
-     * @param Collection $documentCollection
-     */
-    public function setDocumentCollection(Collection $documentCollection)
+    public function setDocumentCollection(Collection $documentCollection): Result
     {
         $this->documentCollection = $documentCollection;
+        return $this;
     }
 
-    /**
-     * @return Collection
-     */
     public function getDocumentCollection(): Collection
     {
         return $this->documentCollection;
     }
 
-    /**
-     * @param Timing $timing
-     */
-    public function setTiming(Timing $timing)
+    public function setTiming(Timing $timing): Result
     {
         $this->timing = $timing;
+        return $this;
     }
 
-    /**
-     * @return Timing
-     */
     public function getTiming(): ?Timing
     {
         return $this->timing;
     }
 
-    /**
-     * @param string $queryParser
-     */
-    public function setQueryParser(string $queryParser)
+    public function setQueryParser(string $queryParser): Result
     {
         $this->queryParser = $queryParser;
+        return $this;
     }
 
     /**

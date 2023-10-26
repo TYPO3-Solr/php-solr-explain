@@ -1,19 +1,17 @@
 <?php
 
-namespace ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result\Explanation;
+namespace ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result\Explanation\Visitors;
 
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Content;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\ExplainResult;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\MetaData;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Parser;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Visitors\SummarizeLeafImpacts;
+use ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result\Explanation\AbstractExplanationTestCase;
 
 class SummarizeLeafImpactsTestCase extends AbstractExplanationTestCase
 {
-    /**
-     * @return ExplainResult
-     */
-    protected function getExplain($filename)
+    protected function getExplain(string $filename): ExplainResult
     {
         $fileContent = $this->getFixtureContent($filename . '.txt');
         $content = new Content($fileContent);
@@ -21,15 +19,10 @@ class SummarizeLeafImpactsTestCase extends AbstractExplanationTestCase
         $parser = new Parser();
 
         $parser->injectExplainResult(new ExplainResult());
-        $explain = $parser->parse($content, $metaData);
-
-        return $explain;
+        return $parser->parse($content, $metaData);
     }
 
-    /**
-     * @return array
-     */
-    public function leafSumFixtureNameDataProvider()
+    public function leafSumFixtureNameDataProvider(): array
     {
         return [
             ['3.0.001'],
@@ -73,7 +66,7 @@ class SummarizeLeafImpactsTestCase extends AbstractExplanationTestCase
     }
 
     /**
-     * The sum for all leaf impacts in percetage should be 100%.
+     * The sum for all leaf impacts in percentage should be 100%.
      *
      * This testcase is used to test this for some fixture files.
      *

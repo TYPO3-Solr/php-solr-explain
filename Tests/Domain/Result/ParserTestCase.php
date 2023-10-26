@@ -1,5 +1,7 @@
 <?php
 
+namespace ApacheSolrForTypo3\SolrExplain\Tests\Domain\Result;
+
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Parser;
 use ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrTest;
 
