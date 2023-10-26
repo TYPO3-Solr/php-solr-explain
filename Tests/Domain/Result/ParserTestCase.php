@@ -1,4 +1,5 @@
 <?php
+
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Parser;
 use ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrTest;
 
@@ -8,65 +9,65 @@ use ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrTest;
  */
 class ParserTestCase extends AbstractSolrTest
 {
-
-	/**
-	 * @test
-	 */
-	public function testFixture001()
+    /**
+     * @test
+     */
+    public function testFixture001()
     {
-		$content = $this->getFixtureContent("3.4.001.xml");
-		$parser = new Parser();
-		$result = $parser->parse($content);
+        $content = $this->getFixtureContent('3.4.001.xml');
+        $parser = new Parser();
+        $result = $parser->parse($content);
 
-		$this->assertEquals(17, $result->getCompleteResultCount());
-		$this->assertEquals(9, $result->getQueryTime());
-		$this->assertEquals(10, $result->getResultCount());
+        self::assertEquals(17, $result->getCompleteResultCount());
+        self::assertEquals(9, $result->getQueryTime());
+        self::assertEquals(10, $result->getResultCount());
 
-		$this->assertEquals("GB18030TEST",
-			$result->getDocumentCollection()->getDocument(0)->getFieldByName('id')->getValue()
-		);
+        self::assertEquals(
+            'GB18030TEST',
+            $result->getDocumentCollection()->getDocument(0)->getFieldByName('id')->getValue()
+        );
 
-		$this->assertEquals(
-            ['electronics','hard drive'],
-			$result->getDocumentCollection()->getDocument(1)->getFieldByName('cat')->getValue()
-		);
+        self::assertEquals(
+            ['electronics', 'hard drive'],
+            $result->getDocumentCollection()->getDocument(1)->getFieldByName('cat')->getValue()
+        );
 
-		$expectedExplain = PHP_EOL.'1.0 = (MATCH) MatchAllDocsQuery, product of:'.PHP_EOL.'  1.0 = queryNorm'.PHP_EOL;
-		$actualExplain = $result->getDocumentCollection()->getDocument(9)->getRawExplainData();
-		$this->assertEquals($expectedExplain, $actualExplain);
-	}
+        $expectedExplain = PHP_EOL . '1.0 = (MATCH) MatchAllDocsQuery, product of:' . PHP_EOL . '  1.0 = queryNorm' . PHP_EOL;
+        $actualExplain = $result->getDocumentCollection()->getDocument(9)->getRawExplainData();
+        self::assertEquals($expectedExplain, $actualExplain);
+    }
 
-	/**
-	 * @test
-	 */
-	public function testFixture004()
+    /**
+     * @test
+     */
+    public function testFixture004()
     {
-		$content = $this->getFixtureContent("3.4.004.xml");
-		$parser = new Parser();
-		$result = $parser->parse($content);
+        $content = $this->getFixtureContent('3.4.004.xml');
+        $parser = new Parser();
+        $result = $parser->parse($content);
 
-		$this->assertEquals(2, $result->getQueryTime());
-		$this->assertEquals(10, $result->getResultCount());
+        self::assertEquals(2, $result->getQueryTime());
+        self::assertEquals(10, $result->getResultCount());
 
-		$expectedExplain4 	= PHP_EOL."4.0 = (MATCH) MatchAllDocsQuery, product of:".PHP_EOL."  4.0 = queryNorm".PHP_EOL;
-		$actualExplain 		= $result->getDocumentCollection()->getDocument(3)->getRawExplainData();
+        $expectedExplain4 	= PHP_EOL . '4.0 = (MATCH) MatchAllDocsQuery, product of:' . PHP_EOL . '  4.0 = queryNorm' . PHP_EOL;
+        $actualExplain 		= $result->getDocumentCollection()->getDocument(3)->getRawExplainData();
 
-		$this->assertEquals($expectedExplain4, $actualExplain);
-		$this->assertEquals(2.0, $result->getTiming()->getTimeSpend());
-		$this->assertEquals(6, $result->getTiming()->getProcessingItems()->count());
-	}
+        self::assertEquals($expectedExplain4, $actualExplain);
+        self::assertEquals(2.0, $result->getTiming()->getTimeSpend());
+        self::assertEquals(6, $result->getTiming()->getProcessingItems()->count());
+    }
 
-	/**
-	 * @test
-	 */
-	public function testFixtureSolr4010()
+    /**
+     * @test
+     */
+    public function testFixtureSolr4010()
     {
-		$content = $this->getFixtureContent("4.0.010.xml");
-		$parser = new Parser();
-		$result = $parser->parse($content);
+        $content = $this->getFixtureContent('4.0.010.xml');
+        $parser = new Parser();
+        $result = $parser->parse($content);
 
-		$this->assertEquals(3, $result->getResultCount());
-		$this->assertEquals(4, $result->getTiming()->getTimeSpend());
-		$this->assertEquals("LuceneQParser",$result->getQueryParser());
-	}
+        self::assertEquals(3, $result->getResultCount());
+        self::assertEquals(4, $result->getTiming()->getTimeSpend());
+        self::assertEquals('LuceneQParser', $result->getQueryParser());
+    }
 }

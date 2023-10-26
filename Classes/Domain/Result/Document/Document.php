@@ -7,63 +7,59 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Field\Field;
 
 class Document
 {
+    /**
+     * @var Collection
+     */
+    protected $fieldCollection;
 
-	/**
-	 * @var Collection
-	 */
-	protected $fieldCollection;
+    /**
+     * @var string
+     */
+    protected $rawExplainData;
 
-	/**
-	 * @var string
-	 */
-	protected $rawExplainData;
-
-	/**
-	 * @return void
-	 */
-	public function __construct()
+    public function __construct()
     {
-		$this->fieldCollection = new Collection();
-	}
+        $this->fieldCollection = new Collection();
+    }
 
-	/**
-	 * @param Field $field
-	 */
-	public function addField(Field $field)
+    /**
+     * @param Field $field
+     */
+    public function addField(Field $field)
     {
-		$this->fieldCollection->offsetSet($field->getName(),$field);
-	}
+        $this->fieldCollection->offsetSet($field->getName(), $field);
+    }
 
-	/**
-	 * @return Collection
-	 */
-	public function getFields(): Collection
+    /**
+     * @return Collection
+     */
+    public function getFields(): Collection
     {
-		return $this->fieldCollection;
-	}
+        return $this->fieldCollection;
+    }
 
-	/**
-	 * @param string
-	 * @return Field
-	 */
-	public function getFieldByName(string $fieldName): Field
+    /**
+     * @param string
+     * @return Field
+     */
+    public function getFieldByName(string $fieldName): Field
     {
-		return $this->fieldCollection->offsetGet($fieldName);
-	}
+        return $this->fieldCollection->offsetGet($fieldName);
+    }
 
-	/**
-	 * @param string $rawExplainData
-	 */
-	public function setRawExplainData(string $rawExplainData)
+    /**
+     * @param string $rawExplainData
+     */
+    public function setRawExplainData(string $rawExplainData)
     {
-		$this->rawExplainData = $rawExplainData;
-	}
+        $this->rawExplainData = $rawExplainData;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getRawExplainData(): string
+    /**
+     * @return string
+     */
+    public function getRawExplainData(): string
     {
-		return $this->rawExplainData;
-	}
+        return $this->rawExplainData;
+    }
 }

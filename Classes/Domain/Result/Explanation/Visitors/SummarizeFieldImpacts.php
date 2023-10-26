@@ -10,34 +10,31 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain;
  */
 class SummarizeFieldImpacts implements ExplainNodeVisitorInterface
 {
+    /**
+     * @var float[]
+     */
+    protected $sums = [];
 
-	/**
-	 * @var float[]
-	 */
-	protected $sums = [];
-
-	/**
-	 * @param Explain $node
-	 * @return void
-	 */
-	public function visit(Explain $node)
+    /**
+     * @param Explain $node
+     */
+    public function visit(Explain $node)
     {
-		if($node->getNodeType() == $node::NODE_TYPE_LEAF) {
-			if($node->getParent() != null) {
-				$fieldName = $this->getClosestFieldName($node);
-                if(trim($fieldName) === '') {
+        if ($node->getNodeType() == $node::NODE_TYPE_LEAF) {
+            if ($node->getParent() != null) {
+                $fieldName = $this->getClosestFieldName($node);
+                if (trim($fieldName) === '') {
                     return;
                 }
 
-				if(!isset($this->sums[$fieldName])) {
-					$this->sums[$fieldName] = 0;
-				}
+                if (!isset($this->sums[$fieldName])) {
+                    $this->sums[$fieldName] = 0;
+                }
 
-				$this->sums[$fieldName] += $node->getAbsoluteImpactPercentage();
-
-			}
-		}
-	}
+                $this->sums[$fieldName] += $node->getAbsoluteImpactPercentage();
+            }
+        }
+    }
 
     /**
      * Returns the closest fieldname in the parent root line and and empty string when none is present.
@@ -45,9 +42,9 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface
      * @param $node
      * @return string
      */
-	protected function getClosestFieldName($node): string
+    protected function getClosestFieldName($node): string
     {
-        while(!is_null($node->getParent())) {
+        while (!is_null($node->getParent())) {
             $parent = $node->getParent();
             if ($parent->getFieldName() !== '') {
                 return $parent->getFieldName();
@@ -59,38 +56,38 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface
         return '';
     }
 
-	/**
-	 * Returns the fieldnames that have been relevant during the explain.
-	 *
-	 * @return string[]
-	 */
-	public function getRelevantFieldNames(): array
-    {
-		return array_keys($this->sums);
-	}
-
-	/**
-	 * Returns the impact for a certain field by name.
-	 *
-	 * @param $fieldName
-	 * @return float
-	 */
-	public function getFieldImpact($fieldName): float
-    {
-		if(!array_key_exists($fieldName,$this->sums)) {
-			return 0.0;
-		}
-
-		return $this->sums[$fieldName];
-	}
-
-	/**
-	 * Returns the fieldname => impact array.
-	 *
-	 * @return float[]
+    /**
+     * Returns the fieldnames that have been relevant during the explain.
+     *
+     * @return string[]
      */
-	public function getFieldImpacts(): array
+    public function getRelevantFieldNames(): array
     {
-		return $this->sums;
-	}
+        return array_keys($this->sums);
+    }
+
+    /**
+     * Returns the impact for a certain field by name.
+     *
+     * @param $fieldName
+     * @return float
+     */
+    public function getFieldImpact($fieldName): float
+    {
+        if (!array_key_exists($fieldName, $this->sums)) {
+            return 0.0;
+        }
+
+        return $this->sums[$fieldName];
+    }
+
+    /**
+     * Returns the fieldname => impact array.
+     *
+     * @return float[]
+     */
+    public function getFieldImpacts(): array
+    {
+        return $this->sums;
+    }
 }
