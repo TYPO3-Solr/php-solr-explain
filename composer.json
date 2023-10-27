@@ -2,12 +2,22 @@
   "name": "apache-solr-for-typo3/php-solr-explain",
   "description": "PHP explain library for apache solr",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Timo Hund",
+      "email": "timo.hund@dkd.de"
+    },
+    {
+      "name": "Michael Klapper",
+      "email": "michael.klapper@aoemedia.de"
+    }
+  ],
   "require": {
     "php": ">=7.4.0",
     "ext-dom": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8 || ^9.5"
+    "phpunit/phpunit": "^9.5"
   },
   "autoload": {
     "psr-4": {
@@ -24,14 +34,20 @@
     "vendor-dir": ".Build/vendor",
     "bin-dir": ".Build/bin"
   },
-  "authors": [
-    {
-      "name": "Timo Hund",
-      "email": "timo.hund@dkd.de"
-    },
-    {
-      "name": "Michael Klapper",
-      "email": "michael.klapper@aoemedia.de"
-    }
-  ]
+  "scripts-descriptions": {
+    "build:phar": "Builds php-solr-explain.phar file from this library.",
+    "tests:setup": "Installs composer dependencies, requiered for tests.",
+    "tests:unit": "Runs unit tests"
+  },
+  "scripts": {
+    "build:phar": [
+      "./Build/phar.sh"
+    ],
+    "tests:setup": [
+      "@composer install"
+    ],
+    "tests:unit": [
+      "phpunit --config Build/Test/phpunit.xml --colors"
+    ]
+  }
 }
