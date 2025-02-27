@@ -1,0 +1,10 @@
+includes:
+  - %rootDir%/../phpstan-phpunit/extension.neon
+
+parameters:
+  level: max
+  treatPhpDocTypesAsCertain: false
+
+  paths:
+    - %currentWorkingDirectory%/Classes
+    - %currentWorkingDirectory%/Tests

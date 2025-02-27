@@ -4,6 +4,7 @@ namespace ApacheSolrForTypo3\SolrExplain\Tests;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use RuntimeException;
 
 abstract class AbstractSolrTest extends TestCase
 {
@@ -13,7 +14,13 @@ abstract class AbstractSolrTest extends TestCase
     protected function getTestFixturePath(): string
     {
         $reflector = new ReflectionClass(static::class);
-        return dirname($reflector->getFileName()) . '/Fixtures/';
+        if (is_string($reflector->getFileName())) {
+            return dirname($reflector->getFileName()) . '/Fixtures/';
+        }
+        throw new RuntimeException(
+            'Failed to get path for fixtures required by: ' . static::class,
+            1740699680,
+        );
     }
 
     /**
@@ -22,6 +29,13 @@ abstract class AbstractSolrTest extends TestCase
      */
     protected function getFixtureContent(string $fixtureFilename): string
     {
-        return file_get_contents($this->getTestFixturePath() . $fixtureFilename);
+        $fileContents = file_get_contents($this->getTestFixturePath() . $fixtureFilename);
+        if (is_string($fileContents)) {
+            return $fileContents;
+        }
+        throw new RuntimeException(
+            'Failed to read file contents for fixture file: ' . $fixtureFilename,
+            1740699685,
+        );
     }
 }

@@ -10,16 +10,17 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\ItemCollection;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\Timing;
 use DOMDocument;
 use DOMElement;
+use DOMNode;
 use DOMNodeList;
-use DOMText;
 use DOMXPath;
+use RuntimeException;
 
 class Parser
 {
     /**
-     * @var DOMNodeList|false
+     * @var DOMNodeList<DOMNode>|false|null
      */
-    protected $explainNodes;
+    protected null|false|DOMNodeList $explainNodes = null;
 
     /**
      * @param string $xml
@@ -28,7 +29,7 @@ class Parser
     public function parse(string $xml): Result
     {
         $result 	= new Result();
-        $dom		= new DOMDocument(1.0, 'UTF-8');
+        $dom		= new DOMDocument('1.0', 'UTF-8');
         $dom->loadXML(trim($xml));
 
         $xpath 		= new DOMXPath($dom);
@@ -56,7 +57,10 @@ class Parser
         $result 	= 0;
         $numFound 	= $resultXpath->query('//response/result/@numFound');
 
-        if (isset($numFound->item(0)->textContent)) {
+        if (
+            $numFound instanceof DOMNodeList
+            && isset($numFound->item(0)->textContent)
+        ) {
             $result = (int)$numFound->item(0)->textContent;
         }
 
@@ -68,23 +72,31 @@ class Parser
         $result 		= 0;
         $responseTime 	= $resultXpath->query("//lst[@name='responseHeader']/int[@name='QTime']");
 
-        if (isset($responseTime->item(0)->textContent)) {
+        if (
+            $responseTime instanceof DOMNodeList
+            && isset($responseTime->item(0)->textContent)
+        ) {
             $result = (int)$responseTime->item(0)->textContent;
         }
 
         return $result;
     }
 
+    /**
+     * @return Collection<int, Document>
+     */
     protected function extractDocumentCollection(DOMXPath $resultXpath): Collection
     {
         $result 		= new Collection();
         $documentNodes 	= $resultXpath->query('//doc');
+        if (!$documentNodes instanceof DOMNodeList) {
+            return $result;
+        }
         $documentCount 	= 0;
 
         foreach ($documentNodes as $documentNode) {
             $document = new Document();
 
-            /* @var DOMElement|DOMText $documentNode */
             foreach ($documentNode->childNodes as $fieldNode) {
                 if (!($fieldNode instanceof DOMElement)) {
                     continue;
@@ -130,12 +142,12 @@ class Parser
     }
 
     /**
-     * @return DOMNodeList|false a DOMNodeList containing all nodes matching
+     * @return DOMNodeList<DOMNode>|false a DOMNodeList containing all nodes matching
      * the given XPath expression. Any expression which does not return nodes
      * will return an empty DOMNodeList. The return is false if the expression
-     * is malformed or the contextnode is invalid.
+     * is malformed or the context-node is invalid.
      */
-    protected function getExplainNodes(DOMXPath $resultXPath)
+    protected function getExplainNodes(DOMXPath $resultXPath): DOMNodeList|false
     {
         if ($this->explainNodes == null) {
             $this->explainNodes = $resultXPath->query("//lst[@name='debug']/lst[@name='explain']/str");
@@ -150,7 +162,10 @@ class Parser
 
         $explainNodes 	= $this->getExplainNodes($resultXPath);
 
-        if (isset($explainNodes->item($documentCount)->textContent)) {
+        if (
+            $explainNodes instanceof DOMNodeList
+            && isset($explainNodes->item($documentCount)->textContent)
+        ) {
             $explainContent = $explainNodes->item($documentCount)->textContent;
         }
 
@@ -194,9 +209,13 @@ class Parser
     protected function extractTimingSubNodes(DOMXPath $xpath, string $nodeXPath, ItemCollection $itemCollection): void
     {
         $nodes = $xpath->query($nodeXPath);
-
+        if (!($nodes instanceof DOMNodeList)) {
+            throw new RuntimeException(
+                'Failed to extract timing sub-nodes for: ' . $nodeXPath,
+            );
+        }
         foreach ($nodes as $node) {
-            /** @var $node DOMElement */
+            /** @var DOMElement $node */
             $name = $node->getAttribute('name');
             $time = 0.0;
             if (isset($node->childNodes->item(0)->textContent)) {
@@ -215,7 +234,10 @@ class Parser
     {
         $timeNode = $xpath->query($path);
         $time = 0.0;
-        if (isset($timeNode->item(0)->textContent)) {
+        if (
+            $timeNode instanceof DOMNodeList
+            && isset($timeNode->item(0)->textContent)
+        ) {
             $time = (float)$timeNode->item(0)->textContent;
         }
 
@@ -228,7 +250,10 @@ class Parser
         $path 				= "//lst[@name='debug']/str[@name='QParser']";
         $queryParserNode 	= $xpath->query($path);
 
-        if (isset($queryParserNode->item(0)->textContent)) {
+        if (
+            $queryParserNode instanceof DOMNodeList
+            && isset($queryParserNode->item(0)->textContent)
+        ) {
             $result = $queryParserNode->item(0)->textContent;
         }
 

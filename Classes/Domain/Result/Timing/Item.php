@@ -4,20 +4,10 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing;
 
 class Item
 {
-    /**
-     * @var float
-     */
-    protected $timeSpend = 0.0;
+    protected float $timeSpend = 0.0;
 
-    /**
-     * @var string
-     */
-    protected $componentName = '';
+    protected string $componentName = '';
 
-    /**
-     * @param string $componentName
-     * @return self
-     */
     public function setComponentName(string $componentName): Item
     {
         $this->componentName = $componentName;
@@ -26,7 +16,7 @@ class Item
     }
 
     /**
-     * @return string
+     * @noinspection PhpUnused
      */
     public function getComponentName(): string
     {

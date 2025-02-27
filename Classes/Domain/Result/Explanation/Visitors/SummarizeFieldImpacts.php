@@ -13,12 +13,12 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface
     /**
      * @var float[]
      */
-    protected $sums = [];
+    protected array $sums = [];
 
     /**
      * @param Explain $node
      */
-    public function visit(Explain $node)
+    public function visit(Explain $node): void
     {
         if ($node->getNodeType() == $node::NODE_TYPE_LEAF) {
             if ($node->getParent() != null) {
@@ -37,12 +37,9 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface
     }
 
     /**
-     * Returns the closest fieldname in the parent root line and and empty string when none is present.
-     *
-     * @param $node
-     * @return string
+     * Returns the closest fieldname in the parent root line and empty string when none is present.
      */
-    protected function getClosestFieldName($node): string
+    protected function getClosestFieldName(Explain $node): string
     {
         while (!is_null($node->getParent())) {
             $parent = $node->getParent();
@@ -57,7 +54,7 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface
     }
 
     /**
-     * Returns the fieldnames that have been relevant during the explain.
+     * Returns the field-names that have been relevant during the explain-result.
      *
      * @return string[]
      */
@@ -68,11 +65,8 @@ class SummarizeFieldImpacts implements ExplainNodeVisitorInterface
 
     /**
      * Returns the impact for a certain field by name.
-     *
-     * @param $fieldName
-     * @return float
      */
-    public function getFieldImpact($fieldName): float
+    public function getFieldImpact(string $fieldName): float
     {
         if (!array_key_exists($fieldName, $this->sums)) {
             return 0.0;

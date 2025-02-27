@@ -9,9 +9,5 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain;
  */
 interface ExplainNodeVisitorInterface
 {
-    /**
-     * @param Explain $node
-     * @return mixed
-     */
-    public function visit(Explain $node);
+    public function visit(Explain $node): void;
 }

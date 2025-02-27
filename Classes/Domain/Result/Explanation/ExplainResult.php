@@ -4,7 +4,6 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation;
 
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain;
 use ArrayObject;
-use Solr\Domain\Result\Explanation\ExplainNode;
 
 /**
  * Root object of the parse explain.
@@ -18,26 +17,21 @@ use Solr\Domain\Result\Explanation\ExplainNode;
 class ExplainResult
 {
     /**
-     * Id of the relevant document.
-     *
-     * @var string
+     * ID of the relevant document.
      */
-    protected $documentId = '';
+    protected string $documentId = '';
 
     /**
-     * @var ArrayObject
+     * @var ?ArrayObject<int, Explain>
      */
-    protected $children;
+    protected ?ArrayObject $children = null;
+
+    protected Explain $rootNode;
 
     /**
-     * @var Explain
+     * @var ArrayObject<string, string>
      */
-    protected $rootNode;
-
-    /**
-     * @var ArrayObject
-     */
-    protected $attributes;
+    protected ArrayObject $attributes;
 
     public function __construct()
     {
@@ -45,44 +39,35 @@ class ExplainResult
     }
 
     /**
-     * @param ArrayObject $children
+     * @param ?ArrayObject<int, Explain> $children
      */
-    public function setChildren(ArrayObject $children)
+    public function setChildren(?ArrayObject $children): void
     {
         $this->children = $children;
     }
 
     /**
-     * @return ArrayObject<ExplainNode>
+     * @return ?ArrayObject<int, Explain>
      */
     public function getChildren(): ?ArrayObject
     {
         return $this->children;
     }
 
-    /**
-     * @param $index
-     * @return Explain
-     */
-    public function getChild($index): Explain
+    public function getChild(int $index): ?Explain
     {
-        return $this->children[$index];
+        return $this->children[$index] ?? null;
     }
 
-    /**
-     * @param Explain $rootNode
-     */
-    public function setRootNode(Explain $rootNode)
+    public function setRootNode(Explain $rootNode): void
     {
         $this->rootNode = $rootNode;
     }
 
     /**
-     * Method to retrieve the root node of the explain.
-     *
-     * @return Explain
+     * Method to retrieve the root node of the explain object.
      */
-    public function getRootNode(): ?Explain
+    public function getRootNode(): Explain
     {
         return $this->rootNode;
     }
@@ -92,7 +77,7 @@ class ExplainResult
      *
      * @param string $documentId
      */
-    public function setDocumentId(string $documentId)
+    public function setDocumentId(string $documentId): void
     {
         $this->documentId = $documentId;
     }
@@ -111,22 +96,16 @@ class ExplainResult
      * Method to set a single attribute
      *
      * Eg: :query
-     *
-     * @param string $key
-     * @param mixed $value
      */
-    public function setAttribute(string $key, $value)
+    public function setAttribute(string $key, string $value): void
     {
         $this->attributes->offsetSet($key, $value);
     }
 
     /**
      * Return the value for a single attribute.
-     *
-     * @param string $key
-     * @return mixed
      */
-    public function getAttribute(string $key)
+    public function getAttribute(string $key): mixed
     {
         return $this->attributes->offsetGet($key);
     }

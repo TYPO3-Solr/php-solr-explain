@@ -8,14 +8,14 @@ on:
   pull_request:
     branches: [ main ]
 
-jobs:
-  tests:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        PHP: [ '7.4', '8.0', '8.1', '8.2', '8.3' ]
+env:
+  IS_ON_GITHUB_ACTIONS: 'true'
+  PHP_MIN: '8.2'
 
-    name: On PHP ${{ matrix.PHP }}
+jobs:
+  analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
     steps:
       # Workaround for issue with actions/checkout "wrong PR commit checkout":
       #   See:
@@ -23,12 +23,57 @@ jobs:
       #   ** https://github.com/actions/checkout/issues/1359#issuecomment-1631503791
       - name: Checkout current state of Pull Request
         if: github.event_name == 'pull_request'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Checkout current state of Branch
         if: github.event_name == 'push'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+      # End: Workaround for issue with actions/checkout...
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_MIN }}
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Tests setup
+        run: |
+          composer tests:setup
+
+      - name: Check coding standards
+        run: |
+          composer t3:standards:fix -- --diff --verbose --dry-run --show-progress=none
+
+      - name: PHPStan
+        run: |
+          composer tests:phpstan -- --no-progress
+
+      - name: Rector
+        run: |
+          composer tests:rector-check -- --no-progress-bar
+
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        PHP: [ '8.2', '8.3', '8.4' ]
+
+    name: Tests on PHP ${{ matrix.PHP }}
+    steps:
+      # Workaround for issue with actions/checkout "wrong PR commit checkout":
+      #   See:
+      #   ** https://github.com/actions/checkout/issues/299#issuecomment-677674415
+      #   ** https://github.com/actions/checkout/issues/1359#issuecomment-1631503791
+      - name: Checkout current state of Pull Request
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Checkout current state of Branch
+        if: github.event_name == 'push'
+        uses: actions/checkout@v4
       # End: Workaround for issue with actions/checkout...
 
       - name: Setup PHP
@@ -53,7 +98,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Build PHAR
       - name: Build PHAR
