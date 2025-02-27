@@ -11,24 +11,18 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Nodes\Explain;
  */
 class SummarizeLeafImpacts implements ExplainNodeVisitorInterface
 {
-    /**
-     * @var float
-     */
-    protected $sum = 0.0;
+    protected float $sum = 0.0;
 
     /**
      * @param Explain $node
      */
-    public function visit(Explain $node)
+    public function visit(Explain $node): void
     {
         if ($node->getNodeType() == $node::NODE_TYPE_LEAF) {
             $this->sum += $node->getAbsoluteImpactPercentage();
         }
     }
 
-    /**
-     * @return float
-     */
     public function getSum(): float
     {
         return round($this->sum, 1);

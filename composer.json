@@ -14,11 +14,15 @@
     }
   ],
   "require": {
-    "php": ">=7.4.0",
+    "php": "^8.2",
     "ext-dom": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^9.5"
+    "phpunit/phpunit": "^11.3.1",
+    "phpstan/phpstan": "^2.1.6",
+    "phpstan/phpstan-phpunit": "^2.0.4",
+    "rector/rector": "^2.0",
+    "typo3/coding-standards": "v0.8.0"
   },
   "autoload": {
     "psr-4": {
@@ -38,6 +42,10 @@
   "scripts-descriptions": {
     "build:phar": "Builds php-solr-explain.phar file from this library.",
     "tests:setup": "Installs composer dependencies, requiered for tests.",
+    "t3:standards:fix": "Checks the coding standards on this lib",
+    "tests:phpstan": "Runs PHPStan analys on this library.",
+    "tests:rector": "Fixes/refactors the code from this library with rector",
+    "tests:rector-check": "Checks if something can be refatored with rector on this library",
     "tests:unit": "Runs unit tests"
   },
   "scripts": {
@@ -47,6 +55,22 @@
     "tests:setup": [
       "@composer install"
     ],
+
+    "t3:standards:fix": [
+      "php-cs-fixer fix"
+    ],
+
+    "tests:phpstan": [
+      "phpstan analyze -c Build/Test/phpstan.neon"
+    ],
+
+    "tests:rector": [
+      "rector process --config=rector.php --autoload-file=.Build/vendor/autoload.php --clear-cache"
+    ],
+    "tests:rector-check": [
+      "rector process --config=rector.php --autoload-file=.Build/vendor/autoload.php --clear-cache --dry-run"
+    ],
+
     "tests:unit": [
       "phpunit --config Build/Test/phpunit.xml --colors"
     ]

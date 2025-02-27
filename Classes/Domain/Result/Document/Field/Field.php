@@ -4,57 +4,39 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Field;
 
 class Field
 {
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
-    /**
-     * @var mixed
-     */
-    protected $value;
+    protected mixed $value;
 
-    /**
-     * @var int
-     */
-    protected $type;
+    protected int $type;
 
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @param int $type
+     * @noinspection PhpUnused
      */
-    public function setType(int $type)
+    public function setType(int $type): void
     {
         $this->type = $type;
     }
 
     /**
-     * @return int
+     * @noinspection PhpUnused
      */
     public function getType(): int
     {
         return $this->type;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function setValue($value)
+    public function setValue(mixed $value): void
     {
         $this->value = $value;
     }
@@ -62,13 +44,13 @@ class Field
     /**
      * @return mixed
      */
-    public function getValue()
+    public function getValue(): mixed
     {
         return $this->value;
     }
 
     /**
-     * @boolean
+     * @noinspection PhpUnused
      */
     public function isMultiValue(): bool
     {

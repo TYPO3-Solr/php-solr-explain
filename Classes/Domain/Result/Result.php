@@ -3,6 +3,7 @@
 namespace ApacheSolrForTypo3\SolrExplain\Domain\Result;
 
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Collection;
+use ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Document;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing\Timing;
 
 class Result
@@ -13,6 +14,9 @@ class Result
 
     protected string $queryParser = '';
 
+    /**
+     * @var ?Collection<int, Document>
+     */
     protected ?Collection $documentCollection = null;
 
     protected ?Timing $timing = null;
@@ -30,7 +34,7 @@ class Result
 
     public function getResultCount(): int
     {
-        return $this->documentCollection->count();
+        return $this->documentCollection?->count() ?? 0;
     }
 
     public function setQueryTime(int $queryTime): Result
@@ -50,7 +54,10 @@ class Result
         return $this;
     }
 
-    public function getDocumentCollection(): Collection
+    /**
+     * @return ?Collection<int, Document>
+     */
+    public function getDocumentCollection(): ?Collection
     {
         return $this->documentCollection;
     }

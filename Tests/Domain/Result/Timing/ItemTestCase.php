@@ -10,7 +10,7 @@ class ItemTestCase extends AbstractSolrTest
     /**
      * @test
      */
-    public function testSetTimeSpend()
+    public function testSetTimeSpend(): void
     {
         $timingItem = new Item();
         self::assertEquals(0.0, $timingItem->getTimeSpend());

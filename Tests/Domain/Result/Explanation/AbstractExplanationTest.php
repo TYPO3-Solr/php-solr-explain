@@ -8,7 +8,7 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\MetaData;
 use ApacheSolrForTypo3\SolrExplain\Domain\Result\Explanation\Parser;
 use ApacheSolrForTypo3\SolrExplain\Tests\AbstractSolrTest;
 
-abstract class AbstractExplanationTestCase extends AbstractSolrTest
+abstract class AbstractExplanationTest extends AbstractSolrTest
 {
     protected function getExplainFromFixture(string $filename): ExplainResult
     {

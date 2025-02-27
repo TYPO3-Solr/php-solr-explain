@@ -7,17 +7,12 @@ namespace ApacheSolrForTypo3\SolrExplain\Domain\Result\Timing;
  */
 class Timing
 {
-    protected ItemCollection $preparationItems;
-
-    protected ItemCollection $processingItems;
-
     protected float $timeSpend = 0.0;
 
-    public function __construct(ItemCollection $preparationItems, ItemCollection $processingItems)
-    {
-        $this->preparationItems = $preparationItems;
-        $this->processingItems = $processingItems;
-    }
+    public function __construct(
+        protected ItemCollection $preparationItems,
+        protected ItemCollection $processingItems,
+    ) {}
 
     public function setTimeSpend(float $timeSpend): Timing
     {
@@ -30,23 +25,40 @@ class Timing
         return $this->timeSpend;
     }
 
+    /**
+     * @param ItemCollection<int, Item> $processingItems
+     *
+     * @noinspection PhpUnused
+     */
     public function setProcessingItems(ItemCollection $processingItems): Timing
     {
         $this->processingItems = $processingItems;
         return $this;
     }
 
+    /**
+     * @return ItemCollection<int, Item> $preparationItems
+     */
     public function getProcessingItems(): ItemCollection
     {
         return $this->processingItems;
     }
 
+    /**
+     * @noinspection PhpUnused
+     * @param ItemCollection<int, Item> $preparationItems
+     */
     public function setPreparationItems(ItemCollection $preparationItems): Timing
     {
         $this->preparationItems = $preparationItems;
         return $this;
     }
 
+    /**
+     * @noinspection PhpUnused
+     *
+     * @return ItemCollection<int, Item>
+     */
     public function getPreparationItems(): ItemCollection
     {
         return $this->preparationItems;

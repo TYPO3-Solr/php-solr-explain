@@ -7,42 +7,29 @@ use ApacheSolrForTypo3\SolrExplain\Domain\Result\Document\Field\Field;
 
 class Document
 {
-    /**
-     * @var Collection
-     */
-    protected $fieldCollection;
+    protected Collection $fieldCollection;
 
-    /**
-     * @var string
-     */
-    protected $rawExplainData;
+    protected string $rawExplainData;
 
     public function __construct()
     {
         $this->fieldCollection = new Collection();
     }
 
-    /**
-     * @param Field $field
-     */
-    public function addField(Field $field)
+    public function addField(Field $field): void
     {
         $this->fieldCollection->offsetSet($field->getName(), $field);
     }
 
     /**
-     * @return Collection
+     * @noinspection PhpUnused
      */
     public function getFields(): Collection
     {
         return $this->fieldCollection;
     }
 
-    /**
-     * @param string
-     * @return Field
-     */
-    public function getFieldByName(string $fieldName): Field
+    public function getFieldByName(string $fieldName): ?Field
     {
         return $this->fieldCollection->offsetGet($fieldName);
     }
@@ -50,7 +37,7 @@ class Document
     /**
      * @param string $rawExplainData
      */
-    public function setRawExplainData(string $rawExplainData)
+    public function setRawExplainData(string $rawExplainData): void
     {
         $this->rawExplainData = $rawExplainData;
     }

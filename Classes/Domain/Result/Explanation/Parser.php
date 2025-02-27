@@ -14,45 +14,29 @@ use ArrayObject;
  */
 class Parser
 {
-    /**
-     * @var ExplainResult
-     */
-    protected $explain;
+    protected ExplainResult $explain;
 
-    /**
-     * @param ExplainResult $explain
-     */
-    public function injectExplainResult(ExplainResult $explain)
+    public function injectExplainResult(ExplainResult $explain): void
     {
         $this->explain = $explain;
     }
 
     /**
      * Invokes the parsing of the raw content and returns the root node.
-     *
-     * @param string
-     * @return  Explain
      */
-    protected function getRootNode($content): Explain
+    protected function getRootNode(string $content): Explain
     {
         $tokens = new ArrayObject();
         $this->parseChildNodes($content, $tokens);
-
-        if (isset($tokens[0])) {
-            return $tokens[0];
-        }
         //error in parsing return a new empty dummy node
-        return new Explain();
+        return $tokens[0] ?? new Explain();
     }
 
     /**
      * This method is used to parse the node type from the content and retrieve the
      * corresponding node object instance.
-     *
-     * @param string $tokenName
-     * @return Leaf|Max|Product|Sum
      */
-    protected function getNodeFromName(string $tokenName): Explain
+    protected function getNodeFromName(string $tokenName): Leaf|Max|Product|Sum
     {
         if (mb_strpos($tokenName, 'sum of:') !== false || mb_strpos($tokenName, 'result of:') !== false) {
             return new Sum();
@@ -73,53 +57,54 @@ class Parser
     /**
      * Recursive method to parse the explain content into a child node structure.
      *
-     * @param string $contextContent
-     * @param ArrayObject $collection
-     * @param Explain|null $parent
-     * @param int $level
+     * @param ArrayObject<int, Explain> $collection
      */
-    protected function parseChildNodes(string $contextContent, ArrayObject $collection, Explain $parent = null, int $level = 0)
-    {
+    protected function parseChildNodes(
+        string $contextContent,
+        ArrayObject $collection,
+        ?Explain $parent = null,
+        int $level = 0,
+    ): void {
         $matches = [];
 
         //look for tokens stating with 0-9* and get all following lines stating with " " space
         preg_match_all('~((?<=^)|(?<=\n))(?<token>[0-9].*?\n)((?=[0-9])|(?=$))~s', $contextContent, $matches);
 
-        if (array_key_exists('token', $matches)) {
-            foreach ($matches['token'] as $tokenKey => $tokenContent) {
-                $nodeParts		= explode(PHP_EOL, $tokenContent);
-                $nodeContent	= trim(array_shift($nodeParts));
-                $node			= $this->getNodeFromName($nodeContent);
-                $score 			= $this->getScoreFromContent($nodeContent);
-                $nodeFieldName 	= $this->getFieldNameFromNodeName($nodeContent);
+        foreach ($matches['token'] as $tokenContent) {
+            $nodeParts		= explode(PHP_EOL, $tokenContent);
+            $nodeContent	= trim(array_shift($nodeParts));
+            $node			= $this->getNodeFromName($nodeContent);
+            $score 			= $this->getScoreFromContent($nodeContent);
+            $nodeFieldName 	= $this->getFieldNameFromNodeName($nodeContent);
 
-                $node->setContent($nodeContent);
-                $node->setParent($parent);
-                $node->setScore($score);
-                $node->setLevel($level);
-                $node->setFieldName($nodeFieldName);
-                $collection->append($node);
+            $node->setContent($nodeContent);
+            $node->setParent($parent);
+            $node->setScore($score);
+            $node->setLevel($level);
+            $node->setFieldName($nodeFieldName);
+            $collection->append($node);
 
-                $nextLevelContent = $this->removeLeadingSpacesFromNextLevelContent($nodeParts);
+            $nextLevelContent = $this->removeLeadingSpacesFromNextLevelContent($nodeParts);
 
-                if (trim($nextLevelContent) != '') {
-                    $level++;
-                    //walk recursive through the input
-                    $this->parseChildNodes($nextLevelContent, $node->getChildren(), $node, $level);
-                }
+            if (
+                trim($nextLevelContent) != ''
+                && $node->getChildren() instanceof ArrayObject
+            ) {
+                $level++;
+                //walk recursive through the input
+                $this->parseChildNodes($nextLevelContent, $node->getChildren(), $node, $level);
             }
         }
     }
 
     /**
-     * @param $tokenParts
-     * @return string
+     * @param string[] $tokenParts
      */
-    protected function removeLeadingSpacesFromNextLevelContent($tokenParts)
+    protected function removeLeadingSpacesFromNextLevelContent(array $tokenParts): string
     {
         $nextLevelContent = '';
         if (count($tokenParts)) {
-            $preparedTokens = preg_replace('~^  ~ims', '', $tokenParts);
+            $preparedTokens = preg_replace('~^ {2}~ims', '', $tokenParts);
             $nextLevelContent = implode(PHP_EOL, $preparedTokens);
             return trim($nextLevelContent) . PHP_EOL;
         }
@@ -135,7 +120,7 @@ class Parser
      * @param string $nodeName
      * @return float
      */
-    protected function getScoreFromContent($nodeName)
+    protected function getScoreFromContent(string $nodeName): float
     {
         $score = 0.0;
         $scoreMatches 	= [];
@@ -147,11 +132,7 @@ class Parser
         return $score;
     }
 
-    /**
-     * @param $content
-     * @return string
-     */
-    protected function getQueryAttribute($content)
+    protected function getQueryAttribute(string $content): string
     {
         $querystring = '';
         $matches = [];
@@ -163,19 +144,16 @@ class Parser
             preg_match('~.*q=(?<querystring>[^&]*)~ism', $attributes, $attributeMatches);
             if (isset($attributeMatches['querystring'])) {
                 $querystring = $attributeMatches['querystring'];
-                //convert boostvalues without decimals to boost value with
+                //convert boost-values without decimals to boost value with
                 //decimal eg: foo^20 => foo^20.0
                 $querystring = preg_replace('~\^([0-9^.]+)~i', '^$1.0', $querystring);
             }
         }
 
-        return $querystring;
+        return $querystring ?? '';
     }
 
-    /**
-     * @param $nodeName
-     */
-    protected function getFieldNameFromNodeName($nodeName)
+    protected function getFieldNameFromNodeName(string $nodeName): string
     {
         $result 	= '';
         $matches 	= [];
@@ -190,10 +168,10 @@ class Parser
         } elseif (mb_strpos($nodeName, 'FunctionQuery(') !== false) {
             preg_match('~FunctionQuery\([^\(]*\((?<fieldname>[^\):]*)~', $nodeName, $matches);
 
-            //check if it is a nested function query an get inner fieldname
-            $lastBracketPos = mb_strpos($matches['fieldname'], '(');
+            //check if it is a nested function query and get inner fieldname
+            $lastBracketPos = mb_strpos($matches['fieldname'] ?? '', '(');
             if ($lastBracketPos !== false) {
-                $fieldMatch = mb_substr($matches['fieldname'], $lastBracketPos + 1, mb_strlen($matches['fieldname']));
+                $fieldMatch = mb_substr($matches['fieldname'] ?? '', $lastBracketPos + 1, mb_strlen($matches['fieldname'] ?? ''));
                 if (!is_numeric($fieldMatch)) {
                     $matches['fieldname'] = $fieldMatch;
                 }
@@ -209,10 +187,8 @@ class Parser
 
     /**
      * Parses the explain content to an explain object wit child nodes.
-     *
-     * @return ExplainResult
      */
-    public function parse(Content $content, MetaData $metaData)
+    public function parse(Content $content, MetaData $metaData): ExplainResult
     {
         $rawContent = $content->getContent();
         $rootNode = $this->getRootNode($rawContent . PHP_EOL);
