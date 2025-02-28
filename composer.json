@@ -1,7 +1,6 @@
 {
   "name": "apache-solr-for-typo3/php-solr-explain",
   "description": "PHP explain library for apache solr",
-  "version": "3.0.0",
   "license": "MIT",
   "authors": [
     {

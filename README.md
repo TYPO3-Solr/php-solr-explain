@@ -9,7 +9,7 @@
 Apache Solr retrieves a detailed explain output how the score of a result is calculated. This explain-result library
 is good for people who know how solr works, but it is also hard to understand.
 
-php-solr-explain is a library that parses this explain output and calculates the impact of each field. Finally this information can be used, e.g.
+php-solr-explain is a library that parses this explain output and calculates the impact of each field. Finally, this information can be used, e.g.
 to display a pie chart that shows the integrator which field had an impact on that match:
 
 ![Pie chart with explain information](example.png)
